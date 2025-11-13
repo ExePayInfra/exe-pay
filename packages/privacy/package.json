@@ -17,7 +17,7 @@
     "circuits"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc",
     "dev": "tsc -b --watch --preserveWatchOutput",
     "clean": "rm -rf dist",
     "type-check": "tsc --noEmit",

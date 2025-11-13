@@ -14,3 +14,4 @@ reports
 # macOS
 .DS_Store
 
+apps/web/.next/

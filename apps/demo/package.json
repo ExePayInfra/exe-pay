@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "build": "tsc -b",
+    "build": "tsc",
     "clean": "rm -rf dist",
     "type-check": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\"",

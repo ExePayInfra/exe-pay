@@ -12,7 +12,7 @@ export function commitmentToSolana(commitment: "processed" | "confirmed" | "fina
 }
 
 export async function withTimeout<T>(promise: Promise<T>, ms: number, onTimeout?: () => void): Promise<T> {
-  let timeoutHandle: NodeJS.Timeout;
+  let timeoutHandle: NodeJS.Timeout | undefined;
 
   const timeout = new Promise<never>((_, reject) => {
     timeoutHandle = setTimeout(() => {
@@ -24,7 +24,7 @@ export async function withTimeout<T>(promise: Promise<T>, ms: number, onTimeout?
   try {
     return await Promise.race([promise, timeout]);
   } finally {
-    clearTimeout(timeoutHandle);
+    if (timeoutHandle) clearTimeout(timeoutHandle);
   }
 }
 

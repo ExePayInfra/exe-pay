@@ -45,8 +45,8 @@ export function decodeSettlement(input: DecodeSettlementInput) {
 
   return {
     signature,
-    slot: status?.slot ?? 0,
-    finalized: commitment === "finalized" && (status?.confirmationStatus === "finalized" ?? false)
+    slot: (status as any)?.slot ?? 0,
+    finalized: commitment === "finalized" && ((status as any)?.confirmationStatus === "finalized" || false)
   };
 }
 
