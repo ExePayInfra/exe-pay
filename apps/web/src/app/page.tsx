@@ -32,8 +32,16 @@ export default function Home() {
               </div>
               <h1 className="text-2xl font-bold text-white">ExePay</h1>
             </div>
-            <div className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold">
-              Demo Mode
+            <div className="flex items-center gap-4">
+              <a
+                href="/create-link"
+                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
+              >
+                Create Link
+              </a>
+              <div className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold">
+                Demo Mode
+              </div>
             </div>
           </div>
         </div>
