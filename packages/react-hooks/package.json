@@ -30,6 +30,7 @@
     "@exe-pay/core": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
     "@types/react": "^18.2.48",
     "tslib": "^2.6.3",
     "vitest": "^2.1.3"
