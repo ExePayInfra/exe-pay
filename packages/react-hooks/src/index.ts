@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback } from "react";
+import type { PublicKey } from "@solana/web3.js";
 import { ExePayClient, type PaymentIntent, type ExePayConfig, type BuiltPayment } from "@exe-pay/core";
 
 export function useExePay(config: ExePayConfig) {
@@ -12,7 +13,7 @@ export function usePaymentIntent(client: ExePayClient) {
   const [isBuilding, setIsBuilding] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const create = useCallback(async (params: Parameters<ExePayClient["createIntent"]>[0], signer: import("@solana/web3.js").PublicKey) => {
+  const create = useCallback(async (params: Parameters<ExePayClient["createIntent"]>[0], signer: PublicKey) => {
     try {
       setError(null);
       setIsBuilding(true);

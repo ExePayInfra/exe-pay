@@ -27,7 +27,8 @@
     "react": "^18.0.0"
   },
   "dependencies": {
-    "@exe-pay/core": "workspace:*"
+    "@exe-pay/core": "workspace:*",
+    "@solana/web3.js": "^1.95.3"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
