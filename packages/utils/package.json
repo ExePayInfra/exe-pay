@@ -1,0 +1,33 @@
+{
+  "name": "@exe-pay/utils",
+  "version": "0.1.0",
+  "description": "Utility helpers shared across the exe-pay monorepo.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch --preserveWatchOutput",
+    "clean": "rm -rf dist",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.3"
+  },
+  "devDependencies": {
+    "tslib": "^2.6.3",
+    "vitest": "^2.1.3"
+  }
+}
+

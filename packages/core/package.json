@@ -1,0 +1,42 @@
+{
+  "name": "@exe-pay/core",
+  "version": "0.1.0",
+  "description": "Core TypeScript SDK for building privacy-preserving payment flows on Solana.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch --preserveWatchOutput",
+    "clean": "rm -rf dist",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
+  },
+  "dependencies": {
+    "@exe-pay/privacy": "workspace:*",
+    "@exe-pay/utils": "workspace:*",
+    "@noble/curves": "^1.4.0",
+    "@noble/hashes": "^1.5.0",
+    "@solana/web3.js": "^1.95.3",
+    "borsh": "^1.2.1",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "tslib": "^2.6.3",
+    "vitest": "^2.1.3"
+  }
+}
+

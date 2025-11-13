@@ -1,0 +1,16 @@
+# turborepo
+.turbo
+
+# pnpm
+node_modules
+pnpm-lock.yaml
+
+# build outputs
+dist
+build
+coverage
+reports
+
+# macOS
+.DS_Store
+
