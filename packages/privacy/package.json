@@ -20,6 +20,7 @@
     "build": "tsc -b",
     "dev": "tsc -b --watch --preserveWatchOutput",
     "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "vitest run"
   },

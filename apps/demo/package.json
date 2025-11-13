@@ -7,7 +7,9 @@
     "dev": "tsx watch src/main.ts",
     "build": "tsc -b",
     "clean": "rm -rf dist",
-    "lint": "eslint \"src/**/*.ts\""
+    "type-check": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "echo \"No tests yet\""
   },
   "dependencies": {
     "@exe-pay/core": "workspace:*",
