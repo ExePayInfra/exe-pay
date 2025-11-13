@@ -39,6 +39,12 @@ export default function Home() {
               >
                 Create Link
               </a>
+              <a
+                href="/scan"
+                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
+              >
+                Scan QR
+              </a>
               <div className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold">
                 Demo Mode
               </div>

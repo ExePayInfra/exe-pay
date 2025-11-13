@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { generatePaymentLink, formatPaymentAmount } from "@exe-pay/utils";
+import { QRCodeDisplay, downloadQRCode } from "./QRCodeDisplay";
 
 export function PaymentLinkGenerator() {
   const [recipient, setRecipient] = useState("");
@@ -12,6 +13,7 @@ export function PaymentLinkGenerator() {
   const [generatedLink, setGeneratedLink] = useState("");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [showQR, setShowQR] = useState(true);
 
   const handleGenerate = () => {
     setError("");
@@ -82,6 +84,15 @@ export function PaymentLinkGenerator() {
       }
     } else {
       handleCopy();
+    }
+  };
+
+  const handleDownloadQR = async () => {
+    try {
+      const filename = `payment-qr-${Date.now()}.png`;
+      await downloadQRCode(generatedLink, filename);
+    } catch (err) {
+      setError("Failed to download QR code");
     }
   };
 
@@ -185,7 +196,7 @@ export function PaymentLinkGenerator() {
               {generatedLink}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-4">
               <button
                 onClick={handleCopy}
                 className="flex-1 bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
@@ -201,8 +212,40 @@ export function PaymentLinkGenerator() {
               </button>
             </div>
 
+            {/* QR Code Section */}
+            <div className="border-t border-green-200 pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-medium text-gray-900">QR Code</h4>
+                <button
+                  onClick={() => setShowQR(!showQR)}
+                  className="text-xs text-purple-600 hover:text-purple-700 font-medium"
+                >
+                  {showQR ? "Hide" : "Show"}
+                </button>
+              </div>
+
+              {showQR && (
+                <div className="space-y-3">
+                  <div className="flex justify-center bg-white p-4 rounded-lg">
+                    <QRCodeDisplay value={generatedLink} size={200} />
+                  </div>
+
+                  <button
+                    onClick={handleDownloadQR}
+                    className="w-full bg-purple-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    📥 Download QR Code
+                  </button>
+
+                  <p className="text-xs text-gray-600 text-center">
+                    Scan this QR code to pay instantly!
+                  </p>
+                </div>
+              )}
+            </div>
+
             <div className="mt-3 text-xs text-gray-600">
-              <p>Share this link to receive payments privately!</p>
+              <p>Share this link or QR code to receive payments privately!</p>
             </div>
           </div>
         )}
