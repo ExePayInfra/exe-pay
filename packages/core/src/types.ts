@@ -40,3 +40,32 @@ export interface BuiltPayment {
   readonly note: ShieldedNote;
 }
 
+export interface BatchPaymentRecipient {
+  readonly address: PublicKey;
+  readonly amount: number;
+  readonly memo?: string;
+}
+
+export interface BatchPaymentIntent {
+  readonly recipients: readonly BatchPaymentRecipient[];
+  readonly tokenMint?: PublicKey;
+  readonly nonce: Uint8Array;
+}
+
+export interface RecurringPaymentSchedule {
+  readonly merchant: PublicKey;
+  readonly amount: number;
+  readonly interval: "daily" | "weekly" | "monthly";
+  readonly startTime: number; // Unix timestamp
+  readonly endTime?: number; // Optional end time
+  readonly maxPayments?: number; // Maximum number of payments
+  readonly tokenMint?: PublicKey;
+}
+
+export interface RecurringPaymentState {
+  readonly schedule: RecurringPaymentSchedule;
+  readonly paymentsExecuted: number;
+  readonly lastPaymentTime: number;
+  readonly isActive: boolean;
+}
+

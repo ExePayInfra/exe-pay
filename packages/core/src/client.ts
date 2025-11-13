@@ -2,8 +2,20 @@ import { Connection, PublicKey, sendAndConfirmTransaction, Transaction } from "@
 import { Rpc, createRpc } from "@lightprotocol/stateless.js";
 import { decodeSettlement, proveSpend } from "@exe-pay/privacy";
 import { commitmentToSolana } from "@exe-pay/utils";
-import type { BuiltPayment, ExePayConfig, PaymentIntent, SettlementResult } from "./types.js";
-import { buildPaymentInstructions, createPaymentIntent } from "./transactions.js";
+import type { 
+  BuiltPayment, 
+  ExePayConfig, 
+  PaymentIntent, 
+  SettlementResult,
+  BatchPaymentIntent,
+  BatchPaymentRecipient 
+} from "./types.js";
+import { 
+  buildPaymentInstructions, 
+  createPaymentIntent,
+  createBatchPaymentIntent,
+  buildBatchPaymentInstructions 
+} from "./transactions.js";
 
 export class ExePayClient {
   readonly connection: Connection;
@@ -46,6 +58,33 @@ export class ExePayClient {
       status: status.value,
       commitment: this.config.defaultCommitment ?? "confirmed"
     });
+  }
+
+  /**
+   * Create a batch payment intent for multiple recipients
+   * Efficient for sending to many addresses at once
+   */
+  createBatchIntent(params: {
+    readonly recipients: readonly BatchPaymentRecipient[];
+    readonly tokenMint?: PublicKey;
+  }): BatchPaymentIntent {
+    return createBatchPaymentIntent(params);
+  }
+
+  /**
+   * Build a batch payment transaction
+   * Includes privacy-preserving compressed transfers for all recipients
+   */
+  async buildBatch(intent: BatchPaymentIntent, opts?: { readonly feePayer?: PublicKey }): Promise<BuiltPayment> {
+    return buildBatchPaymentInstructions(intent, { feePayer: opts?.feePayer });
+  }
+
+  /**
+   * Execute a batch payment to multiple recipients
+   * All transfers are privacy-preserving using Light Protocol
+   */
+  async settleBatch(payment: BuiltPayment, signer: import("@solana/web3.js").Signer): Promise<SettlementResult> {
+    return this.settle(payment, signer);
   }
 }
 

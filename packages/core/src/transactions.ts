@@ -2,7 +2,13 @@ import { SystemProgram, TransactionInstruction, PublicKey } from "@solana/web3.j
 import { CompressedTokenProgram } from "@lightprotocol/compressed-token";
 import { keccak_256 } from "@noble/hashes/sha3";
 import { randomBytes } from "@noble/hashes/utils";
-import type { BuiltPayment, PaymentIntent, BuildTransactionOptions } from "./types.js";
+import type { 
+  BuiltPayment, 
+  PaymentIntent, 
+  BuildTransactionOptions,
+  BatchPaymentIntent,
+  BatchPaymentRecipient 
+} from "./types.js";
 import { buildShieldedNote } from "./merkle.js";
 
 const EXE_PAY_PROGRAM_ID = new PublicKey("ExEPaY1111111111111111111111111111111111");
@@ -92,6 +98,99 @@ export function buildPaymentInstructions(intent: PaymentIntent, opts: BuildTrans
 
   return {
     instructions: [instruction, compressedTransfer],
+    signers: [],
+    note
+  };
+}
+
+/**
+ * Create a batch payment intent for multiple recipients
+ * Enables efficient multi-recipient payments with privacy
+ */
+export function createBatchPaymentIntent(params: {
+  readonly recipients: readonly BatchPaymentRecipient[];
+  readonly tokenMint?: PublicKey;
+}): BatchPaymentIntent {
+  if (params.recipients.length === 0) {
+    throw new Error("At least one recipient is required");
+  }
+
+  if (params.recipients.length > 100) {
+    throw new Error("Maximum 100 recipients per batch");
+  }
+
+  for (const recipient of params.recipients) {
+    if (recipient.amount <= 0) {
+      throw new Error("All amounts must be positive");
+    }
+  }
+
+  return {
+    recipients: params.recipients,
+    tokenMint: params.tokenMint,
+    nonce: randomBytes(32)
+  };
+}
+
+/**
+ * Build instructions for a batch payment
+ * Creates compressed transfers for privacy and efficiency
+ */
+export function buildBatchPaymentInstructions(
+  intent: BatchPaymentIntent,
+  opts: BuildTransactionOptions = {}
+): BuiltPayment {
+  const instructions: TransactionInstruction[] = [];
+  
+  // Calculate total amount
+  const totalAmount = intent.recipients.reduce(
+    (sum, r) => sum + BigInt(Math.trunc(r.amount)),
+    0n
+  );
+
+  // Create batch payment instruction
+  const batchData = keccak_256.create()
+    .update(intent.nonce)
+    .update(Buffer.from(totalAmount.toString()))
+    .digest();
+
+  const batchInstruction = new TransactionInstruction({
+    programId: EXE_PAY_PROGRAM_ID,
+    keys: [
+      { pubkey: opts.feePayer ?? intent.recipients[0].address, isSigner: true, isWritable: true },
+      ...intent.recipients.map(r => ({
+        pubkey: r.address,
+        isSigner: false,
+        isWritable: true
+      })),
+      { pubkey: LIGHT_PROGRAM_ID, isSigner: false, isWritable: false }
+    ],
+    data: Buffer.from(batchData)
+  });
+
+  instructions.push(batchInstruction);
+
+  // Create compressed transfers for each recipient
+  for (const recipient of intent.recipients) {
+    const transfer = createCompressedTransfer(
+      opts.feePayer ?? intent.recipients[0].address,
+      recipient.address,
+      BigInt(Math.trunc(recipient.amount)),
+      intent.tokenMint
+    );
+    instructions.push(transfer);
+  }
+
+  // Build a combined shielded note for the batch
+  const note = buildShieldedNote({
+    merchant: intent.recipients[0].address, // First recipient as primary
+    amountLamports: totalAmount,
+    memo: `Batch payment to ${intent.recipients.length} recipients`,
+    nonce: intent.nonce
+  });
+
+  return {
+    instructions,
     signers: [],
     note
   };
