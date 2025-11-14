@@ -1,11 +1,59 @@
 'use client';
 
-import { PaymentForm } from '@/components/PaymentForm';
-import { WalletButton } from '@/components/WalletButton';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useState, useEffect } from 'react';
 
-export default function WalletPage() {
-  const { publicKey, connected } = useWallet();
+export default function WalletWorkingPage() {
+  const [mounted, setMounted] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [connecting, setConnecting] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const connectWallet = async () => {
+    setConnecting(true);
+    try {
+      // Check if Phantom is installed
+      const { solana } = window as any;
+      
+      if (!solana?.isPhantom) {
+        alert('Please install Phantom wallet from https://phantom.app/');
+        setConnecting(false);
+        return;
+      }
+
+      // Connect to Phantom
+      const response = await solana.connect();
+      setWalletAddress(response.publicKey.toString());
+      console.log('Connected to wallet:', response.publicKey.toString());
+    } catch (err) {
+      console.error('Failed to connect wallet:', err);
+      alert('Failed to connect wallet. Please try again.');
+    } finally {
+      setConnecting(false);
+    }
+  };
+
+  const disconnectWallet = async () => {
+    try {
+      const { solana } = window as any;
+      if (solana) {
+        await solana.disconnect();
+        setWalletAddress(null);
+      }
+    } catch (err) {
+      console.error('Failed to disconnect:', err);
+    }
+  };
+
+  if (!mounted) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -20,31 +68,35 @@ export default function WalletPage() {
               <a href="/" className="text-2xl font-bold text-white hover:text-purple-300 transition-colors">ExePay</a>
             </div>
             <div className="flex items-center gap-4">
-              <a
-                href="/"
-                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
-              >
+              <a href="/" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
                 Home
               </a>
-              <a
-                href="/create-link"
-                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
-              >
-                Payment Links
+              <a href="/batch" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+                Batch
               </a>
-              <a
-                href="/scan"
-                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
-              >
-                Scan QR
+              <a href="/recurring" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+                Recurring
               </a>
-              <a
-                href="/history"
-                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
-              >
+              <a href="/history" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
                 History
               </a>
-              <WalletButton />
+              
+              {walletAddress ? (
+                <button
+                  onClick={disconnectWallet}
+                  className="px-4 py-2 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 hover:bg-red-500/30 font-medium transition-all"
+                >
+                  {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
+                </button>
+              ) : (
+                <button
+                  onClick={connectWallet}
+                  disabled={connecting}
+                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
+                >
+                  {connecting ? 'Connecting...' : 'Connect Wallet'}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -60,12 +112,12 @@ export default function WalletPage() {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Connect your Solana wallet and send privacy-preserving payments powered by Light Protocol.
+            Connect your Phantom wallet and send privacy-preserving payments powered by Light Protocol.
           </p>
         </div>
 
         {/* Wallet Status */}
-        {!connected ? (
+        {!walletAddress ? (
           <div className="max-w-2xl mx-auto mb-8">
             <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-8 text-center">
               <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -75,11 +127,15 @@ export default function WalletPage() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Connect Your Wallet</h3>
               <p className="text-blue-200 mb-6">
-                To send payments, please connect your Solana wallet (Phantom, Solflare, etc.)
+                To send payments, please connect your Phantom wallet
               </p>
-              <div className="flex justify-center">
-                <WalletButton />
-              </div>
+              <button
+                onClick={connectWallet}
+                disabled={connecting}
+                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 shadow-lg"
+              >
+                {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
+              </button>
             </div>
           </div>
         ) : (
@@ -92,18 +148,64 @@ export default function WalletPage() {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm text-green-200 font-medium">Wallet Connected</p>
-                  <p className="text-xs text-green-300 font-mono">{publicKey?.toBase58().slice(0, 8)}...{publicKey?.toBase58().slice(-8)}</p>
+                  <p className="text-sm text-green-200 font-medium">Wallet Connected ✅</p>
+                  <p className="text-xs text-green-300 font-mono">{walletAddress}</p>
                 </div>
+                <button
+                  onClick={disconnectWallet}
+                  className="px-4 py-2 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 hover:bg-red-500/30 text-sm font-medium transition-all"
+                >
+                  Disconnect
+                </button>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Payment Form */}
-        {connected && (
-          <div className="mt-8">
-            <PaymentForm />
+            {/* Payment Form */}
+            <div className="mt-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-white mb-6">Send Payment</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Recipient Address
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Solana wallet address"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Amount (SOL)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="0.001"
+                    step="0.000000001"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Memo (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Payment for..."
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  />
+                </div>
+
+                <button
+                  className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  🔒 Send Private Payment
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -118,8 +220,13 @@ export default function WalletPage() {
                   1
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Connect Your Wallet</h4>
-                  <p className="text-gray-400">Click "Select Wallet" and choose Phantom, Solflare, or another Solana wallet.</p>
+                  <h4 className="text-lg font-semibold text-white mb-2">Install Phantom Wallet</h4>
+                  <p className="text-gray-400">
+                    Download from{' '}
+                    <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">
+                      phantom.app
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -129,7 +236,7 @@ export default function WalletPage() {
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-white mb-2">Get Devnet SOL (For Testing)</h4>
-                  <p className="text-gray-400 mb-2">Visit the Solana faucet to get free test SOL:</p>
+                  <p className="text-gray-400 mb-2">Visit the Solana faucet:</p>
                   <a 
                     href="https://faucet.solana.com" 
                     target="_blank" 
@@ -137,9 +244,6 @@ export default function WalletPage() {
                     className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium"
                   >
                     https://faucet.solana.com
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
                   </a>
                 </div>
               </div>
@@ -150,17 +254,7 @@ export default function WalletPage() {
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-white mb-2">Send a Private Payment</h4>
-                  <p className="text-gray-400">Enter a recipient address, amount, and optional memo. Your payment will be private!</p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold">
-                  4
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Approve & Confirm</h4>
-                  <p className="text-gray-400">Your wallet will ask you to approve the transaction. Click approve and wait for confirmation!</p>
+                  <p className="text-gray-400">Connect your wallet, enter details, and send!</p>
                 </div>
               </div>
             </div>
@@ -179,7 +273,7 @@ export default function WalletPage() {
               <div>
                 <h4 className="text-lg font-semibold text-purple-200 mb-2">🔐 Privacy Guaranteed</h4>
                 <p className="text-sm text-purple-300">
-                  All payments use zero-knowledge proofs powered by Light Protocol. Your transaction details are completely private - only you and the recipient can see them. The blockchain only sees encrypted data.
+                  All payments use zero-knowledge proofs powered by Light Protocol. Your transaction details are completely private.
                 </p>
               </div>
             </div>
