@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 export default function Home() {
   const [recipient, setRecipient] = useState('');
@@ -10,8 +9,7 @@ export default function Home() {
 
   const handleDemo = () => {
     try {
-      // Just demonstrate the SDK works
-      const demoAddress = 'DemoAddress123'; // Placeholder
+      const demoAddress = 'DemoAddress123';
       const demoAmount = parseFloat(amount || '0.001');
       
       setResult(`✅ Demo: Would send ${demoAmount} SOL to ${recipient || demoAddress}`);
@@ -30,14 +28,14 @@ export default function Home() {
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
               </div>
-              <h1 className="text-2xl font-bold text-white">ExePay</h1>
+              <a href="/" className="text-2xl font-bold text-white hover:text-purple-300 transition-colors">ExePay</a>
             </div>
             <div className="flex items-center gap-4">
               <a
                 href="/create-link"
                 className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
               >
-                Create Link
+                Payment Links
               </a>
               <a
                 href="/scan"
@@ -96,7 +94,6 @@ export default function Home() {
             <h3 className="text-2xl font-bold text-white mb-6">SDK Demo</h3>
             
             <div className="space-y-6">
-              {/* Recipient */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Recipient Address (Optional)
@@ -110,7 +107,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* Amount */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Amount (SOL)
@@ -125,14 +121,12 @@ export default function Home() {
                 />
               </div>
 
-              {/* Result */}
               {result && (
                 <div className="bg-purple-500/20 border border-purple-500/50 rounded-lg p-4">
                   <p className="text-purple-200 text-sm">{result}</p>
                 </div>
               )}
 
-              {/* Button */}
               <button
                 onClick={handleDemo}
                 className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
@@ -141,10 +135,9 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Info */}
             <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
               <p className="text-sm text-blue-200">
-                <span className="font-semibold">📘 Demo Mode:</span> This is a simplified demo. Full wallet integration with Phantom/Solflare coming soon!
+                <span className="font-semibold">📘 Demo Mode:</span> Testing transaction history with Helius RPC. Visit <a href="/history" className="underline">/history</a> to test!
               </p>
             </div>
           </div>
@@ -194,7 +187,7 @@ export default function Home() {
       <footer className="border-t border-white/10 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-400">
-            <p>Built with ❤️ on Solana • Powered by ExePay SDK</p>
+            <p>Built with ❤️ on Solana • Powered by Light Protocol</p>
             <p className="mt-2 text-sm">
               <a href="https://github.com/ExePayInfra/exe-pay" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                 View on GitHub
@@ -206,4 +199,3 @@ export default function Home() {
     </main>
   );
 }
-

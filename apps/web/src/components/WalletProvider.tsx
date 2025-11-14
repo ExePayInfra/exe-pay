@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import { ConnectionProvider, WalletProvider as SolanaWalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
+import type { Adapter } from '@solana/wallet-adapter-base';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -23,13 +23,20 @@ export const WalletProvider: FC<{ children: ReactNode }> = ({ children }) => {
     return customRpc || clusterApiUrl(network);
   }, [network]);
 
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-    ],
-    [network]
-  );
+  // Lazy-load wallet adapters only on client side
+  const [wallets, setWallets] = useState<Adapter[]>([]);
+  
+  useEffect(() => {
+    // Only load wallets in the browser
+    if (typeof window !== 'undefined') {
+      import('@solana/wallet-adapter-wallets').then(({ PhantomWalletAdapter, SolflareWalletAdapter }) => {
+        setWallets([
+          new PhantomWalletAdapter(),
+          new SolflareWalletAdapter(),
+        ]);
+      });
+    }
+  }, []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>

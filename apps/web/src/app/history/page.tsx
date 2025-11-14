@@ -33,6 +33,8 @@ export default function HistoryPage() {
 
       // Connect to Solana using environment variable or default
       const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.devnet.solana.com";
+      
+      console.log('🔍 Using RPC URL:', rpcUrl.includes('helius') ? 'Helius RPC ✅' : rpcUrl); // Debug log
       const connection = new Connection(rpcUrl, "confirmed");
 
       // Fetch transactions

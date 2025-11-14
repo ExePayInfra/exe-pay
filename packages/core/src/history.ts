@@ -51,8 +51,8 @@ async function sleep(ms: number): Promise<void> {
  */
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
-  maxRetries: number = 3,
-  initialDelay: number = 1000
+  maxRetries: number = 5,
+  initialDelay: number = 2000
 ): Promise<T> {
   let lastError: Error | undefined;
   
@@ -72,9 +72,9 @@ async function retryWithBackoff<T>(
         throw lastError;
       }
       
-      // Wait with exponential backoff
+      // Wait with exponential backoff (longer delays for rate limits)
       const delay = initialDelay * Math.pow(2, i);
-      console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms...`);
+      console.log(`⏳ Retry ${i + 1}/${maxRetries} after ${delay}ms... (Rate limit protection)`);
       await sleep(delay);
     }
   }
@@ -112,7 +112,7 @@ export async function fetchTransactionHistory(
 
     // Fetch full transaction details with retry
     // Split into smaller batches to avoid rate limits
-    const batchSize = 10;
+    const batchSize = 5; // Reduced from 10 to 5 for better rate limit handling
     const allTransactions: (ParsedTransactionWithMeta | null)[] = [];
     
     for (let i = 0; i < signatures.length; i += batchSize) {
@@ -130,9 +130,9 @@ export async function fetchTransactionHistory(
       
       allTransactions.push(...batchTransactions);
       
-      // Small delay between batches to avoid rate limiting
+      // Longer delay between batches to avoid rate limiting
       if (i + batchSize < signatures.length) {
-        await sleep(100);
+        await sleep(500); // Increased from 100ms to 500ms
       }
     }
 
