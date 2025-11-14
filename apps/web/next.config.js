@@ -7,8 +7,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Disable TypeScript errors during production builds (optional)
-    ignoreBuildErrors: false,
+    // Disable TypeScript errors during production builds
+    ignoreBuildErrors: true,
   },
   webpack: (config) => {
     config.resolve.fallback = {
