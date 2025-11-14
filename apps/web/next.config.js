@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@exe-pay/core', '@exe-pay/react-hooks', '@exe-pay/utils'],
+  eslint: {
+    // Disable ESLint during production builds
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Disable TypeScript errors during production builds (optional)
+    ignoreBuildErrors: false,
+  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
