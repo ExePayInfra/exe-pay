@@ -13,5 +13,15 @@ reports
 # macOS
 .DS_Store
 
+# Next.js
 apps/web/.next/
+.next/
+
+# Vercel
 .vercel
+
+# Environment variables
+.env
+.env.local
+.env*.local
+*.env.local

@@ -31,11 +31,9 @@ export default function HistoryPage() {
         throw new Error("Invalid Solana wallet address");
       }
 
-      // Connect to Solana
-      const connection = new Connection(
-        "https://api.mainnet-beta.solana.com",
-        "confirmed"
-      );
+      // Connect to Solana using environment variable or default
+      const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.devnet.solana.com";
+      const connection = new Connection(rpcUrl, "confirmed");
 
       // Fetch transactions
       const history = await fetchTransactionHistory(connection, publicKey, {
@@ -49,7 +47,18 @@ export default function HistoryPage() {
       }
     } catch (err) {
       console.error("Failed to fetch transactions:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch transactions");
+      
+      let errorMessage = "Failed to fetch transactions";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        
+        // Add helpful hints for common errors
+        if (err.message.includes("Rate limit")) {
+          errorMessage += " 💡 Tip: Set up a free Helius RPC endpoint for better reliability.";
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

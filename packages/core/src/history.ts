@@ -40,6 +40,49 @@ export interface TransactionHistoryOptions {
 }
 
 /**
+ * Sleep utility for retry logic
+ */
+async function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Retry a function with exponential backoff
+ */
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  initialDelay: number = 1000
+): Promise<T> {
+  let lastError: Error | undefined;
+  
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      
+      // Don't retry on validation errors
+      if (lastError.message.includes("Invalid") || lastError.message.includes("invalid")) {
+        throw lastError;
+      }
+      
+      // If this was the last retry, throw
+      if (i === maxRetries - 1) {
+        throw lastError;
+      }
+      
+      // Wait with exponential backoff
+      const delay = initialDelay * Math.pow(2, i);
+      console.log(`Retry ${i + 1}/${maxRetries} after ${delay}ms...`);
+      await sleep(delay);
+    }
+  }
+  
+  throw lastError || new Error("Max retries reached");
+}
+
+/**
  * Fetch transaction history for a wallet
  */
 export async function fetchTransactionHistory(
@@ -50,35 +93,54 @@ export async function fetchTransactionHistory(
   try {
     const { limit = 50, before, until, commitment = "confirmed" } = options;
 
-    // Get transaction signatures
-    const signatures = await connection.getSignaturesForAddress(
-      address,
-      {
-        limit,
-        before,
-        until
-      },
-      commitment === "processed" ? "confirmed" : commitment
-    );
+    // Get transaction signatures with retry
+    const signatures = await retryWithBackoff(async () => {
+      return await connection.getSignaturesForAddress(
+        address,
+        {
+          limit,
+          before,
+          until
+        },
+        commitment === "processed" ? "confirmed" : commitment
+      );
+    });
 
     if (signatures.length === 0) {
       return [];
     }
 
-    // Fetch full transaction details
-    const transactions = await connection.getParsedTransactions(
-      signatures.map(sig => sig.signature),
-      {
-        maxSupportedTransactionVersion: 0,
-        commitment: commitment === "processed" ? "confirmed" : commitment
+    // Fetch full transaction details with retry
+    // Split into smaller batches to avoid rate limits
+    const batchSize = 10;
+    const allTransactions: (ParsedTransactionWithMeta | null)[] = [];
+    
+    for (let i = 0; i < signatures.length; i += batchSize) {
+      const batch = signatures.slice(i, i + batchSize);
+      
+      const batchTransactions = await retryWithBackoff(async () => {
+        return await connection.getParsedTransactions(
+          batch.map(sig => sig.signature),
+          {
+            maxSupportedTransactionVersion: 0,
+            commitment: commitment === "processed" ? "confirmed" : commitment
+          }
+        );
+      });
+      
+      allTransactions.push(...batchTransactions);
+      
+      // Small delay between batches to avoid rate limiting
+      if (i + batchSize < signatures.length) {
+        await sleep(100);
       }
-    );
+    }
 
     // Parse transactions into records
     const records: TransactionRecord[] = [];
 
-    for (let i = 0; i < transactions.length; i++) {
-      const tx = transactions[i];
+    for (let i = 0; i < allTransactions.length; i++) {
+      const tx = allTransactions[i];
       const sigInfo = signatures[i];
 
       if (!tx || !tx.meta) continue;
@@ -92,7 +154,18 @@ export async function fetchTransactionHistory(
     return records;
   } catch (error) {
     console.error("Failed to fetch transaction history:", error);
-    throw new Error("Failed to fetch transaction history");
+    
+    // Provide more helpful error messages
+    if (error instanceof Error) {
+      if (error.message.includes("429") || error.message.includes("Too Many Requests")) {
+        throw new Error("Rate limit exceeded. Please use a dedicated RPC endpoint (Helius, QuickNode, etc.) or try again later.");
+      } else if (error.message.includes("timeout")) {
+        throw new Error("Request timed out. Please check your connection or try a different RPC endpoint.");
+      }
+      throw error;
+    }
+    
+    throw new Error("Failed to fetch transaction history. Please try again.");
   }
 }
 
