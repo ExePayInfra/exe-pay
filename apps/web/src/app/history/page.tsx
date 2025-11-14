@@ -100,7 +100,7 @@ export default function HistoryPage() {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter Solana wallet address..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
                     handleFetch();
@@ -153,14 +153,14 @@ export default function HistoryPage() {
         </div>
 
         {/* Privacy Notice */}
-        <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-6">
+        <div className="mt-6 bg-purple-50 border border-cyan-200 rounded-lg p-6">
           <div className="flex items-start gap-2">
-            <span className="text-purple-600 text-xl">🔒</span>
+            <span className="text-cyan-600 text-xl">🔒</span>
             <div>
-              <p className="text-sm font-medium text-purple-900 mb-1">
+              <p className="text-sm font-medium text-cyan-900 mb-1">
                 Privacy Note
               </p>
-              <p className="text-xs text-purple-700">
+              <p className="text-xs text-cyan-700">
                 While ExePay payments use zero-knowledge proofs for privacy, this history viewer shows all public Solana transactions. Private payment details are not revealed.
               </p>
             </div>
@@ -171,7 +171,7 @@ export default function HistoryPage() {
         <div className="mt-8 text-center">
           <a
             href="/"
-            className="text-purple-600 hover:text-purple-700 font-medium"
+            className="text-cyan-600 hover:text-cyan-700 font-medium"
           >
             ← Back to Home
           </a>

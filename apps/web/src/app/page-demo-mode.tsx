@@ -21,18 +21,18 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
       <nav className="border-b border-white/10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
               </div>
               <h1 className="text-2xl font-bold text-white">ExePay</h1>
             </div>
-            <div className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold">
+            <div className="px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold">
               Demo Mode
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function Home() {
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-white mb-4">
             Private Payments on{' '}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Solana
             </span>
           </h2>
@@ -86,7 +86,7 @@ export default function Home() {
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   placeholder="Enter Solana wallet address"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -101,21 +101,21 @@ export default function Home() {
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.001"
                   step="0.000000001"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                 />
               </div>
 
               {/* Result */}
               {result && (
-                <div className="bg-purple-500/20 border border-purple-500/50 rounded-lg p-4">
-                  <p className="text-purple-200 text-sm">{result}</p>
+                <div className="bg-blue-500/20 border border-cyan-500/50 rounded-lg p-4">
+                  <p className="text-cyan-200 text-sm">{result}</p>
                 </div>
               )}
 
               {/* Button */}
               <button
                 onClick={handleDemo}
-                className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 🔒 Test SDK (Demo)
               </button>
@@ -133,8 +133,8 @@ export default function Home() {
         {/* Features */}
         <div className="mt-20 grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>

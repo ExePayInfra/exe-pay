@@ -127,35 +127,35 @@ export default function WalletWorkingPage() {
 
   if (!mounted) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
       <nav className="border-b border-white/10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
               </div>
-              <a href="/" className="text-2xl font-bold text-white hover:text-purple-300 transition-colors">ExePay</a>
+              <a href="/" className="text-2xl font-bold text-white hover:text-cyan-300 transition-colors">ExePay</a>
             </div>
             <div className="flex items-center gap-4">
-              <a href="/" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 Home
               </a>
-              <a href="/batch" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/batch" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 Batch
               </a>
-              <a href="/recurring" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/recurring" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 Recurring
               </a>
-              <a href="/history" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/history" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 History
               </a>
               
@@ -170,7 +170,7 @@ export default function WalletWorkingPage() {
                 <button
                   onClick={connectWallet}
                   disabled={connecting}
-                  className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
+                  className="px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50"
                 >
                   {connecting ? 'Connecting...' : 'Connect Wallet'}
                 </button>
@@ -185,7 +185,7 @@ export default function WalletWorkingPage() {
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-white mb-4">
             Send Private Payments with{' '}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Your Wallet
             </span>
           </h2>
@@ -210,7 +210,7 @@ export default function WalletWorkingPage() {
               <button
                 onClick={connectWallet}
                 disabled={connecting}
-                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 shadow-lg"
+                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 shadow-lg"
               >
                 {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
               </button>
@@ -252,7 +252,7 @@ export default function WalletWorkingPage() {
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
                     placeholder="Enter Solana wallet address"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -266,7 +266,7 @@ export default function WalletWorkingPage() {
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.001"
                     step="0.000000001"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -279,7 +279,7 @@ export default function WalletWorkingPage() {
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
                     placeholder="Payment for..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -304,7 +304,7 @@ export default function WalletWorkingPage() {
                 <button
                   onClick={sendPayment}
                   disabled={sending}
-                  className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {sending ? '⏳ Sending...' : '🔒 Send Private Payment'}
                 </button>
@@ -320,14 +320,14 @@ export default function WalletWorkingPage() {
             
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-cyan-400 font-bold">
                   1
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold text-white mb-2">Install Phantom Wallet</h4>
                   <p className="text-gray-400">
                     Download from{' '}
-                    <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">
+                    <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300">
                       phantom.app
                     </a>
                   </p>
@@ -335,7 +335,7 @@ export default function WalletWorkingPage() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-cyan-400 font-bold">
                   2
                 </div>
                 <div>
@@ -345,7 +345,7 @@ export default function WalletWorkingPage() {
                     href="https://faucet.solana.com" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium"
+                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium"
                   >
                     https://faucet.solana.com
                   </a>
@@ -353,7 +353,7 @@ export default function WalletWorkingPage() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-cyan-400 font-bold">
                   3
                 </div>
                 <div>
@@ -367,16 +367,16 @@ export default function WalletWorkingPage() {
 
         {/* Privacy Notice */}
         <div className="mt-8 max-w-4xl mx-auto">
-          <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6">
+          <div className="bg-blue-500/10 border border-cyan-500/30 rounded-xl p-6">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
               <div>
-                <h4 className="text-lg font-semibold text-purple-200 mb-2">🔐 Privacy Guaranteed</h4>
-                <p className="text-sm text-purple-300">
+                <h4 className="text-lg font-semibold text-cyan-200 mb-2">🔐 Privacy Guaranteed</h4>
+                <p className="text-sm text-cyan-300">
                   All payments use zero-knowledge proofs powered by Light Protocol. Your transaction details are completely private.
                 </p>
               </div>

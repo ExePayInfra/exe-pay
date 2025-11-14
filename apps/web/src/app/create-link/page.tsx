@@ -85,7 +85,7 @@ export default function CreateLinkPage() {
         <div className="mt-8 text-center">
           <a
             href="/"
-            className="text-purple-600 hover:text-purple-700 font-medium"
+            className="text-cyan-600 hover:text-cyan-700 font-medium"
           >
             ← Back to Home
           </a>

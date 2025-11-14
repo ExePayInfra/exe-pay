@@ -4,28 +4,28 @@ import { RecurringPaymentForm } from '@/components/RecurringPaymentForm';
 
 export default function RecurringPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
       <nav className="border-b border-white/10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">E</span>
               </div>
-              <a href="/" className="text-2xl font-bold text-white hover:text-purple-300 transition-colors">ExePay</a>
+              <a href="/" className="text-2xl font-bold text-white hover:text-cyan-300 transition-colors">ExePay</a>
             </div>
             <div className="flex items-center gap-4">
-              <a href="/" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 Home
               </a>
-              <a href="/batch" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/batch" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 Batch
               </a>
-              <a href="/recurring" className="px-4 py-2 text-purple-300 font-medium">
+              <a href="/recurring" className="px-4 py-2 text-cyan-300 font-medium">
                 Recurring
               </a>
-              <a href="/history" className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors">
+              <a href="/history" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
                 History
               </a>
             </div>
@@ -38,7 +38,7 @@ export default function RecurringPage() {
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-white mb-4">
             Recurring Payments on{' '}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Solana
             </span>
           </h2>
@@ -53,8 +53,8 @@ export default function RecurringPage() {
         {/* Features */}
         <div className="mt-16 grid md:grid-cols-3 gap-6">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -93,9 +93,9 @@ export default function RecurringPage() {
         <div className="mt-16">
           <h3 className="text-3xl font-bold text-white text-center mb-8">Perfect For</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-6">
-              <h4 className="text-xl font-semibold text-purple-200 mb-3">💼 Business</h4>
-              <ul className="space-y-2 text-purple-100">
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-cyan-500/30 rounded-xl p-6">
+              <h4 className="text-xl font-semibold text-cyan-200 mb-3">💼 Business</h4>
+              <ul className="space-y-2 text-cyan-100">
                 <li>• Employee salaries</li>
                 <li>• Contractor payments</li>
                 <li>• Vendor invoices</li>

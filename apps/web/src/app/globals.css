@@ -5,6 +5,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* ExePay Brand Colors - Blue/Cyan Theme (Coinbase + Light Protocol inspired) */
+  --primary-blue: #0052FF;
+  --primary-cyan: #00D4FF;
+  --secondary-blue: #0066FF;
+  --accent-cyan: #00E5FF;
+  --dark-bg: #0A1929;
+  --darker-bg: #050D18;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +30,22 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Custom gradient utilities for new brand colors */
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+  }
+  
+  .bg-gradient-brand-dark {
+    background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+  }
+  
+  .text-gradient-brand {
+    background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--accent-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 

@@ -67,7 +67,7 @@ function PaymentPageContent() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading payment details...</p>
         </div>
       </div>
@@ -164,14 +164,14 @@ function PaymentPageContent() {
         </div>
 
         {/* Privacy Notice */}
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+        <div className="bg-purple-50 border border-cyan-200 rounded-lg p-4 mb-6">
           <div className="flex items-start gap-2">
-            <span className="text-purple-600 text-xl">🔒</span>
+            <span className="text-cyan-600 text-xl">🔒</span>
             <div>
-              <p className="text-sm font-medium text-purple-900 mb-1">
+              <p className="text-sm font-medium text-cyan-900 mb-1">
                 Private Payment
               </p>
-              <p className="text-xs text-purple-700">
+              <p className="text-xs text-cyan-700">
                 This transaction uses zero-knowledge proofs to keep your payment private.
               </p>
             </div>
@@ -214,7 +214,7 @@ export default function PaymentPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
