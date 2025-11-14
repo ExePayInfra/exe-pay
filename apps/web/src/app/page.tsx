@@ -32,16 +32,22 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-4">
               <a
+                href="/batch"
+                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
+              >
+                Batch
+              </a>
+              <a
+                href="/recurring"
+                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
+              >
+                Recurring
+              </a>
+              <a
                 href="/create-link"
                 className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
               >
-                Payment Links
-              </a>
-              <a
-                href="/scan"
-                className="px-4 py-2 text-white hover:text-purple-300 font-medium transition-colors"
-              >
-                Scan QR
+                Links
               </a>
               <a
                 href="/history"
