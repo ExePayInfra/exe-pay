@@ -1,11 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 export default function WalletWorkingPage() {
   const [mounted, setMounted] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
+  const [memo, setMemo] = useState('');
+  const [txResult, setTxResult] = useState<{ success: boolean; message: string; signature?: string } | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -44,6 +50,78 @@ export default function WalletWorkingPage() {
       }
     } catch (err) {
       console.error('Failed to disconnect:', err);
+    }
+  };
+
+  const sendPayment = async () => {
+    setSending(true);
+    setTxResult(null);
+
+    try {
+      // Validate inputs
+      if (!recipient) {
+        throw new Error('Please enter a recipient address');
+      }
+      if (!amount || parseFloat(amount) <= 0) {
+        throw new Error('Please enter a valid amount');
+      }
+
+      const { solana } = window as any;
+      if (!solana) {
+        throw new Error('Phantom wallet not found');
+      }
+
+      // Get RPC endpoint from env or use default
+      const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
+      const connection = new Connection(rpcUrl, 'confirmed');
+
+      // Create recipient public key
+      const recipientPubkey = new PublicKey(recipient);
+      const senderPubkey = new PublicKey(walletAddress!);
+
+      // Convert SOL to lamports
+      const lamports = Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL);
+
+      // Create transaction
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: senderPubkey,
+          toPubkey: recipientPubkey,
+          lamports,
+        })
+      );
+
+      // Get recent blockhash
+      const { blockhash } = await connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = senderPubkey;
+
+      // Sign and send transaction
+      const signed = await solana.signAndSendTransaction(transaction);
+      console.log('Transaction sent:', signed.signature);
+
+      // Wait for confirmation
+      await connection.confirmTransaction(signed.signature, 'confirmed');
+
+      setTxResult({
+        success: true,
+        message: `✅ Payment sent successfully!`,
+        signature: signed.signature,
+      });
+
+      // Clear form
+      setRecipient('');
+      setAmount('');
+      setMemo('');
+
+    } catch (err: any) {
+      console.error('Payment failed:', err);
+      setTxResult({
+        success: false,
+        message: `❌ ${err.message || 'Payment failed. Please try again.'}`,
+      });
+    } finally {
+      setSending(false);
     }
   };
 
@@ -171,6 +249,8 @@ export default function WalletWorkingPage() {
                   </label>
                   <input
                     type="text"
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
                     placeholder="Enter Solana wallet address"
                     className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   />
@@ -182,6 +262,8 @@ export default function WalletWorkingPage() {
                   </label>
                   <input
                     type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.001"
                     step="0.000000001"
                     className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -194,15 +276,37 @@ export default function WalletWorkingPage() {
                   </label>
                   <input
                     type="text"
+                    value={memo}
+                    onChange={(e) => setMemo(e.target.value)}
                     placeholder="Payment for..."
                     className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   />
                 </div>
 
+                {txResult && (
+                  <div className={`p-4 rounded-lg ${txResult.success ? 'bg-green-500/20 border border-green-500/50' : 'bg-red-500/20 border border-red-500/50'}`}>
+                    <p className={`text-sm ${txResult.success ? 'text-green-200' : 'text-red-200'}`}>
+                      {txResult.message}
+                    </p>
+                    {txResult.signature && (
+                      <a
+                        href={`https://explorer.solana.com/tx/${txResult.signature}?cluster=${process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'mainnet-beta' ? 'mainnet-beta' : 'devnet'}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-green-300 hover:text-green-200 underline mt-2 block"
+                      >
+                        View on Solana Explorer →
+                      </a>
+                    )}
+                  </div>
+                )}
+
                 <button
-                  className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={sendPayment}
+                  disabled={sending}
+                  className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  🔒 Send Private Payment
+                  {sending ? '⏳ Sending...' : '🔒 Send Private Payment'}
                 </button>
               </div>
             </div>
