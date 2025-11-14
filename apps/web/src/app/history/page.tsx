@@ -1,0 +1,172 @@
+"use client";
+
+import { useState } from "react";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { fetchTransactionHistory, exportTransactionsToCSV, downloadCSV } from "@exe-pay/core";
+import type { TransactionRecord } from "@exe-pay/core";
+import { TransactionList } from "@/components/TransactionList";
+
+export default function HistoryPage() {
+  const [address, setAddress] = useState("");
+  const [transactions, setTransactions] = useState<TransactionRecord[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleFetch = async () => {
+    if (!address.trim()) {
+      setError("Please enter a wallet address");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setTransactions([]);
+
+    try {
+      // Validate address
+      let publicKey: PublicKey;
+      try {
+        publicKey = new PublicKey(address.trim());
+      } catch {
+        throw new Error("Invalid Solana wallet address");
+      }
+
+      // Connect to Solana
+      const connection = new Connection(
+        "https://api.mainnet-beta.solana.com",
+        "confirmed"
+      );
+
+      // Fetch transactions
+      const history = await fetchTransactionHistory(connection, publicKey, {
+        limit: 50
+      });
+
+      setTransactions(history);
+
+      if (history.length === 0) {
+        setError("No transactions found for this address");
+      }
+    } catch (err) {
+      console.error("Failed to fetch transactions:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch transactions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExport = () => {
+    if (transactions.length === 0) return;
+
+    const csv = exportTransactionsToCSV(transactions);
+    const filename = `transactions-${address.substring(0, 8)}-${Date.now()}.csv`;
+    downloadCSV(csv, filename);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Transaction History
+          </h1>
+          <p className="text-lg text-gray-600">
+            View your payment history on Solana
+          </p>
+        </div>
+
+        {/* Address Input */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                Wallet Address
+              </label>
+              <input
+                id="address"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter Solana wallet address..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleFetch();
+                  }
+                }}
+              />
+            </div>
+
+            <button
+              onClick={handleFetch}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
+                  Loading Transactions...
+                </span>
+              ) : (
+                "Fetch Transaction History"
+              )}
+            </button>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {error}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Transaction List */}
+        {transactions.length > 0 && (
+          <TransactionList
+            transactions={transactions}
+            onExport={handleExport}
+          />
+        )}
+
+        {/* Info Box */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="font-semibold text-blue-900 mb-3">💡 How to Use</h3>
+          <ul className="list-disc list-inside space-y-2 text-sm text-blue-800">
+            <li>Enter any Solana wallet address to view its transaction history</li>
+            <li>Filter transactions by type (sent/received)</li>
+            <li>Search by signature, address, or memo</li>
+            <li>Export your history to CSV for record-keeping</li>
+            <li>Click on signatures to view on Solana Explorer</li>
+          </ul>
+        </div>
+
+        {/* Privacy Notice */}
+        <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-6">
+          <div className="flex items-start gap-2">
+            <span className="text-purple-600 text-xl">🔒</span>
+            <div>
+              <p className="text-sm font-medium text-purple-900 mb-1">
+                Privacy Note
+              </p>
+              <p className="text-xs text-purple-700">
+                While ExePay payments use zero-knowledge proofs for privacy, this history viewer shows all public Solana transactions. Private payment details are not revealed.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Back Button */}
+        <div className="mt-8 text-center">
+          <a
+            href="/"
+            className="text-purple-600 hover:text-purple-700 font-medium"
+          >
+            ← Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
