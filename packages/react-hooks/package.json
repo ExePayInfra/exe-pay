@@ -1,10 +1,35 @@
 {
   "name": "@exe-pay/react-hooks",
-  "version": "0.1.0",
-  "description": "React hooks for integrating exe-pay into dApps.",
+  "version": "1.0.0",
+  "description": "React hooks for building privacy-first payment dApps on Solana. Easy integration with wallet adapters, batch payments, and recurring subscriptions.",
+  "keywords": [
+    "react",
+    "hooks",
+    "solana",
+    "privacy",
+    "payments",
+    "dapp",
+    "wallet",
+    "web3",
+    "blockchain"
+  ],
+  "homepage": "https://github.com/ExePayInfra/exe-pay#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExePayInfra/exe-pay.git",
+    "directory": "packages/react-hooks"
+  },
+  "bugs": {
+    "url": "https://github.com/ExePayInfra/exe-pay/issues"
+  },
+  "license": "MIT",
+  "author": "ExePay Team",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

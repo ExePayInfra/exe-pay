@@ -1,10 +1,32 @@
 {
   "name": "@exe-pay/utils",
-  "version": "0.1.0",
-  "description": "Utility helpers shared across the exe-pay monorepo.",
+  "version": "1.0.0",
+  "description": "Utility functions and helpers for Solana payments. Includes address validation, amount formatting, and transaction utilities.",
+  "keywords": [
+    "solana",
+    "utils",
+    "utilities",
+    "helpers",
+    "blockchain",
+    "web3"
+  ],
+  "homepage": "https://github.com/ExePayInfra/exe-pay#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExePayInfra/exe-pay.git",
+    "directory": "packages/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/ExePayInfra/exe-pay/issues"
+  },
+  "license": "MIT",
+  "author": "ExePay Team",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

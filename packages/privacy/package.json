@@ -1,10 +1,36 @@
 {
   "name": "@exe-pay/privacy",
-  "version": "0.1.0",
-  "description": "Deterministic privacy primitives, proof helpers, and ZK circuits for exe-pay.",
+  "version": "1.0.0",
+  "description": "Zero-knowledge proofs, ElGamal encryption, and privacy primitives for Solana. Includes Groth16 ZK-SNARKs and confidential transfer circuits.",
+  "keywords": [
+    "solana",
+    "privacy",
+    "zero-knowledge",
+    "zk-snarks",
+    "groth16",
+    "elgamal",
+    "encryption",
+    "circom",
+    "snarkjs",
+    "cryptography"
+  ],
+  "homepage": "https://github.com/ExePayInfra/exe-pay#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExePayInfra/exe-pay.git",
+    "directory": "packages/privacy"
+  },
+  "bugs": {
+    "url": "https://github.com/ExePayInfra/exe-pay/issues"
+  },
+  "license": "MIT",
+  "author": "ExePay Team",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

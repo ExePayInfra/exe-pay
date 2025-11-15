@@ -1,11 +1,37 @@
 {
   "name": "@exe-pay/core",
-  "version": "0.1.0",
-  "description": "Core TypeScript SDK for building privacy-preserving payment flows on Solana.",
+  "version": "1.0.0",
+  "description": "Privacy-first payments SDK for Solana with zero-knowledge proofs, ElGamal encryption, and confidential transfers",
+  "keywords": [
+    "solana",
+    "privacy",
+    "payments",
+    "zero-knowledge",
+    "zk-snarks",
+    "elgamal",
+    "encryption",
+    "confidential",
+    "blockchain",
+    "crypto"
+  ],
+  "homepage": "https://github.com/ExePayInfra/exe-pay#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExePayInfra/exe-pay.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/ExePayInfra/exe-pay/issues"
+  },
+  "license": "MIT",
+  "author": "ExePay Team",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
