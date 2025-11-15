@@ -1,0 +1,38 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer glow ring -->
+  <circle cx="100" cy="100" r="96" stroke="url(#paint0_linear)" stroke-width="8" opacity="0.3"/>
+  
+  <!-- Main shield background -->
+  <path d="M100 20L20 50V130L100 180L180 130V50L100 20Z" fill="url(#paint1_linear)"/>
+  
+  <!-- Inner shield -->
+  <path d="M100 40L40 65V135L100 170L160 135V65L100 40Z" fill="white"/>
+  
+  <!-- E letter (stylized) -->
+  <path d="M70 80H130V95H70V80Z" fill="url(#paint2_linear)"/>
+  <path d="M70 97.5H120V112.5H70V97.5Z" fill="url(#paint2_linear)"/>
+  <path d="M70 115H130V130H70V115Z" fill="url(#paint2_linear)"/>
+  
+  <!-- Privacy lock accent -->
+  <circle cx="100" cy="105" r="15" fill="none" stroke="url(#paint3_linear)" stroke-width="3" opacity="0.5"/>
+  
+  <defs>
+    <linearGradient id="paint0_linear" x1="100" y1="0" x2="100" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="100" y1="20" x2="100" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear" x1="100" y1="80" x2="100" y2="130" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="paint3_linear" x1="100" y1="90" x2="100" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+</svg>
+

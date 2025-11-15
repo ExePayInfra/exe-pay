@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield -->
+  <path d="M16 3L3 8V20L16 29L29 20V8L16 3Z" fill="url(#paint0_linear)"/>
+  <path d="M16 6L6 10V22L16 27L26 22V10L16 6Z" fill="white"/>
+  
+  <!-- E letter -->
+  <path d="M11 13H21V15H11V13Z" fill="url(#paint1_linear)"/>
+  <path d="M11 15.5H19V17.5H11V15.5Z" fill="url(#paint1_linear)"/>
+  <path d="M11 18H21V20H11V18Z" fill="url(#paint1_linear)"/>
+  
+  <defs>
+    <linearGradient id="paint0_linear" x1="16" y1="3" x2="16" y2="29" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="16" y1="13" x2="16" y2="20" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
