@@ -1,0 +1,31 @@
+<svg width="2000" height="750" viewBox="0 0 2000 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="2000" height="750" rx="40" fill="#0066FF"/>
+  
+  <!-- Logo centered -->
+  <g transform="translate(500, 225)">
+    <!-- Left "E" -->
+    <rect x="0" y="0" width="60" height="300" fill="white" rx="15"/>
+    <rect x="0" y="0" width="200" height="60" fill="white" rx="15"/>
+    <rect x="0" y="120" width="165" height="60" fill="white" rx="15"/>
+    <rect x="0" y="240" width="200" height="60" fill="white" rx="15"/>
+    
+    <!-- Center "X" - PERFECTLY CENTERED -->
+    <g transform="translate(250, 0)">
+      <rect x="0" y="0" width="60" height="300" fill="white" rx="15" transform="rotate(45 30 150)"/>
+      <rect x="0" y="0" width="60" height="300" fill="white" rx="15" transform="rotate(-45 30 150)"/>
+    </g>
+    
+    <!-- Right "E" -->
+    <g transform="translate(540, 0)">
+      <rect x="0" y="0" width="60" height="300" fill="white" rx="15"/>
+      <rect x="-140" y="0" width="200" height="60" fill="white" rx="15"/>
+      <rect x="-105" y="120" width="165" height="60" fill="white" rx="15"/>
+      <rect x="-140" y="240" width="200" height="60" fill="white" rx="15"/>
+    </g>
+    
+    <!-- "Pay" Text -->
+    <text x="700" y="280" font-family="'Inter', sans-serif" font-size="180" font-weight="600" fill="#1a1a1a">Pay</text>
+  </g>
+</svg>
+

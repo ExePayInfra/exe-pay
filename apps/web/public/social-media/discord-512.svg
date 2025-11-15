@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="512" height="512" rx="100" fill="#0066FF"/>
+  
+  <!-- EXE centered -->
+  <g transform="translate(120, 221)">
+    <!-- Left "E" -->
+    <rect x="0" y="0" width="22" height="70" fill="white" rx="4"/>
+    <rect x="0" y="0" width="60" height="22" fill="white" rx="4"/>
+    <rect x="0" y="24" width="50" height="22" fill="white" rx="4"/>
+    <rect x="0" y="48" width="60" height="22" fill="white" rx="4"/>
+    
+    <!-- Center "X" - PERFECTLY CENTERED -->
+    <g transform="translate(75, 0)">
+      <rect x="0" y="0" width="22" height="70" fill="white" rx="4" transform="rotate(45 11 35)"/>
+      <rect x="0" y="0" width="22" height="70" fill="white" rx="4" transform="rotate(-45 11 35)"/>
+    </g>
+    
+    <!-- Right "E" -->
+    <g transform="translate(165, 0)">
+      <rect x="0" y="0" width="22" height="70" fill="white" rx="4"/>
+      <rect x="-38" y="0" width="60" height="22" fill="white" rx="4"/>
+      <rect x="-28" y="24" width="50" height="22" fill="white" rx="4"/>
+      <rect x="-38" y="48" width="60" height="22" fill="white" rx="4"/>
+    </g>
+  </g>
+</svg>
+

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExePay Logo - Font Variations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 10px;
+      font-size: 3rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 40px;
+      font-size: 1.3rem;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .version {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+    
+    .version:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+    }
+    
+    .version h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: #0066FF;
+    }
+    
+    .logo-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      min-height: 150px;
+    }
+    
+    .logo-svg {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+    }
+    
+    .features {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+    
+    .features ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .features li {
+      padding: 5px 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .features li::before {
+      content: "✓ ";
+      color: #0066FF;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    
+    .vote-btn {
+      width: 100%;
+      padding: 15px;
+      background: #0066FF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.3s;
+    }
+    
+    .vote-btn:hover {
+      background: #0052cc;
+      transform: scale(1.05);
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 ExePay Logo - Font Variations</h1>
+    <p class="subtitle">Choose Your Favorite!</p>
+    
+    <div class="grid">
+      <!-- Version 1: Current (Arial Bold) -->
+      <div class="version">
+        <h2>Option 1: Arial Bold (Current)</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Bold & Strong</li>
+            <li>Traditional & Safe</li>
+            <li>Good readability</li>
+            <li>Weight: 700 (Bold)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose Arial Bold!')">Choose This</button>
+      </div>
+      
+      <!-- Version 2: Inter SemiBold (Modern) -->
+      <div class="version">
+        <h2>Option 2: Inter SemiBold (Recommended!)</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="'Inter', sans-serif" font-size="36" font-weight="600" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Modern & Clean ⭐</li>
+            <li>Used by Stripe, GitHub</li>
+            <li>Excellent readability</li>
+            <li>Weight: 600 (SemiBold)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose Inter SemiBold!')">Choose This</button>
+      </div>
+      
+      <!-- Version 3: Poppins Medium -->
+      <div class="version">
+        <h2>Option 3: Poppins Medium</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="'Poppins', sans-serif" font-size="36" font-weight="500" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Friendly & Approachable</li>
+            <li>Rounded & Soft</li>
+            <li>Popular for startups</li>
+            <li>Weight: 500 (Medium)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose Poppins Medium!')">Choose This</button>
+      </div>
+      
+      <!-- Version 4: DM Sans SemiBold -->
+      <div class="version">
+        <h2>Option 4: DM Sans SemiBold</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="'DM Sans', sans-serif" font-size="36" font-weight="600" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Geometric & Modern</li>
+            <li>Tech-focused</li>
+            <li>Clean & Professional</li>
+            <li>Weight: 600 (SemiBold)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose DM Sans!')">Choose This</button>
+      </div>
+      
+      <!-- Version 5: Thinner (Less Bold) -->
+      <div class="version">
+        <h2>Option 5: Inter Medium (Less Bold)</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="10" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="10" fill="white" rx="3"/>
+              <rect x="30" y="55" width="33" height="10" fill="white" rx="3"/>
+              <rect x="30" y="85" width="40" height="10" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="10" height="70" fill="white" rx="3" transform="rotate(45 5 35)"/>
+              <rect x="0" y="0" width="10" height="70" fill="white" rx="3" transform="rotate(-45 5 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="130" y="25" width="10" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="10" fill="white" rx="3"/>
+              <rect x="107" y="55" width="33" height="10" fill="white" rx="3"/>
+              <rect x="100" y="85" width="40" height="10" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="'Inter', sans-serif" font-size="36" font-weight="500" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Lighter & Elegant</li>
+            <li>Less bold (10px vs 12px)</li>
+            <li>More refined</li>
+            <li>Weight: 500 (Medium)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose Thinner version!')">Choose This</button>
+      </div>
+      
+      <!-- Version 6: SF Pro (Apple Style) -->
+      <div class="version">
+        <h2>Option 6: SF Pro (Apple Style)</h2>
+        
+        <div class="logo-display">
+          <svg class="logo-svg" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="120" rx="12" fill="#0066FF"/>
+            <g id="left-e">
+              <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <g id="center-x" transform="translate(85, 25)">
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+              <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+            </g>
+            <g id="right-e">
+              <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+              <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+              <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+              <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+            </g>
+            <text x="175" y="88" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="36" font-weight="600" fill="#1a1a1a">Pay</text>
+          </svg>
+        </div>
+        
+        <div class="features">
+          <ul>
+            <li>Apple's Font</li>
+            <li>Premium & Polished</li>
+            <li>System font (fast load)</li>
+            <li>Weight: 600 (SemiBold)</li>
+          </ul>
+        </div>
+        
+        <button class="vote-btn" onclick="alert('You chose SF Pro!')">Choose This</button>
+      </div>
+    </div>
+    
+    <div style="background: white; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+      <h2 style="color: #0066FF; margin-bottom: 20px; font-size: 2rem;">My Recommendation: Option 2 (Inter SemiBold)</h2>
+      <p style="color: #666; font-size: 1.2rem; margin-bottom: 20px;">
+        Inter is used by Stripe, GitHub, and thousands of modern companies.<br>
+        It's clean, professional, and perfectly balanced!
+      </p>
+      <p style="color: #999;">
+        But feel free to choose any option you like! 😊
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+

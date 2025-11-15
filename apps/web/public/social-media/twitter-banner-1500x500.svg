@@ -1,0 +1,42 @@
+<svg width="1500" height="500" viewBox="0 0 1500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0066FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0052CC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1500" height="500" fill="url(#bgGradient)"/>
+  
+  <!-- Logo centered -->
+  <g transform="translate(400, 190)">
+    <!-- Left "E" -->
+    <rect x="0" y="0" width="20" height="120" fill="white" rx="5"/>
+    <rect x="0" y="0" width="70" height="20" fill="white" rx="5"/>
+    <rect x="0" y="50" width="58" height="20" fill="white" rx="5"/>
+    <rect x="0" y="100" width="70" height="20" fill="white" rx="5"/>
+    
+    <!-- Center "X" -->
+    <g transform="translate(95, 0)">
+      <rect x="0" y="0" width="20" height="120" fill="white" rx="5" transform="rotate(45 10 60)"/>
+      <rect x="0" y="0" width="20" height="120" fill="white" rx="5" transform="rotate(-45 10 60)"/>
+    </g>
+    
+    <!-- Right "E" -->
+    <g transform="translate(215, 0)">
+      <rect x="0" y="0" width="20" height="120" fill="white" rx="5"/>
+      <rect x="-50" y="0" width="70" height="20" fill="white" rx="5"/>
+      <rect x="-38" y="50" width="58" height="20" fill="white" rx="5"/>
+      <rect x="-50" y="100" width="70" height="20" fill="white" rx="5"/>
+    </g>
+    
+    <!-- "Pay" Text -->
+    <text x="300" y="110" font-family="'Inter', sans-serif" font-size="80" font-weight="600" fill="white">Pay</text>
+  </g>
+  
+  <!-- Tagline -->
+  <text x="750" y="380" font-family="'Inter', sans-serif" font-size="32" font-weight="500" fill="white" text-anchor="middle" opacity="0.9">
+    Privacy-preserving payments on Solana
+  </text>
+</svg>
+
