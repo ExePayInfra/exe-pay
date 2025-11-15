@@ -119,41 +119,115 @@ export default function WalletWorkingPage() {
         : parseTokenAmount(amount, selectedToken.decimals);
 
       // Handle different privacy levels
-      if (privacyLevel === 'shielded') {
-        // SHIELDED MODE: Amount hidden, addresses visible
-        const result = await createShieldedTransfer({
-          sender: senderPubkey,
-          recipient: recipientPubkey,
-          amount: amountValue,
-          token: selectedToken.mint === 'native' ? undefined : new PublicKey(selectedToken.mint),
-          connection,
-        });
+        if (privacyLevel === 'shielded') {
+            // SHIELDED MODE: Amount hidden, addresses visible (DEMO)
+            // In demo mode, we still do a standard transfer but mark it as "shielded"
+            // Real implementation would use Pedersen commitments
+            
+            if (selectedToken.mint === 'native') {
+              // Native SOL transfer
+              transaction = new Transaction().add(
+                SystemProgram.transfer({
+                  fromPubkey: senderPubkey,
+                  toPubkey: recipientPubkey,
+                  lamports: amountValue,
+                })
+              );
+            } else {
+              // SPL Token transfer
+              const mintPubkey = new PublicKey(selectedToken.mint);
 
-        transaction = result.transaction;
-        privacyInfo = {
-          mode: 'shielded',
-          isDemo: result.isDemo,
-          commitment: result.commitment,
-        };
-      } else if (privacyLevel === 'private') {
-        // PRIVATE MODE: Everything hidden
-        const encryptedRecipient = encryptRecipientAddress(recipientPubkey);
-        
-        const result = await createPrivateTransfer({
-          senderKeypair: senderPubkey,
-          recipientAddress: encryptedRecipient,
-          amount: amountValue,
-          token: selectedToken.mint === 'native' ? undefined : new PublicKey(selectedToken.mint),
-          connection,
-        });
+              const senderTokenAccount = await getAssociatedTokenAddress(
+                mintPubkey,
+                senderPubkey
+              );
 
-        transaction = result.transaction;
-        privacyInfo = {
-          mode: 'private',
-          isDemo: result.isDemo,
-          nullifier: result.nullifier,
-        };
-      } else {
+              const recipientTokenAccount = await getAssociatedTokenAddress(
+                mintPubkey,
+                recipientPubkey
+              );
+
+              transaction = new Transaction().add(
+                createTransferInstruction(
+                  senderTokenAccount,
+                  recipientTokenAccount,
+                  senderPubkey,
+                  amountValue,
+                  [],
+                  TOKEN_PROGRAM_ID
+                )
+              );
+            }
+
+            // Get recent blockhash
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = senderPubkey;
+
+            // Generate demo commitment for UI
+            const demoCommitment = new Uint8Array(32);
+            crypto.getRandomValues(demoCommitment);
+
+            privacyInfo = {
+              mode: 'shielded',
+              isDemo: true,
+              commitment: demoCommitment,
+            };
+        } else if (privacyLevel === 'private') {
+            // PRIVATE MODE: Everything hidden (DEMO)
+            // In demo mode, we still do a standard transfer but mark it as "private"
+            // Real implementation would use Light Protocol's full ZK circuits
+            
+            if (selectedToken.mint === 'native') {
+              // Native SOL transfer
+              transaction = new Transaction().add(
+                SystemProgram.transfer({
+                  fromPubkey: senderPubkey,
+                  toPubkey: recipientPubkey,
+                  lamports: amountValue,
+                })
+              );
+            } else {
+              // SPL Token transfer
+              const mintPubkey = new PublicKey(selectedToken.mint);
+
+              const senderTokenAccount = await getAssociatedTokenAddress(
+                mintPubkey,
+                senderPubkey
+              );
+
+              const recipientTokenAccount = await getAssociatedTokenAddress(
+                mintPubkey,
+                recipientPubkey
+              );
+
+              transaction = new Transaction().add(
+                createTransferInstruction(
+                  senderTokenAccount,
+                  recipientTokenAccount,
+                  senderPubkey,
+                  amountValue,
+                  [],
+                  TOKEN_PROGRAM_ID
+                )
+              );
+            }
+
+            // Get recent blockhash
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = senderPubkey;
+
+            // Generate demo nullifier for UI
+            const demoNullifier = new Uint8Array(32);
+            crypto.getRandomValues(demoNullifier);
+
+            privacyInfo = {
+              mode: 'private',
+              isDemo: true,
+              nullifier: demoNullifier,
+            };
+          } else {
         // PUBLIC MODE: Standard transfer (current functionality)
         if (selectedToken.mint === 'native') {
           // Native SOL transfer
