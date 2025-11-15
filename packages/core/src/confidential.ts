@@ -34,6 +34,16 @@ import {
   getAccount,
   getOrCreateAssociatedTokenAccount,
 } from '@solana/spl-token';
+import {
+  generateElGamalKeypair,
+  deriveElGamalKeypair,
+  encryptAmount as elgamalEncrypt,
+  decryptAmount as elgamalDecrypt,
+  serializeCiphertext,
+  deserializeCiphertext,
+  type ElGamalKeypair,
+  type ElGamalCiphertext,
+} from './crypto/elgamal.js';
 
 /**
  * Confidential account configuration
@@ -216,25 +226,46 @@ export async function sendConfidentialTransfer(
 /**
  * Encrypt an amount using ElGamal encryption
  * 
- * @param amount - Amount to encrypt
- * @param recipientPublicKey - Recipient's ElGamal public key
- * @returns Encrypted amount (ciphertext)
+ * @param amount - Amount to encrypt (as bigint)
+ * @param recipientElGamalPublicKey - Recipient's ElGamal public key (32 bytes)
+ * @returns Encrypted amount (ciphertext as base64)
  */
-async function encryptAmount(
-  amount: number,
-  recipientPublicKey: PublicKey
+export async function encryptAmountForRecipient(
+  amount: bigint,
+  recipientElGamalPublicKey: Uint8Array
 ): Promise<string> {
-  // TODO: Implement ElGamal encryption
-  // This requires:
-  // 1. Get recipient's ElGamal public key from their account
-  // 2. Generate random nonce
-  // 3. Encrypt: C = (g^r, h^r * g^m) where:
-  //    - g is generator
-  //    - h is recipient's public key
-  //    - r is random nonce
-  //    - m is message (amount)
+  // 1. Encrypt amount using recipient's ElGamal public key
+  const ciphertext = elgamalEncrypt(amount, recipientElGamalPublicKey);
   
-  throw new Error('ElGamal encryption not yet implemented');
+  // 2. Serialize and encode as base64
+  const serialized = serializeCiphertext(ciphertext);
+  return Buffer.from(serialized).toString('base64');
+}
+
+/**
+ * Decrypt an encrypted amount using ElGamal decryption
+ * 
+ * @param encryptedAmount - Encrypted amount (ciphertext as base64)
+ * @param recipientKeypair - Recipient's Solana keypair (to derive ElGamal key)
+ * @returns Decrypted amount (as bigint)
+ */
+export async function decryptAmountForRecipient(
+  encryptedAmount: string,
+  recipientKeypair: Keypair
+): Promise<bigint> {
+  // 1. Decode base64 to bytes
+  const serialized = Buffer.from(encryptedAmount, 'base64');
+  
+  // 2. Deserialize to ciphertext
+  const ciphertext = deserializeCiphertext(new Uint8Array(serialized));
+  
+  // 3. Derive ElGamal keypair from Solana keypair
+  const elgamalKeypair = deriveElGamalKeypair(recipientKeypair);
+  
+  // 4. Decrypt using private key
+  const amount = elgamalDecrypt(ciphertext, elgamalKeypair.privateKey);
+  
+  return amount;
 }
 
 /**
