@@ -25,3 +25,6 @@ apps/web/.next/
 .env.local
 .env*.local
 *.env.local
+
+# Documentation archive (session notes)
+docs/archive/

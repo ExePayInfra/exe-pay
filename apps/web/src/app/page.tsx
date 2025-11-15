@@ -90,6 +90,66 @@ export default function Home() {
         </div>
       </div>
 
+      {/* How It Works Section - Educational */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            ExePay uses cutting-edge cryptography to protect your financial privacy
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {/* Step 1 */}
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl font-bold text-white">1</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Choose Privacy Level</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Select between Public, Shielded (hidden amounts), or Private (fully anonymous) transfers based on your needs.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl font-bold text-white">2</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Zero-Knowledge Proofs</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Our system generates cryptographic proofs that validate your transaction without revealing sensitive details.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl font-bold text-white">3</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Instant Settlement</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Transactions settle on Solana in under a second with minimal fees, while maintaining complete privacy.
+            </p>
+          </div>
+        </div>
+
+        {/* Privacy Explanation */}
+        <div className="glass-card p-8 rounded-2xl">
+          <div className="max-w-3xl mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">What is Zero-Knowledge Privacy?</h3>
+            <p className="text-gray-600 leading-relaxed mb-4">
+              Zero-knowledge proofs allow you to prove that a transaction is valid (you have sufficient funds, the recipient is correct) 
+              without revealing any actual transaction details like amounts, sender, or recipient addresses.
+            </p>
+            <p className="text-gray-600 leading-relaxed">
+              Think of it like proving you're old enough to enter a venue without showing your ID - you prove the fact without revealing the data. 
+              ExePay brings this same principle to blockchain payments, ensuring your financial privacy while maintaining network security.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Stats Section */}
       <div className="bg-gradient-to-br from-indigo-50 to-blue-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -109,6 +169,86 @@ export default function Home() {
             <div>
               <div className="text-4xl font-bold text-gray-900 mb-2">$0.0001</div>
               <div className="text-gray-600">Average Fee</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Use Cases Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Built For Everyone</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            From individuals to enterprises, ExePay protects your financial privacy
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Personal Use */}
+          <div className="glass-card p-8 rounded-2xl hover-lift">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Personal Payments</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Send money to friends, family, or pay for services without exposing your transaction history or wallet balance.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Business Use */}
+          <div className="glass-card p-8 rounded-2xl hover-lift">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Business Payments</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Pay vendors, contractors, or employees while keeping sensitive financial information confidential from competitors.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* DeFi Use */}
+          <div className="glass-card p-8 rounded-2xl hover-lift">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">DeFi & Trading</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Execute trades and DeFi transactions without revealing your strategy or portfolio size to front-runners.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Payroll Use */}
+          <div className="glass-card p-8 rounded-2xl hover-lift">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Payroll & Subscriptions</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Automate recurring payments for salaries or subscriptions with built-in privacy and scheduling features.
+                </p>
+              </div>
             </div>
           </div>
         </div>
