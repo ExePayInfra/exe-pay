@@ -5,13 +5,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* ExePay Brand Colors - Blue/Cyan Theme (Coinbase + Light Protocol inspired) */
-  --primary-blue: #0052FF;
-  --primary-cyan: #00D4FF;
-  --secondary-blue: #0066FF;
-  --accent-cyan: #00E5FF;
-  --dark-bg: #0A1929;
-  --darker-bg: #050D18;
+  /* ExePay Brand Colors - PayAI-inspired Deep Blue Theme */
+  --primary-blue: #0A1628;
+  --secondary-blue: #1A2942;
+  --accent-blue: #2563EB;
+  --bright-blue: #3B82F6;
+  --electric-blue: #60A5FA;
+  --dark-bg: #030712;
+  --darker-bg: #000000;
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --border-color: rgba(59, 130, 246, 0.2);
+  --glow-blue: rgba(37, 99, 235, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,8 +27,25 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--dark-bg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow-x: hidden;
+}
+
+/* PayAI-inspired gradient background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    linear-gradient(180deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 @layer utilities {
@@ -32,28 +53,47 @@ body {
     text-wrap: balance;
   }
   
-  /* Custom gradient utilities for new brand colors */
+  /* PayAI-inspired gradient utilities */
   .bg-gradient-brand {
-    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--electric-blue) 100%);
   }
   
-  .bg-gradient-brand-dark {
-    background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+  .bg-gradient-dark {
+    background: linear-gradient(180deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
   }
   
   .text-gradient-brand {
-    background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--accent-cyan) 100%);
+    background: linear-gradient(135deg, var(--bright-blue) 0%, var(--electric-blue) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  
+  /* Glass morphism cards */
+  .glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Glow effect for buttons */
+  .btn-glow {
+    box-shadow: 0 0 20px var(--glow-blue);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-glow:hover {
+    box-shadow: 0 0 30px var(--glow-blue), 0 0 60px var(--glow-blue);
+    transform: translateY(-2px);
+  }
 }
 
-/* Smooth animations */
+/* PayAI-inspired smooth animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -64,7 +104,7 @@ body {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
@@ -77,16 +117,57 @@ body {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--glow-blue);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--glow-blue), 0 0 60px var(--glow-blue);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.3s ease-out;
+  animation: slideInRight 0.6s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
 }
 
 /* Mobile optimizations */
