@@ -1,0 +1,30 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background (Light Protocol style) -->
+  <rect width="200" height="200" rx="20" fill="#0066FF"/>
+  
+  <!-- "EXE" centered -->
+  <g transform="translate(30, 65)">
+    <!-- Left "E" Bracket -->
+    <g id="left-e">
+      <rect x="0" y="0" width="6" height="70" fill="white" rx="2"/>
+      <rect x="0" y="0" width="30" height="6" fill="white" rx="2"/>
+      <rect x="0" y="32" width="24" height="6" fill="white" rx="2"/>
+      <rect x="0" y="64" width="30" height="6" fill="white" rx="2"/>
+    </g>
+    
+    <!-- Center "X" -->
+    <g id="center-x" transform="translate(45, 5)">
+      <rect x="0" y="0" width="6" height="60" fill="white" rx="2" transform="rotate(45 3 30)"/>
+      <rect x="0" y="0" width="6" height="60" fill="white" rx="2" transform="rotate(-45 3 30)"/>
+    </g>
+    
+    <!-- Right "E" Bracket (mirrored) -->
+    <g id="right-e" transform="translate(94, 0)">
+      <rect x="0" y="0" width="6" height="70" fill="white" rx="2"/>
+      <rect x="-24" y="0" width="30" height="6" fill="white" rx="2"/>
+      <rect x="-18" y="32" width="24" height="6" fill="white" rx="2"/>
+      <rect x="-24" y="64" width="30" height="6" fill="white" rx="2"/>
+    </g>
+  </g>
+</svg>
+

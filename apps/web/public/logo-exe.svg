@@ -1,0 +1,42 @@
+<svg width="400" height="120" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background (Light Protocol style) -->
+  <rect width="400" height="120" rx="12" fill="#0066FF"/>
+  
+  <!-- Left "E" Bracket -->
+  <g id="left-e">
+    <!-- Vertical bar -->
+    <rect x="40" y="25" width="8" height="70" fill="white" rx="2"/>
+    <!-- Top horizontal -->
+    <rect x="40" y="25" width="35" height="8" fill="white" rx="2"/>
+    <!-- Middle horizontal -->
+    <rect x="40" y="56" width="28" height="8" fill="white" rx="2"/>
+    <!-- Bottom horizontal -->
+    <rect x="40" y="87" width="35" height="8" fill="white" rx="2"/>
+  </g>
+  
+  <!-- Center "X" -->
+  <g id="center-x">
+    <!-- Top-left to bottom-right diagonal -->
+    <rect x="105" y="35" width="8" height="50" fill="white" rx="2" transform="rotate(45 109 60)"/>
+    <!-- Top-right to bottom-left diagonal -->
+    <rect x="105" y="35" width="8" height="50" fill="white" rx="2" transform="rotate(-45 109 60)"/>
+  </g>
+  
+  <!-- Right "E" Bracket (mirrored) -->
+  <g id="right-e">
+    <!-- Vertical bar -->
+    <rect x="152" y="25" width="8" height="70" fill="white" rx="2"/>
+    <!-- Top horizontal -->
+    <rect x="125" y="25" width="35" height="8" fill="white" rx="2"/>
+    <!-- Middle horizontal -->
+    <rect x="132" y="56" width="28" height="8" fill="white" rx="2"/>
+    <!-- Bottom horizontal -->
+    <rect x="125" y="87" width="35" height="8" fill="white" rx="2"/>
+  </g>
+  
+  <!-- "Pay" Text -->
+  <text x="220" y="72" font-family="Arial, sans-serif" font-size="48" font-weight="600" fill="#1a1a1a">
+    Pay
+  </text>
+</svg>
+
