@@ -1,0 +1,28 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="400" height="400" rx="40" fill="#0066FF"/>
+  
+  <!-- EXE centered - E's BIGGER, X SMALLER -->
+  <g transform="translate(85, 160)">
+    <!-- Left "E" - DOMINANT -->
+    <rect x="0" y="0" width="24" height="80" fill="white" rx="5"/>
+    <rect x="0" y="0" width="65" height="24" fill="white" rx="5"/>
+    <rect x="0" y="28" width="54" height="24" fill="white" rx="5"/>
+    <rect x="0" y="56" width="65" height="24" fill="white" rx="5"/>
+    
+    <!-- Center "X" - SMALLER, STYLISH -->
+    <g transform="translate(78, 10)">
+      <rect x="0" y="0" width="10" height="60" fill="white" rx="3" transform="rotate(45 5 30)"/>
+      <rect x="0" y="0" width="10" height="60" fill="white" rx="3" transform="rotate(-45 5 30)"/>
+    </g>
+    
+    <!-- Right "E" - DOMINANT -->
+    <g transform="translate(165, 0)">
+      <rect x="0" y="0" width="24" height="80" fill="white" rx="5"/>
+      <rect x="-41" y="0" width="65" height="24" fill="white" rx="5"/>
+      <rect x="-30" y="28" width="54" height="24" fill="white" rx="5"/>
+      <rect x="-41" y="56" width="65" height="24" fill="white" rx="5"/>
+    </g>
+  </g>
+</svg>
+

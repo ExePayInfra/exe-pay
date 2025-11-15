@@ -1,0 +1,34 @@
+<svg width="320" height="120" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="320" height="120" rx="12" fill="#0066FF"/>
+  
+  <!-- Left "E" Bracket - STARTS AT x=30 -->
+  <g id="left-e">
+    <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+    <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+    <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+    <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+  </g>
+  
+  <!-- Center "X" - MATHEMATICALLY CENTERED -->
+  <!-- Left E ends at x=70, Right E starts at x=100, so X center = 85 -->
+  <g id="center-x">
+    <!-- First diagonal (top-left to bottom-right) -->
+    <rect x="73.5" y="25" width="12" height="70" fill="white" rx="3" transform="rotate(45 79.5 60)"/>
+    <!-- Second diagonal (top-right to bottom-left) -->
+    <rect x="84.5" y="25" width="12" height="70" fill="white" rx="3" transform="rotate(-45 90.5 60)"/>
+  </g>
+  
+  <!-- Right "E" Bracket (mirrored) - STARTS AT x=100 -->
+  <g id="right-e">
+    <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+    <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+    <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+    <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+  </g>
+  
+  <!-- "Pay" Text - ALIGNED WITH E's BOTTOM EDGE -->
+  <!-- E's bottom edge is at y=83, height=12, so baseline = 83+12-3 = 92 -->
+  <text x="175" y="92" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="600" fill="#1a1a1a">Pay</text>
+</svg>
+

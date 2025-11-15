@@ -1,0 +1,32 @@
+<svg width="320" height="120" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="320" height="120" rx="12" fill="#0066FF"/>
+  
+  <!-- Left "E" Bracket - BIGGER & BOLDER -->
+  <g id="left-e">
+    <rect x="25" y="20" width="16" height="80" fill="white" rx="4"/>
+    <rect x="25" y="20" width="50" height="16" fill="white" rx="4"/>
+    <rect x="25" y="52" width="42" height="16" fill="white" rx="4"/>
+    <rect x="25" y="84" width="50" height="16" fill="white" rx="4"/>
+  </g>
+  
+  <!-- Center "X" - SMALLER, STYLISH CONNECTOR -->
+  <!-- Thinner lines (8px instead of 12px) to make E's dominant -->
+  <g id="center-x">
+    <!-- X positioned between E's as a subtle connector -->
+    <rect x="82" y="35" width="8" height="50" fill="white" rx="2" transform="rotate(45 86 60)"/>
+    <rect x="82" y="35" width="8" height="50" fill="white" rx="2" transform="rotate(-45 86 60)"/>
+  </g>
+  
+  <!-- Right "E" Bracket (mirrored) - BIGGER & BOLDER -->
+  <g id="right-e">
+    <rect x="131" y="20" width="16" height="80" fill="white" rx="4"/>
+    <rect x="97" y="20" width="50" height="16" fill="white" rx="4"/>
+    <rect x="105" y="52" width="42" height="16" fill="white" rx="4"/>
+    <rect x="97" y="84" width="50" height="16" fill="white" rx="4"/>
+  </g>
+  
+  <!-- "Pay" Text - ALIGNED WITH E's BOTTOM BASELINE -->
+  <text x="170" y="97" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="38" font-weight="600" fill="#1a1a1a">Pay</text>
+</svg>
+
