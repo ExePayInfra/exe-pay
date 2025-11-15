@@ -218,16 +218,12 @@ export function RecurringPaymentForm() {
       setSuccess(true);
       setError('');
       
-      console.log('Recurring payment demo:', {
-        recipient,
-        amount: amountValue * LAMPORTS_PER_SOL,
-        interval,
-        maxPayments: paymentsValue,
-        memo,
-        totalAmount: getTotalAmount() * LAMPORTS_PER_SOL,
-        nextPayment: getNextPaymentDate(),
-        endDate: getEndDate()
-      });
+      // Clear form
+      setRecipient('');
+      setAmount('');
+      setMemo('');
+      
+      console.log('Subscription created:', newSubscription);
     } catch (err: any) {
       console.error('Recurring payment error:', err);
       setError(err.message || 'Failed to create recurring payment');
@@ -236,17 +232,197 @@ export function RecurringPaymentForm() {
     }
   };
 
+  const pauseSubscription = (id: string) => {
+    const updated = subscriptions.map(sub =>
+      sub.id === id ? { ...sub, status: 'paused' as const } : sub
+    );
+    setSubscriptions(updated);
+    localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
+  };
+
+  const resumeSubscription = (id: string) => {
+    const updated = subscriptions.map(sub =>
+      sub.id === id ? { ...sub, status: 'active' as const } : sub
+    );
+    setSubscriptions(updated);
+    localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
+  };
+
+  const cancelSubscription = (id: string) => {
+    if (!confirm('Are you sure you want to cancel this subscription?')) {
+      return;
+    }
+    const updated = subscriptions.map(sub =>
+      sub.id === id ? { ...sub, status: 'cancelled' as const } : sub
+    );
+    setSubscriptions(updated);
+    localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
+  };
+
+  const deleteSubscription = (id: string) => {
+    if (!confirm('Are you sure you want to delete this subscription? This cannot be undone.')) {
+      return;
+    }
+    const updated = subscriptions.filter(sub => sub.id !== id);
+    setSubscriptions(updated);
+    localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
+  };
+
+  const executePayment = async (subscription: Subscription) => {
+    try {
+      const { solana } = window as any;
+      if (!solana) {
+        throw new Error('Phantom wallet not found');
+      }
+
+      const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
+      const connection = new Connection(rpcUrl, 'confirmed');
+      
+      const senderPubkey = new PublicKey(walletAddress!);
+      const recipientPubkey = new PublicKey(subscription.recipient);
+      const lamports = Math.floor(parseFloat(subscription.amount) * LAMPORTS_PER_SOL);
+
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: senderPubkey,
+          toPubkey: recipientPubkey,
+          lamports,
+        })
+      );
+
+      const { blockhash } = await connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = senderPubkey;
+
+      const signed = await solana.signAndSendTransaction(transaction);
+      await connection.confirmTransaction(signed.signature, 'confirmed');
+
+      // Update subscription
+      const updated = subscriptions.map(sub => {
+        if (sub.id === subscription.id) {
+          const remaining = sub.paymentsRemaining - 1;
+          const nextPayment = new Date(sub.nextPayment);
+          
+          // Calculate next payment date
+          switch (sub.interval) {
+            case 'daily':
+              nextPayment.setDate(nextPayment.getDate() + 1);
+              break;
+            case 'weekly':
+              nextPayment.setDate(nextPayment.getDate() + 7);
+              break;
+            case 'monthly':
+              nextPayment.setMonth(nextPayment.getMonth() + 1);
+              break;
+          }
+
+          return {
+            ...sub,
+            paymentsRemaining: remaining,
+            nextPayment,
+            status: remaining === 0 ? 'completed' as const : sub.status,
+          };
+        }
+        return sub;
+      });
+
+      setSubscriptions(updated);
+      localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
+
+      alert(`Payment sent successfully! ${subscription.paymentsRemaining - 1} payments remaining.`);
+    } catch (err: any) {
+      console.error('Payment execution failed:', err);
+      alert(`Payment failed: ${err.message}`);
+    }
+  };
+
+  if (!mounted) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 text-center">
+          <p className="text-white">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
-        <h3 className="text-2xl font-bold text-white mb-6">Recurring Payment</h3>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Recipient Address */}
-          <div>
-            <label htmlFor="recipient" className="block text-sm font-medium text-gray-300 mb-2">
-              Recipient Address
-            </label>
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Wallet Connection */}
+      {!walletAddress ? (
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl text-center">
+          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">Connect Your Wallet</h3>
+          <p className="text-blue-200 mb-6">
+            To set up recurring payments, please connect your Phantom wallet
+          </p>
+          <button
+            onClick={connectWallet}
+            disabled={connecting}
+            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all disabled:opacity-50 shadow-lg"
+          >
+            {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
+          </button>
+        </div>
+      ) : (
+        <>
+          {/* Create Subscription Form */}
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-white">Create Recurring Payment</h3>
+              <div className="flex items-center gap-3">
+                <div className="text-sm text-green-300 font-mono">
+                  {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
+                </div>
+                <button
+                  onClick={disconnectWallet}
+                  className="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded text-red-200 hover:bg-red-500/30 text-sm transition-all"
+                >
+                  Disconnect
+                </button>
+              </div>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Token Selector */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Select Token
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {tokens.map((token) => (
+                    <button
+                      key={token.symbol}
+                      type="button"
+                      onClick={() => setSelectedToken(token)}
+                      disabled={loading}
+                      className={`p-4 rounded-lg border-2 transition-all ${
+                        selectedToken?.symbol === token.symbol
+                          ? 'border-cyan-500 bg-cyan-500/20'
+                          : 'border-white/20 bg-white/5 hover:border-cyan-400/50'
+                      } disabled:opacity-50`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{token.logo}</span>
+                        <div className="text-left">
+                          <p className="text-white font-semibold">{token.symbol}</p>
+                          <p className="text-xs text-gray-400">{token.name}</p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recipient Address */}
+              <div>
+                <label htmlFor="recipient" className="block text-sm font-medium text-gray-300 mb-2">
+                  Recipient Address
+                </label>
             <input
               type="text"
               id="recipient"
@@ -262,7 +438,7 @@ export function RecurringPaymentForm() {
           {/* Amount */}
           <div>
             <label htmlFor="amount" className="block text-sm font-medium text-gray-300 mb-2">
-              Amount per Payment (SOL)
+              Amount per Payment ({selectedToken?.symbol || 'SOL'})
             </label>
             <input
               type="number"
@@ -323,6 +499,26 @@ export function RecurringPaymentForm() {
             </p>
           </div>
 
+          {/* Start Date */}
+          <div>
+            <label htmlFor="startDate" className="block text-sm font-medium text-gray-300 mb-2">
+              Start Date
+            </label>
+            <input
+              type="date"
+              id="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+              required
+              disabled={loading}
+            />
+            <p className="mt-2 text-sm text-gray-400">
+              First payment will be sent on this date
+            </p>
+          </div>
+
           {/* Memo */}
           <div>
             <label htmlFor="memo" className="block text-sm font-medium text-gray-300 mb-2">
@@ -380,10 +576,10 @@ export function RecurringPaymentForm() {
           {success && (
             <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4">
               <p className="text-green-200 text-sm mb-2">
-                ✅ Demo: Recurring payment schedule created!
+                ✅ Subscription created successfully!
               </p>
               <p className="text-green-300 text-xs">
-                Would send {parseFloat(amount).toFixed(6)} SOL {interval} for {maxPayments} payments
+                {parseFloat(amount).toFixed(6)} {selectedToken?.symbol} will be sent {interval} for {maxPayments} payments
               </p>
             </div>
           )}
@@ -392,15 +588,15 @@ export function RecurringPaymentForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
-                Processing...
+                Creating...
               </span>
             ) : (
-              '🔒 Preview Recurring Payment (Demo)'
+              '🔄 Create Subscription'
             )}
           </button>
         </form>
@@ -408,10 +604,100 @@ export function RecurringPaymentForm() {
         {/* Info */}
         <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
           <p className="text-sm text-blue-200">
-            <span className="font-semibold">📘 Demo Mode:</span> This is a preview. Connect your wallet to set up real recurring payments. Payments will execute automatically on schedule!
+            <span className="font-semibold">💡 How it works:</span> Create a subscription and manually execute payments on schedule. Fully automated payments coming soon!
           </p>
         </div>
       </div>
+
+      {/* Active Subscriptions */}
+      {subscriptions.length > 0 && (
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
+          <h3 className="text-2xl font-bold text-white mb-6">Your Subscriptions</h3>
+          
+          <div className="space-y-4">
+            {subscriptions.map((sub) => (
+              <div
+                key={sub.id}
+                className={`bg-white/5 border rounded-xl p-6 ${
+                  sub.status === 'active' ? 'border-green-500/30' :
+                  sub.status === 'paused' ? 'border-yellow-500/30' :
+                  sub.status === 'completed' ? 'border-blue-500/30' :
+                  'border-red-500/30'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="text-lg font-semibold text-white">
+                        {sub.amount} {sub.token} / {sub.interval}
+                      </h4>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        sub.status === 'active' ? 'bg-green-500/20 text-green-300' :
+                        sub.status === 'paused' ? 'bg-yellow-500/20 text-yellow-300' :
+                        sub.status === 'completed' ? 'bg-blue-500/20 text-blue-300' :
+                        'bg-red-500/20 text-red-300'
+                      }`}>
+                        {sub.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-400 font-mono mb-1">
+                      To: {sub.recipient.slice(0, 8)}...{sub.recipient.slice(-8)}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      Next: {sub.nextPayment.toLocaleDateString()} • {sub.paymentsRemaining}/{sub.totalPayments} remaining
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-col gap-2">
+                    {sub.status === 'active' && (
+                      <>
+                        <button
+                          onClick={() => executePayment(sub)}
+                          className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded text-green-200 hover:bg-green-500/30 text-sm font-medium transition-all"
+                        >
+                          Execute Payment
+                        </button>
+                        <button
+                          onClick={() => pauseSubscription(sub.id)}
+                          className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 rounded text-yellow-200 hover:bg-yellow-500/30 text-sm font-medium transition-all"
+                        >
+                          Pause
+                        </button>
+                      </>
+                    )}
+                    {sub.status === 'paused' && (
+                      <button
+                        onClick={() => resumeSubscription(sub.id)}
+                        className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded text-green-200 hover:bg-green-500/30 text-sm font-medium transition-all"
+                      >
+                        Resume
+                      </button>
+                    )}
+                    {(sub.status === 'active' || sub.status === 'paused') && (
+                      <button
+                        onClick={() => cancelSubscription(sub.id)}
+                        className="px-4 py-2 bg-red-500/20 border border-red-500/50 rounded text-red-200 hover:bg-red-500/30 text-sm font-medium transition-all"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                    {(sub.status === 'completed' || sub.status === 'cancelled') && (
+                      <button
+                        onClick={() => deleteSubscription(sub.id)}
+                        className="px-4 py-2 bg-red-500/20 border border-red-500/50 rounded text-red-200 hover:bg-red-500/30 text-sm font-medium transition-all"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+        </>
+      )}
     </div>
   );
 }
