@@ -2,39 +2,136 @@
 
 ## 💰 **Domain Costs (Annual Pricing):**
 
-### **Popular Domain Options:**
+### **All Available Options (Sorted by Price):**
 
-| Domain             | Registrar      | First Year | Renewal | Total (Year 1) |
-| ------------------ | -------------- | ---------- | ------- | -------------- |
-| **exepay.app**     | Namecheap      | $14.98     | $19.98  | ~$15           |
-| **exepay.io**      | Namecheap      | $32.98     | $39.98  | ~$33           |
-| **exepay.xyz**     | Namecheap      | $1.98      | $12.98  | ~$2            |
-| **exepay.dev**     | Google Domains | $12.00     | $12.00  | ~$12           |
-| **exepay.com**     | GoDaddy        | $11.99     | $19.99  | ~$12           |
-| **exepay.network** | Namecheap      | $9.98      | $14.98  | ~$10           |
+| Domain             | Registrar      | First Year | Renewal | Total (Year 1) | Notes          |
+| ------------------ | -------------- | ---------- | ------- | -------------- | -------------- |
+| **exepay.xyz**     | Namecheap      | $1.98      | $12.98  | ~$2            | 🔥 Cheapest!   |
+| **exepay.site**    | Namecheap      | $2.98      | $9.98   | ~$3            | Modern         |
+| **exepay.online**  | Namecheap      | $3.98      | $12.98  | ~$4            | Generic        |
+| **exepay.tech**    | Namecheap      | $5.98      | $14.98  | ~$6            | Tech-focused   |
+| **exepay.store**   | Namecheap      | $6.98      | $14.98  | ~$7            | E-commerce     |
+| **exepay.network** | Namecheap      | $9.98      | $14.98  | ~$10           | Blockchain     |
+| **exepay.com**     | Namecheap      | $10.98     | $14.98  | ~$11           | 🏆 Classic     |
+| **exepay.gg**      | Namecheap      | $11.98     | $29.98  | ~$12           | Gaming/Cool    |
+| **exepay.dev**     | Google Domains | $12.00     | $12.00  | ~$12           | Developer      |
+| **exepay.app**     | Namecheap      | $14.98     | $19.98  | ~$15           | 💙 Recommended |
+| **exepay.money**   | Namecheap      | $19.98     | $29.98  | ~$20           | Finance        |
+| **exepay.finance** | Namecheap      | $24.98     | $49.98  | ~$25           | Premium        |
+| **exepay.io**      | Namecheap      | $32.98     | $39.98  | ~$33           | Startup        |
+| **exepay.ai**      | Namecheap      | $49.98     | $79.98  | ~$50           | AI/Tech        |
 
-### **🏆 Recommended Options:**
+### **🏆 Top 5 Recommendations:**
 
-#### **Best Overall: exepay.app** 💙
+#### **1. exepay.com** 🏆 (BEST VALUE!)
+
+- **Cost:** ~$11/year (first year), $15/year renewal
+- **Why:** Classic, trusted, everyone knows .com
+- **Pros:**
+  - ✅ Most recognizable TLD worldwide
+  - ✅ Professional & credible
+  - ✅ Great for grants & investors
+  - ✅ Easy to remember
+  - ✅ Affordable!
+- **Cons:** Might be taken (need to check!)
+- **Perfect for:** Serious projects, fundraising, mainstream adoption
+
+#### **2. exepay.gg** 🎮 (COOL & TRENDY!)
+
+- **Cost:** ~$12/year (first year), $30/year renewal
+- **Why:** Cool, modern, crypto community loves it
+- **Pros:**
+  - ✅ Trendy & memorable
+  - ✅ Popular in crypto/gaming
+  - ✅ Stands out
+  - ✅ Short & catchy
+- **Cons:** Higher renewal ($30/year)
+- **Perfect for:** Community-driven projects, crypto natives
+
+#### **3. exepay.app** 💙 (PROFESSIONAL!)
 
 - **Cost:** ~$15/year
 - **Why:** Modern, tech-focused, perfect for web apps
-- **Pros:** Professional, memorable, crypto-friendly
+- **Pros:**
+  - ✅ Professional & modern
+  - ✅ Tech/crypto friendly
+  - ✅ Consistent pricing
+  - ✅ Great for dApps
 - **Cons:** Slightly more expensive
+- **Perfect for:** Web applications, dApps, SaaS
 
-#### **Budget Option: exepay.xyz** 💚
+#### **4. exepay.xyz** 💚 (CHEAPEST!)
 
-- **Cost:** ~$2/year (first year)
-- **Why:** Cheapest option, still professional
-- **Pros:** Super affordable, modern TLD
-- **Cons:** Renewal jumps to $13/year
+- **Cost:** ~$2/year (first year), $13/year renewal
+- **Why:** Super affordable, modern
+- **Pros:**
+  - ✅ Cheapest option
+  - ✅ Modern TLD
+  - ✅ Popular in crypto
+  - ✅ Great for testing
+- **Cons:** Less professional, renewal jumps
+- **Perfect for:** Budget-conscious, early stage
 
-#### **Developer Favorite: exepay.dev** 🧡
+#### **5. exepay.network** 🌐 (BLOCKCHAIN!)
 
-- **Cost:** ~$12/year
-- **Why:** Developer-focused, consistent pricing
-- **Pros:** Google-backed, no price jumps
-- **Cons:** Requires HTTPS (Vercel has this ✅)
+- **Cost:** ~$10/year
+- **Why:** Blockchain-focused, affordable
+- **Pros:**
+  - ✅ Perfect for blockchain projects
+  - ✅ Affordable
+  - ✅ Descriptive
+  - ✅ Professional
+- **Cons:** Longer domain name
+- **Perfect for:** Blockchain/Web3 projects
+
+---
+
+## 🎯 **Quick Comparison - Top Picks:**
+
+| Domain             | Year 1 | Year 2 | 3-Year Total | Best For      | Rating     |
+| ------------------ | ------ | ------ | ------------ | ------------- | ---------- |
+| **exepay.com**     | $11    | $15    | $41          | Everyone      | ⭐⭐⭐⭐⭐ |
+| **exepay.gg**      | $12    | $30    | $72          | Crypto/Gaming | ⭐⭐⭐⭐   |
+| **exepay.app**     | $15    | $20    | $55          | Web Apps      | ⭐⭐⭐⭐⭐ |
+| **exepay.xyz**     | $2     | $13    | $28          | Budget        | ⭐⭐⭐     |
+| **exepay.network** | $10    | $15    | $40          | Blockchain    | ⭐⭐⭐⭐   |
+| **exepay.tech**    | $6     | $15    | $36          | Tech          | ⭐⭐⭐⭐   |
+
+### **💡 My Top 3 Picks for You:**
+
+#### **🥇 First Choice: exepay.com** ($11/year)
+
+**Why:**
+
+- ✅ Best overall value
+- ✅ Most professional
+- ✅ Perfect for grants & investors
+- ✅ Everyone recognizes .com
+- ✅ Only $11 first year!
+
+**BUT:** Need to check if it's available!
+
+#### **🥈 Second Choice: exepay.gg** ($12/year)
+
+**Why:**
+
+- ✅ Cool & trendy
+- ✅ Crypto community loves it
+- ✅ Memorable
+- ✅ Same price as .com first year
+
+**BUT:** Renewal is $30/year (still affordable!)
+
+#### **🥉 Third Choice: exepay.app** ($15/year)
+
+**Why:**
+
+- ✅ Professional & modern
+- ✅ Perfect for web apps
+- ✅ Consistent pricing
+- ✅ Great for dApps
+
+**Safe choice if .com and .gg are taken!**
 
 ---
 
@@ -68,17 +165,49 @@
 
 ## 🎯 **My Recommendation:**
 
-### **Go with exepay.app** 🚀
+### **🥇 BEST CHOICE: Try exepay.com first!** 🏆
 
-**Why:**
+**Why .com is the winner:**
 
-- ✅ Perfect for web applications
-- ✅ Modern and professional
-- ✅ Crypto/tech community loves .app domains
-- ✅ Only $15/year (affordable)
-- ✅ Consistent pricing (no huge renewal jumps)
-- ✅ Great for grant applications
-- ✅ Memorable and brandable
+- ✅ Most professional & credible
+- ✅ Everyone knows .com
+- ✅ Perfect for grants & investors
+- ✅ Only $11 first year!
+- ✅ Great long-term value
+
+**Cost Breakdown:**
+
+- **Year 1:** $11
+- **Year 2:** $15
+- **Year 3:** $15
+- **3-Year Total:** $41 (~$14/year average)
+
+**If .com is taken, go with:**
+
+### **🥈 SECOND CHOICE: exepay.gg** 🎮
+
+**Why .gg is awesome:**
+
+- ✅ Cool & memorable
+- ✅ Crypto community loves it
+- ✅ Stands out from the crowd
+- ✅ Only $12 first year
+
+**Cost Breakdown:**
+
+- **Year 1:** $12
+- **Year 2:** $30
+- **Year 3:** $30
+- **3-Year Total:** $72 (~$24/year average)
+
+### **🥉 THIRD CHOICE: exepay.app** 💙
+
+**Why .app is solid:**
+
+- ✅ Professional & modern
+- ✅ Perfect for web apps
+- ✅ Consistent pricing
+- ✅ Safe choice
 
 **Cost Breakdown:**
 
