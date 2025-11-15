@@ -1,19 +1,105 @@
 'use client';
 
-import { useState } from 'react';
-import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { useState, useEffect } from 'react';
+import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { getTokens, parseTokenAmount, type Token } from '@/lib/tokens';
 
 type Interval = 'daily' | 'weekly' | 'monthly';
 
+interface Subscription {
+  id: string;
+  recipient: string;
+  amount: string;
+  token: string;
+  interval: Interval;
+  nextPayment: Date;
+  paymentsRemaining: number;
+  totalPayments: number;
+  status: 'active' | 'paused' | 'completed' | 'cancelled';
+  createdAt: Date;
+}
+
 export function RecurringPaymentForm() {
+  const [mounted, setMounted] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [connecting, setConnecting] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [tokens, setTokens] = useState<Token[]>([]);
   const [interval, setInterval] = useState<Interval>('monthly');
   const [maxPayments, setMaxPayments] = useState('12');
+  const [startDate, setStartDate] = useState('');
   const [memo, setMemo] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    // Load tokens
+    const network = (process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'devnet') as 'mainnet-beta' | 'devnet';
+    const availableTokens = getTokens(network);
+    setTokens(availableTokens);
+    setSelectedToken(availableTokens[0]); // Default to SOL
+
+    // Set default start date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    setStartDate(tomorrow.toISOString().split('T')[0]);
+
+    // Load subscriptions from localStorage
+    const saved = localStorage.getItem('exepay_subscriptions');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Convert date strings back to Date objects
+        const subs = parsed.map((sub: any) => ({
+          ...sub,
+          nextPayment: new Date(sub.nextPayment),
+          createdAt: new Date(sub.createdAt),
+        }));
+        setSubscriptions(subs);
+      } catch (err) {
+        console.error('Failed to load subscriptions:', err);
+      }
+    }
+  }, []);
+
+  const connectWallet = async () => {
+    setConnecting(true);
+    try {
+      const { solana } = window as any;
+      
+      if (!solana?.isPhantom) {
+        alert('Please install Phantom wallet from https://phantom.app/');
+        setConnecting(false);
+        return;
+      }
+
+      const response = await solana.connect();
+      setWalletAddress(response.publicKey.toString());
+    } catch (err) {
+      console.error('Failed to connect wallet:', err);
+      alert('Failed to connect wallet. Please try again.');
+    } finally {
+      setConnecting(false);
+    }
+  };
+
+  const disconnectWallet = async () => {
+    try {
+      const { solana } = window as any;
+      if (solana) {
+        await solana.disconnect();
+        setWalletAddress(null);
+      }
+    } catch (err) {
+      console.error('Failed to disconnect:', err);
+    }
+  };
 
   const getNextPaymentDate = () => {
     const now = new Date();
@@ -66,6 +152,16 @@ export function RecurringPaymentForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!walletAddress) {
+      setError('Please connect your wallet first');
+      return;
+    }
+
+    if (!selectedToken) {
+      setError('Please select a token');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setSuccess(false);
@@ -94,8 +190,30 @@ export function RecurringPaymentForm() {
         throw new Error('Max payments must be between 1 and 365');
       }
 
-      // Demo mode - just show what would happen
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Validate start date
+      const start = new Date(startDate);
+      if (isNaN(start.getTime())) {
+        throw new Error('Invalid start date');
+      }
+
+      // Create subscription
+      const newSubscription: Subscription = {
+        id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        recipient: recipient.trim(),
+        amount,
+        token: selectedToken.symbol,
+        interval,
+        nextPayment: start,
+        paymentsRemaining: paymentsValue,
+        totalPayments: paymentsValue,
+        status: 'active',
+        createdAt: new Date(),
+      };
+
+      // Save to localStorage
+      const updated = [...subscriptions, newSubscription];
+      setSubscriptions(updated);
+      localStorage.setItem('exepay_subscriptions', JSON.stringify(updated));
 
       setSuccess(true);
       setError('');
