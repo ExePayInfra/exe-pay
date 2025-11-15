@@ -15,52 +15,52 @@ export const LogoEXE: React.FC<LogoProps> = ({
   className = '',
   showPay = true 
 }) => {
-  const height = size * 0.43; // 120/280 ratio for horizontal logo
+  const height = size * 0.375; // 120/320 ratio for horizontal logo
   
   return (
     <div 
       className={`inline-block ${animated ? 'animate-float' : ''} ${className}`}
-      style={{ width: showPay ? size : size * 0.65, height }}
+      style={{ width: showPay ? size : size * 0.5, height }}
     >
       <svg 
         width="100%" 
         height="100%" 
-        viewBox={showPay ? "0 0 280 120" : "0 0 180 120"} 
+        viewBox={showPay ? "0 0 320 120" : "0 0 170 120"} 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
       >
         {/* Blue Background (Light Protocol style) */}
-        <rect width={showPay ? "280" : "180"} height="120" rx="12" fill="#0066FF"/>
+        <rect width={showPay ? "320" : "170"} height="120" rx="12" fill="#0066FF"/>
         
-        {/* Left "E" Bracket - BOLDER & THICKER */}
+        {/* Left "E" Bracket - PERFECTLY ALIGNED */}
         <g id="left-e">
-          <rect x="30" y="20" width="14" height="80" fill="white" rx="3"/>
-          <rect x="30" y="20" width="45" height="14" fill="white" rx="3"/>
-          <rect x="30" y="53" width="38" height="14" fill="white" rx="3"/>
-          <rect x="30" y="86" width="45" height="14" fill="white" rx="3"/>
+          <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+          <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+          <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+          <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
         </g>
         
-        {/* Center "X" - LARGER & CONNECTS THE E's */}
-        <g id="center-x">
-          <rect x="80" y="20" width="14" height="80" fill="white" rx="3" transform="rotate(45 87 60)"/>
-          <rect x="80" y="20" width="14" height="80" fill="white" rx="3" transform="rotate(-45 87 60)"/>
+        {/* Center "X" - PERFECTLY CENTERED between E's */}
+        <g id="center-x" transform="translate(85, 25)">
+          <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+          <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
         </g>
         
-        {/* Right "E" Bracket (mirrored) - BOLDER & THICKER */}
+        {/* Right "E" Bracket (mirrored) - PERFECTLY ALIGNED */}
         <g id="right-e">
-          <rect x="136" y="20" width="14" height="80" fill="white" rx="3"/>
-          <rect x="105" y="20" width="45" height="14" fill="white" rx="3"/>
-          <rect x="112" y="53" width="38" height="14" fill="white" rx="3"/>
-          <rect x="105" y="86" width="45" height="14" fill="white" rx="3"/>
+          <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+          <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+          <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+          <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
         </g>
         
-        {/* "Pay" Text - MOVED DOWN & CLOSER */}
+        {/* "Pay" Text - ALIGNED with baseline of E's */}
         {showPay && (
           <text 
-            x="165" 
-            y="95" 
+            x="175" 
+            y="88" 
             fontFamily="Arial, sans-serif" 
-            fontSize="32" 
+            fontSize="36" 
             fontWeight="700" 
             fill="#1a1a1a"
           >
@@ -91,24 +91,24 @@ export const LogoSquare: React.FC<Omit<LogoProps, 'showPay'>> = ({
       >
         <rect width="200" height="200" rx="20" fill="#0066FF"/>
         
-        <g transform="translate(25, 60)">
+        <g transform="translate(35, 65)">
           <g id="left-e">
-            <rect x="0" y="0" width="12" height="80" fill="white" rx="3"/>
-            <rect x="0" y="0" width="42" height="12" fill="white" rx="3"/>
-            <rect x="0" y="34" width="35" height="12" fill="white" rx="3"/>
-            <rect x="0" y="68" width="42" height="12" fill="white" rx="3"/>
+            <rect x="0" y="0" width="10" height="70" fill="white" rx="3"/>
+            <rect x="0" y="0" width="35" height="10" fill="white" rx="3"/>
+            <rect x="0" y="30" width="28" height="10" fill="white" rx="3"/>
+            <rect x="0" y="60" width="35" height="10" fill="white" rx="3"/>
           </g>
           
           <g id="center-x" transform="translate(50, 0)">
-            <rect x="0" y="0" width="12" height="80" fill="white" rx="3" transform="rotate(45 6 40)"/>
-            <rect x="0" y="0" width="12" height="80" fill="white" rx="3" transform="rotate(-45 6 40)"/>
+            <rect x="0" y="0" width="10" height="70" fill="white" rx="3" transform="rotate(45 5 35)"/>
+            <rect x="0" y="0" width="10" height="70" fill="white" rx="3" transform="rotate(-45 5 35)"/>
           </g>
           
-          <g id="right-e" transform="translate(108, 0)">
-            <rect x="0" y="0" width="12" height="80" fill="white" rx="3"/>
-            <rect x="-30" y="0" width="42" height="12" fill="white" rx="3"/>
-            <rect x="-23" y="34" width="35" height="12" fill="white" rx="3"/>
-            <rect x="-30" y="68" width="42" height="12" fill="white" rx="3"/>
+          <g id="right-e" transform="translate(95, 0)">
+            <rect x="0" y="0" width="10" height="70" fill="white" rx="3"/>
+            <rect x="-25" y="0" width="35" height="10" fill="white" rx="3"/>
+            <rect x="-18" y="30" width="28" height="10" fill="white" rx="3"/>
+            <rect x="-25" y="60" width="35" height="10" fill="white" rx="3"/>
           </g>
         </g>
       </svg>
@@ -135,22 +135,22 @@ export const LogoIcon: React.FC<Omit<LogoProps, 'showPay'>> = ({
       >
         <rect width="32" height="32" rx="4" fill="#0066FF"/>
         
-        <g transform="translate(3, 6)">
-          <rect x="0" y="0" width="3" height="20" fill="white" rx="1"/>
-          <rect x="0" y="0" width="8" height="3" fill="white" rx="1"/>
-          <rect x="0" y="8.5" width="7" height="3" fill="white" rx="1"/>
-          <rect x="0" y="17" width="8" height="3" fill="white" rx="1"/>
+        <g transform="translate(5, 8)">
+          <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1"/>
+          <rect x="0" y="0" width="7" height="2.5" fill="white" rx="1"/>
+          <rect x="0" y="6.75" width="6" height="2.5" fill="white" rx="1"/>
+          <rect x="0" y="13.5" width="7" height="2.5" fill="white" rx="1"/>
           
-          <g transform="translate(10, 0)">
-            <rect x="0" y="0" width="3" height="20" fill="white" rx="1" transform="rotate(45 1.5 10)"/>
-            <rect x="0" y="0" width="3" height="20" fill="white" rx="1" transform="rotate(-45 1.5 10)"/>
+          <g transform="translate(9.5, 0)">
+            <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1" transform="rotate(45 1.25 8)"/>
+            <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1" transform="rotate(-45 1.25 8)"/>
           </g>
           
-          <g transform="translate(23, 0)">
-            <rect x="0" y="0" width="3" height="20" fill="white" rx="1"/>
-            <rect x="-5" y="0" width="8" height="3" fill="white" rx="1"/>
-            <rect x="-4" y="8.5" width="7" height="3" fill="white" rx="1"/>
-            <rect x="-5" y="17" width="8" height="3" fill="white" rx="1"/>
+          <g transform="translate(19.5, 0)">
+            <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1"/>
+            <rect x="-4.5" y="0" width="7" height="2.5" fill="white" rx="1"/>
+            <rect x="-3.5" y="6.75" width="6" height="2.5" fill="white" rx="1"/>
+            <rect x="-4.5" y="13.5" width="7" height="2.5" fill="white" rx="1"/>
           </g>
         </g>
       </svg>

@@ -1,0 +1,28 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background -->
+  <rect width="32" height="32" rx="4" fill="#0066FF"/>
+  
+  <!-- EXE - PERFECTLY CENTERED -->
+  <g transform="translate(5, 8)">
+    <!-- Left "E" -->
+    <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1"/>
+    <rect x="0" y="0" width="7" height="2.5" fill="white" rx="1"/>
+    <rect x="0" y="6.75" width="6" height="2.5" fill="white" rx="1"/>
+    <rect x="0" y="13.5" width="7" height="2.5" fill="white" rx="1"/>
+    
+    <!-- Center "X" - PERFECTLY CENTERED -->
+    <g transform="translate(9.5, 0)">
+      <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1" transform="rotate(45 1.25 8)"/>
+      <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1" transform="rotate(-45 1.25 8)"/>
+    </g>
+    
+    <!-- Right "E" (mirrored) -->
+    <g transform="translate(19.5, 0)">
+      <rect x="0" y="0" width="2.5" height="16" fill="white" rx="1"/>
+      <rect x="-4.5" y="0" width="7" height="2.5" fill="white" rx="1"/>
+      <rect x="-3.5" y="6.75" width="6" height="2.5" fill="white" rx="1"/>
+      <rect x="-4.5" y="13.5" width="7" height="2.5" fill="white" rx="1"/>
+    </g>
+  </g>
+</svg>
+

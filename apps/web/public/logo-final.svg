@@ -1,0 +1,42 @@
+<svg width="320" height="120" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background (Light Protocol style) -->
+  <rect width="320" height="120" rx="12" fill="#0066FF"/>
+  
+  <!-- Left "E" Bracket - PERFECTLY ALIGNED -->
+  <g id="left-e">
+    <!-- Vertical bar -->
+    <rect x="30" y="25" width="12" height="70" fill="white" rx="3"/>
+    <!-- Top horizontal -->
+    <rect x="30" y="25" width="40" height="12" fill="white" rx="3"/>
+    <!-- Middle horizontal -->
+    <rect x="30" y="54" width="33" height="12" fill="white" rx="3"/>
+    <!-- Bottom horizontal -->
+    <rect x="30" y="83" width="40" height="12" fill="white" rx="3"/>
+  </g>
+  
+  <!-- Center "X" - PERFECTLY CENTERED between E's -->
+  <g id="center-x" transform="translate(85, 25)">
+    <!-- Diagonal 1 -->
+    <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(45 6 35)"/>
+    <!-- Diagonal 2 -->
+    <rect x="0" y="0" width="12" height="70" fill="white" rx="3" transform="rotate(-45 6 35)"/>
+  </g>
+  
+  <!-- Right "E" Bracket (mirrored) - PERFECTLY ALIGNED -->
+  <g id="right-e">
+    <!-- Vertical bar -->
+    <rect x="128" y="25" width="12" height="70" fill="white" rx="3"/>
+    <!-- Top horizontal -->
+    <rect x="100" y="25" width="40" height="12" fill="white" rx="3"/>
+    <!-- Middle horizontal -->
+    <rect x="107" y="54" width="33" height="12" fill="white" rx="3"/>
+    <!-- Bottom horizontal -->
+    <rect x="100" y="83" width="40" height="12" fill="white" rx="3"/>
+  </g>
+  
+  <!-- "Pay" Text - ALIGNED with baseline of E's -->
+  <text x="175" y="88" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#1a1a1a">
+    Pay
+  </text>
+</svg>
+
