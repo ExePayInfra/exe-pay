@@ -147,16 +147,18 @@ export function encryptAmount(
   const sharedSecret = sharedSecretPoint.toRawBytes();
   
   // 4. Encode amount as a point: g^m
-  // For small amounts, we can use scalar multiplication
-  // Note: This is a simplified version. Production code should use
-  // proper point encoding (e.g., Elligator or Ristretto)
-  const amountPoint = ed25519.getPublicKey(
-    bigIntToBytes(amount, 32)
-  );
+  // Use generator point multiplied by amount
+  const generator = ed25519.ExtendedPoint.BASE;
+  // Handle zero amount specially (identity point)
+  const amountPoint = amount === 0n 
+    ? ed25519.ExtendedPoint.ZERO 
+    : generator.multiply(amount);
   
-  // 5. Compute C2 = s * g^m
+  // 5. Compute C2 = s + g^m
   // This is point addition: C2 = sharedSecret + amountPoint
-  const c2 = addPoints(sharedSecret, amountPoint);
+  const sharedSecretPoint2 = ed25519.ExtendedPoint.fromHex(sharedSecret);
+  const c2Point = sharedSecretPoint2.add(amountPoint);
+  const c2 = c2Point.toRawBytes();
   
   return { c1, c2 };
 }
@@ -183,14 +185,14 @@ export function decryptAmount(
   const sharedSecretPoint = c1Point.multiply(xScalar);
   const sharedSecret = sharedSecretPoint.toRawBytes();
   
-  // 2. Compute amount point: g^m = C2 / s
+  // 2. Compute amount point: g^m = C2 - s
   // This is point subtraction: amountPoint = C2 - sharedSecret
-  const amountPoint = subtractPoints(ciphertext.c2, sharedSecret);
+  const c2Point = ed25519.ExtendedPoint.fromHex(ciphertext.c2);
+  const sharedSecretPoint2 = ed25519.ExtendedPoint.fromHex(sharedSecret);
+  const amountPoint = c2Point.subtract(sharedSecretPoint2);
   
   // 3. Solve discrete log to get amount
-  // For small amounts, we can use brute force
-  // Production code should use baby-step giant-step or Pollard's rho
-  const amount = discreteLog(amountPoint);
+  const amount = discreteLog(amountPoint.toRawBytes());
   
   return amount;
 }
@@ -275,18 +277,22 @@ function initDiscreteLogTable(): void {
   
   try {
     const generator = ed25519.ExtendedPoint.BASE;
-    let current = ed25519.ExtendedPoint.ZERO;
     
-    // Compute g^0, g^1, g^2, ..., g^MAX_LOOKUP_AMOUNT
-    for (let i = 0n; i <= MAX_LOOKUP_AMOUNT; i++) {
+    // Start with g^0 = identity point
+    let current = ed25519.ExtendedPoint.ZERO;
+    const key0 = Buffer.from(current.toRawBytes()).toString('hex');
+    DISCRETE_LOG_TABLE.set(key0, 0n);
+    
+    // Compute g^1, g^2, ..., g^10000
+    current = generator; // g^1
+    for (let i = 1n; i <= 10000n; i++) {
       const key = Buffer.from(current.toRawBytes()).toString('hex');
       DISCRETE_LOG_TABLE.set(key, i);
       
-      // Only compute first 10000 for performance
-      // Production should use baby-step giant-step for larger amounts
-      if (i >= 10000n) break;
-      
-      current = current.add(generator);
+      // Add generator for next iteration
+      if (i < 10000n) {
+        current = current.add(generator);
+      }
     }
     
     console.log(`✅ Initialized discrete log table with ${DISCRETE_LOG_TABLE.size} entries`);
@@ -455,10 +461,24 @@ export function addCiphertexts(
   ct1: ElGamalCiphertext,
   ct2: ElGamalCiphertext
 ): ElGamalCiphertext {
-  return {
-    c1: addPoints(ct1.c1, ct2.c1),
-    c2: addPoints(ct1.c2, ct2.c2),
-  };
+  try {
+    const c1_1 = ed25519.ExtendedPoint.fromHex(ct1.c1);
+    const c1_2 = ed25519.ExtendedPoint.fromHex(ct2.c1);
+    const c2_1 = ed25519.ExtendedPoint.fromHex(ct1.c2);
+    const c2_2 = ed25519.ExtendedPoint.fromHex(ct2.c2);
+    
+    return {
+      c1: c1_1.add(c1_2).toRawBytes(),
+      c2: c2_1.add(c2_2).toRawBytes(),
+    };
+  } catch (error) {
+    console.error('Homomorphic addition failed:', error);
+    // Fallback
+    return {
+      c1: addPoints(ct1.c1, ct2.c1),
+      c2: addPoints(ct1.c2, ct2.c2),
+    };
+  }
 }
 
 /**
@@ -472,10 +492,24 @@ export function subtractCiphertexts(
   ct1: ElGamalCiphertext,
   ct2: ElGamalCiphertext
 ): ElGamalCiphertext {
-  return {
-    c1: subtractPoints(ct1.c1, ct2.c1),
-    c2: subtractPoints(ct1.c2, ct2.c2),
-  };
+  try {
+    const c1_1 = ed25519.ExtendedPoint.fromHex(ct1.c1);
+    const c1_2 = ed25519.ExtendedPoint.fromHex(ct2.c1);
+    const c2_1 = ed25519.ExtendedPoint.fromHex(ct1.c2);
+    const c2_2 = ed25519.ExtendedPoint.fromHex(ct2.c2);
+    
+    return {
+      c1: c1_1.subtract(c1_2).toRawBytes(),
+      c2: c2_1.subtract(c2_2).toRawBytes(),
+    };
+  } catch (error) {
+    console.error('Homomorphic subtraction failed:', error);
+    // Fallback
+    return {
+      c1: subtractPoints(ct1.c1, ct2.c1),
+      c2: subtractPoints(ct1.c2, ct2.c2),
+    };
+  }
 }
 
 /**
