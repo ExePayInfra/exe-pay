@@ -29,10 +29,11 @@
   "dependencies": {
     "@exe-pay/privacy": "workspace:*",
     "@exe-pay/utils": "workspace:*",
-    "@lightprotocol/stateless.js": "^0.9.0",
     "@lightprotocol/compressed-token": "^0.9.0",
+    "@lightprotocol/stateless.js": "^0.9.0",
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.5.0",
+    "@solana/spl-token": "0.4.9",
     "@solana/web3.js": "^1.95.3",
     "borsh": "^2.0.0",
     "tweetnacl": "^1.0.3"
