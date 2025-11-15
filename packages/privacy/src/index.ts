@@ -11,6 +11,7 @@ export interface ShieldedNote {
 // Export shielded and private transfer modules
 export * from "./shielded.js";
 export * from "./private.js";
+export * from "./proofs/groth16.js";
 
 export interface ProveSpendResult {
   readonly proof: Uint8Array;
