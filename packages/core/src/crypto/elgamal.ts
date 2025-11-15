@@ -83,7 +83,10 @@ export function generateElGamalKeypair(): ElGamalKeypair {
   const privateKey = ed25519.utils.randomPrivateKey();
   
   // Derive public key: h = g^x where x is private key
-  const publicKey = ed25519.getPublicKey(privateKey);
+  // Use the same method as in encryption/decryption for consistency
+  const privateScalar = bytesToBigInt(privateKey) % ed25519.CURVE.n;
+  const publicKeyPoint = ed25519.ExtendedPoint.BASE.multiply(privateScalar);
+  const publicKey = publicKeyPoint.toRawBytes();
   
   return {
     publicKey,
@@ -104,8 +107,10 @@ export function deriveElGamalKeypair(solanaKeypair: Keypair): ElGamalKeypair {
   // Use Solana private key as ElGamal private key
   const privateKey = solanaKeypair.secretKey.slice(0, 32);
   
-  // Derive public key
-  const publicKey = ed25519.getPublicKey(privateKey);
+  // Derive public key using the same method as generateElGamalKeypair
+  const privateScalar = bytesToBigInt(privateKey) % ed25519.CURVE.n;
+  const publicKeyPoint = ed25519.ExtendedPoint.BASE.multiply(privateScalar);
+  const publicKey = publicKeyPoint.toRawBytes();
   
   return {
     publicKey,
@@ -135,14 +140,16 @@ export function encryptAmount(
   const r = ed25519.utils.randomPrivateKey();
   
   // 2. Compute C1 = g^r (ephemeral public key)
-  const c1 = ed25519.getPublicKey(r);
+  // Use the same method as in key generation for consistency
+  const rScalar = bytesToBigInt(r) % ed25519.CURVE.n;
+  const c1Point = ed25519.ExtendedPoint.BASE.multiply(rScalar);
+  const c1 = c1Point.toRawBytes();
   
   // 3. Compute shared secret: s = h^r
   // This is the Diffie-Hellman shared secret
   // Multiply recipient's public key by our ephemeral private key
   const recipientPoint = ed25519.ExtendedPoint.fromHex(recipientPublicKey);
-  // Reduce scalar modulo curve order to ensure it's valid
-  const rScalar = bytesToBigInt(r) % ed25519.CURVE.n;
+  // Use the same rScalar we computed above
   const sharedSecretPoint = recipientPoint.multiply(rScalar);
   const sharedSecret = sharedSecretPoint.toRawBytes();
   
@@ -192,7 +199,8 @@ export function decryptAmount(
   const amountPoint = c2Point.subtract(sharedSecretPoint2);
   
   // 3. Solve discrete log to get amount
-  const amount = discreteLog(amountPoint.toRawBytes());
+  const amountBytes = amountPoint.toRawBytes();
+  const amount = discreteLog(amountBytes);
   
   return amount;
 }
@@ -294,8 +302,6 @@ function initDiscreteLogTable(): void {
         current = current.add(generator);
       }
     }
-    
-    console.log(`✅ Initialized discrete log table with ${DISCRETE_LOG_TABLE.size} entries`);
   } catch (error) {
     console.error('Failed to initialize discrete log table:', error);
   }
