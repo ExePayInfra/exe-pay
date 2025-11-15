@@ -1,0 +1,42 @@
+<svg width="280" height="120" viewBox="0 0 280 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background (Light Protocol style) -->
+  <rect width="280" height="120" rx="12" fill="#0066FF"/>
+  
+  <!-- Left "E" Bracket - BOLDER & THICKER -->
+  <g id="left-e">
+    <!-- Vertical bar - THICKER -->
+    <rect x="30" y="20" width="14" height="80" fill="white" rx="3"/>
+    <!-- Top horizontal - THICKER -->
+    <rect x="30" y="20" width="45" height="14" fill="white" rx="3"/>
+    <!-- Middle horizontal - THICKER -->
+    <rect x="30" y="53" width="38" height="14" fill="white" rx="3"/>
+    <!-- Bottom horizontal - THICKER -->
+    <rect x="30" y="86" width="45" height="14" fill="white" rx="3"/>
+  </g>
+  
+  <!-- Center "X" - LARGER & CONNECTS THE E's -->
+  <g id="center-x">
+    <!-- Top-left to bottom-right diagonal - THICKER -->
+    <rect x="80" y="20" width="14" height="80" fill="white" rx="3" transform="rotate(45 87 60)"/>
+    <!-- Top-right to bottom-left diagonal - THICKER -->
+    <rect x="80" y="20" width="14" height="80" fill="white" rx="3" transform="rotate(-45 87 60)"/>
+  </g>
+  
+  <!-- Right "E" Bracket (mirrored) - BOLDER & THICKER -->
+  <g id="right-e">
+    <!-- Vertical bar - THICKER -->
+    <rect x="136" y="20" width="14" height="80" fill="white" rx="3"/>
+    <!-- Top horizontal - THICKER -->
+    <rect x="105" y="20" width="45" height="14" fill="white" rx="3"/>
+    <!-- Middle horizontal - THICKER -->
+    <rect x="112" y="53" width="38" height="14" fill="white" rx="3"/>
+    <!-- Bottom horizontal - THICKER -->
+    <rect x="105" y="86" width="45" height="14" fill="white" rx="3"/>
+  </g>
+  
+  <!-- "Pay" Text - MOVED DOWN & CLOSER -->
+  <text x="165" y="95" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#1a1a1a">
+    Pay
+  </text>
+</svg>
+

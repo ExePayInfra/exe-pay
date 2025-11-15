@@ -1,0 +1,30 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Background (Light Protocol style) -->
+  <rect width="200" height="200" rx="20" fill="#0066FF"/>
+  
+  <!-- "EXE" centered - BOLDER & MORE COMPACT -->
+  <g transform="translate(25, 60)">
+    <!-- Left "E" Bracket - THICKER -->
+    <g id="left-e">
+      <rect x="0" y="0" width="12" height="80" fill="white" rx="3"/>
+      <rect x="0" y="0" width="42" height="12" fill="white" rx="3"/>
+      <rect x="0" y="34" width="35" height="12" fill="white" rx="3"/>
+      <rect x="0" y="68" width="42" height="12" fill="white" rx="3"/>
+    </g>
+    
+    <!-- Center "X" - LARGER & CONNECTS -->
+    <g id="center-x" transform="translate(50, 0)">
+      <rect x="0" y="0" width="12" height="80" fill="white" rx="3" transform="rotate(45 6 40)"/>
+      <rect x="0" y="0" width="12" height="80" fill="white" rx="3" transform="rotate(-45 6 40)"/>
+    </g>
+    
+    <!-- Right "E" Bracket (mirrored) - THICKER -->
+    <g id="right-e" transform="translate(108, 0)">
+      <rect x="0" y="0" width="12" height="80" fill="white" rx="3"/>
+      <rect x="-30" y="0" width="42" height="12" fill="white" rx="3"/>
+      <rect x="-23" y="34" width="35" height="12" fill="white" rx="3"/>
+      <rect x="-30" y="68" width="42" height="12" fill="white" rx="3"/>
+    </g>
+  </g>
+</svg>
+
