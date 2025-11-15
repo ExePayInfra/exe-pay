@@ -1,26 +1,12 @@
-# 🔐 ExePay
+# ExePay
 
-**Privacy-preserving payments SDK for Solana** powered by [Light Protocol](https://lightprotocol.com).
+**Privacy-preserving payments SDK for Solana**
 
-Build private, efficient, and scalable payment applications with zero-knowledge proofs and compressed accounts.
+Build private, efficient, and scalable payment applications with zero-knowledge proofs and compressed accounts powered by [Light Protocol](https://lightprotocol.com).
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://exe-payments-nki63him5-exechainlink-5881s-projects.vercel.app)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](./LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
-[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)]()
-[![Progress](https://img.shields.io/badge/progress-100%25-success)]()
-
----
-
-## 📊 **Project Status: 100% Complete!** 🎉
-
-**Development Timeline:** 2 weeks  
-**Total Commits:** 60+  
-**Lines of Code:** 6,000+  
-**Packages:** 5 working  
-**Features:** 10+ live on production  
-
-**Live Demo:** [https://exe-payments-nki63him5-exechainlink-5881s-projects.vercel.app](https://exe-payments-nki63him5-exechainlink-5881s-projects.vercel.app)
 
 ---
 
@@ -102,11 +88,11 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 
 ## 📚 Documentation
 
-- **[Features Guide](./FEATURES.md)** - Complete feature overview with examples
-- **[API Reference](./API.md)** - Full API documentation
-- **[Getting Started](./GETTING_STARTED.md)** - Setup and installation guide
-- **[Deployment Guide](./DEPLOY.md)** - Deploy to Vercel
-- **[MVP Guide](./MVP_GUIDE.md)** - Build production-ready applications
+- **[Features Guide](./docs/FEATURES.md)** - Complete feature overview with examples
+- **[Getting Started](./docs/GETTING_STARTED.md)** - Setup and installation guide
+- **[API Reference](./docs/development/API.md)** - Full API documentation
+- **[Deployment Guide](./docs/guides/DEPLOY_TO_VERCEL.md)** - Deploy to Vercel
+- **[Mainnet Guide](./docs/guides/MAINNET_DEPLOY.md)** - Production deployment
 
 ---
 
@@ -161,7 +147,7 @@ const schedule = createRecurringSchedule({
 const state = initializeRecurringState(schedule);
 ```
 
-See [FEATURES.md](./FEATURES.md) for more examples!
+See [FEATURES.md](./docs/FEATURES.md) for more examples!
 
 ---
 
@@ -230,7 +216,9 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## 📄 License
 
-Apache-2.0 © ExePay Contributors
+MIT © ExePay Contributors
+
+See [LICENSE](./LICENSE) for details.
 
 ---
 
@@ -244,10 +232,9 @@ Apache-2.0 © ExePay Contributors
 
 ## 📞 Support
 
-- **Documentation**: [Full Docs](./FEATURES.md)
+- **Documentation**: [Full Docs](./docs/FEATURES.md)
 - **GitHub Issues**: [Report a bug](https://github.com/ExePayInfra/exe-pay/issues)
-- **Discord**: Join our community
-- **Twitter**: [@ExePayInfra](https://twitter.com/ExePayInfra)
+- **Email**: exechainlink@outlook.com
 
 ---
 
