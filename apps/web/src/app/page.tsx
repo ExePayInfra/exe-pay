@@ -1,388 +1,184 @@
 'use client';
 
-import { useState } from 'react';
+import { LogoText } from '@/components/Logo';
 
 export default function Home() {
-  const [recipient, setRecipient] = useState('');
-  const [amount, setAmount] = useState('');
-  const [result, setResult] = useState('');
-
-  const handleDemo = () => {
-    try {
-      const demoAddress = 'DemoAddress123';
-      const demoAmount = parseFloat(amount || '0.001');
-      
-      setResult(`✅ Demo: Would send ${demoAmount} SOL to ${recipient || demoAddress}`);
-    } catch (error: any) {
-      setResult(`❌ Error: ${error.message}`);
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Header */}
-      <nav className="border-b border-white/10 backdrop-blur-sm">
+    <main className="min-h-screen bg-white">
+      {/* PayAI-style Header */}
+      <nav className="border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
-              </div>
-              <a href="/" className="text-2xl font-bold text-white hover:text-cyan-300 transition-colors">ExePay</a>
-            </div>
-            <div className="flex items-center gap-4">
-              <a
-                href="/batch"
-                className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors"
-              >
-                Batch
+          <div className="flex justify-between items-center h-20">
+            <LogoText />
+            
+            <div className="flex items-center gap-8">
+              <a href="/features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                Features
               </a>
-              <a
-                href="/recurring"
-                className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors"
-              >
-                Recurring
+              <a href="/wallet" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                Wallet
               </a>
-              <a
-                href="/create-link"
-                className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors"
-              >
-                Links
-              </a>
-              <a
-                href="/history"
-                className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors"
-              >
+              <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
                 History
               </a>
-              <div className="px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold">
-                Demo Mode
-              </div>
+              <a
+                href="/wallet"
+                className="btn-primary px-6 py-2.5 rounded-lg font-semibold"
+              >
+                Launch App
+              </a>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-white mb-4">
-            Private Payments on{' '}
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Solana
-            </span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Send and receive payments with zero-knowledge privacy. 
-            Fast, secure, and completely confidential.
+      {/* PayAI-style Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center max-w-4xl mx-auto animate-fade-in">
+          <h1 className="text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            Solana-first, privacy-preserving
+            <br />
+            <span className="text-gradient-brand">payments platform.</span>
+          </h1>
+          
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Send private payments with zero-knowledge proofs. Fast, secure, and completely confidential on Solana.
           </p>
-        </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-            <p className="text-4xl font-bold text-white mb-2">12,847</p>
-            <p className="text-gray-400">Private Transactions</p>
-          </div>
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-            <p className="text-4xl font-bold text-white mb-2">2,453 SOL</p>
-            <p className="text-gray-400">Total Volume</p>
-          </div>
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-            <p className="text-4xl font-bold text-white mb-2">891</p>
-            <p className="text-gray-400">Active Users</p>
-          </div>
-        </div>
-
-        {/* How It Works - Educational Section */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-white mb-4">How It Works</h3>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              ExePay uses zero-knowledge proofs to keep your payments private while remaining verifiable on-chain
-            </p>
-          </div>
-
-          {/* Problem vs Solution */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* Traditional Payments Problem */}
-            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <h4 className="text-xl font-semibold text-white">Traditional Crypto</h4>
-              </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400 mt-1">❌</span>
-                  <span>Everyone can see your balance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400 mt-1">❌</span>
-                  <span>All transactions are public</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400 mt-1">❌</span>
-                  <span>Payment amounts visible to everyone</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-red-400 mt-1">❌</span>
-                  <span>Your financial history is exposed</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* ExePay Solution */}
-            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <h4 className="text-xl font-semibold text-white">ExePay Private</h4>
-              </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400 mt-1">✅</span>
-                  <span>Your balance stays hidden</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400 mt-1">✅</span>
-                  <span>Transactions are confidential</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400 mt-1">✅</span>
-                  <span>Payment amounts are encrypted</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400 mt-1">✅</span>
-                  <span>Still verifiable & compliant</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Simple Analogy */}
-          <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-xl p-8">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <div>
-                <h4 className="text-xl font-semibold text-white mb-3">Think of it like this:</h4>
-                <p className="text-gray-300 mb-4">
-                  Imagine you're at a restaurant and need to prove you're over 21 without showing your ID. 
-                  A zero-knowledge proof is like having a mathematical conversation that proves "I'm over 21" 
-                  without revealing your name, address, or exact age.
-                </p>
-                <p className="text-gray-300">
-                  Similarly, ExePay lets you prove "This transaction is valid" without revealing how much money 
-                  you have, where it came from, or any other private details. The math itself provides the proof 
-                  — no bank or trusted authority needed.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Demo Form */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
-            <h3 className="text-2xl font-bold text-white mb-6">SDK Demo</h3>
+          <div className="flex items-center justify-center gap-4">
+            <a
+              href="/wallet"
+              className="btn-primary px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2"
+            >
+              <span>Try ExePay</span>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
             
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Recipient Address (Optional)
-                </label>
-                <input
-                  type="text"
-                  value={recipient}
-                  onChange={(e) => setRecipient(e.target.value)}
-                  placeholder="Enter Solana wallet address"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Amount (SOL)
-                </label>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0.001"
-                  step="0.000000001"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-                />
-              </div>
-
-              {result && (
-                <div className="bg-blue-500/20 border border-cyan-500/50 rounded-lg p-4">
-                  <p className="text-cyan-200 text-sm">{result}</p>
-                </div>
-              )}
-
-              <button
-                onClick={handleDemo}
-                className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                🔒 Test SDK (Demo)
-              </button>
-            </div>
-
-            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-              <p className="text-sm text-blue-200 mb-3">
-                <span className="font-semibold">📘 Demo Mode:</span> This is a simplified demo.
-              </p>
-              <a 
-                href="/wallet" 
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-purple-600 hover:to-pink-600 rounded-lg text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-                Connect Wallet & Send Real Payments
-              </a>
-            </div>
+            <a
+              href="https://github.com/ExePayInfra/exe-pay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-outline px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              <span>Github</span>
+            </a>
           </div>
         </div>
+      </div>
 
-        {/* Features */}
-        <div className="mt-20 grid md:grid-cols-3 gap-8">
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {/* Features Grid - PayAI style */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <div className="glass-card p-8 rounded-2xl animate-slide-up">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Private by Default</h3>
-            <p className="text-gray-400">
-              Zero-knowledge proofs ensure your payment details remain confidential
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Private Transfers</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Zero-knowledge proofs ensure complete transaction privacy. Your payments are your business.
             </p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="w-12 h-12 bg-pink-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* Feature 2 */}
+          <div className="glass-card p-8 rounded-2xl animate-slide-up" style={{animationDelay: '0.1s'}}>
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Lightning Fast</h3>
-            <p className="text-gray-400">
-              Powered by Solana's high-performance blockchain
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Lightning Fast</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Built on Solana for instant finality. Send payments in seconds, not minutes.
             </p>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* Feature 3 */}
+          <div className="glass-card p-8 rounded-2xl animate-slide-up" style={{animationDelay: '0.2s'}}>
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Low Fees</h3>
-            <p className="text-gray-400">
-              Pay fractions of a cent per transaction
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Multi-Token</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Support for SOL, USDC, USDT, and more. One platform for all your crypto payments.
             </p>
           </div>
         </div>
+      </div>
 
-        {/* Trust Indicators Section */}
-        <div className="mt-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-white mb-4">Built on Proven Technology</h3>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              ExePay is powered by industry-leading cryptographic protocols and blockchain infrastructure
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Light Protocol */}
-            <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-xl p-6 text-center">
-              <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-white mb-2">Light Protocol</h4>
-              <p className="text-sm text-gray-400">Zero-knowledge proofs & shielded transfers</p>
+      {/* Stats Section */}
+      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">100%</div>
+              <div className="text-gray-600">Private</div>
             </div>
-
-            {/* Solana */}
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-6 text-center">
-              <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-white mb-2">Solana Blockchain</h4>
-              <p className="text-sm text-gray-400">Fast, scalable, & low-cost transactions</p>
+            <div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">&lt;1s</div>
+              <div className="text-gray-600">Transaction Time</div>
             </div>
-
-            {/* SNARKs */}
-            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-6 text-center">
-              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-white mb-2">zk-SNARKs</h4>
-              <p className="text-sm text-gray-400">Succinct non-interactive proofs</p>
+            <div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">5+</div>
+              <div className="text-gray-600">Tokens Supported</div>
             </div>
-
-            {/* Open Source */}
-            <div className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/30 rounded-xl p-6 text-center">
-              <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold text-white mb-2">Open Source</h4>
-              <p className="text-sm text-gray-400">Transparent, auditable, & community-driven</p>
-            </div>
-          </div>
-
-          {/* Security Features */}
-          <div className="mt-12 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 border border-cyan-500/20 rounded-xl p-8">
-            <h4 className="text-2xl font-bold text-white mb-6 text-center">Security & Privacy Features</h4>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-cyan-400 text-3xl mb-2">🔒</div>
-                <h5 className="text-white font-semibold mb-1">Pedersen Commitments</h5>
-                <p className="text-sm text-gray-400">Cryptographically hide transaction amounts</p>
-              </div>
-              <div className="text-center">
-                <div className="text-cyan-400 text-3xl mb-2">🛡️</div>
-                <h5 className="text-white font-semibold mb-1">Nullifier Generation</h5>
-                <p className="text-sm text-gray-400">Prevent double-spending without exposing history</p>
-              </div>
-              <div className="text-center">
-                <div className="text-cyan-400 text-3xl mb-2">✅</div>
-                <h5 className="text-white font-semibold mb-1">On-Chain Verification</h5>
-                <p className="text-sm text-gray-400">Transactions are provably valid & compliant</p>
-              </div>
+            <div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">$0.0001</div>
+              <div className="text-gray-600">Average Fee</div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* CTA Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="glass-card rounded-3xl p-12 text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Ready to send private payments?
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Join the future of private, secure payments on Solana.
+          </p>
+          <a
+            href="/wallet"
+            className="btn-primary px-10 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-2"
+          >
+            <span>Get Started</span>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="border-t border-white/10 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-400">
-            <p>Built with ❤️ on Solana • Powered by Light Protocol</p>
-            <p className="mt-2 text-sm">
-              <a href="https://github.com/ExePayInfra/exe-pay" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                View on GitHub
+      <footer className="border-t border-gray-100 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            <LogoText />
+            <div className="flex items-center gap-6">
+              <a href="https://github.com/ExePayInfra/exe-pay" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
+                Github
               </a>
-            </p>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
+                Twitter
+              </a>
+              <a href="/docs" className="text-gray-600 hover:text-gray-900">
+                Docs
+              </a>
+            </div>
+          </div>
+          <div className="mt-8 text-center text-gray-500 text-sm">
+            © 2025 ExePay. Built with ❤️ on Solana.
           </div>
         </div>
       </footer>
