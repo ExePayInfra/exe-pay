@@ -1,48 +1,23 @@
 'use client';
 
 import { BatchPaymentForm } from '@/components/BatchPaymentForm';
+import { Navigation, Footer } from '@/components/Navigation';
 
 export default function BatchPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Header */}
-      <nav className="border-b border-white/10 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
-              </div>
-              <a href="/" className="text-2xl font-bold text-white hover:text-cyan-300 transition-colors">ExePay</a>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="/" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
-                Home
-              </a>
-              <a href="/batch" className="px-4 py-2 text-cyan-300 font-medium">
-                Batch
-              </a>
-              <a href="/recurring" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
-                Recurring
-              </a>
-              <a href="/history" className="px-4 py-2 text-white hover:text-cyan-300 font-medium transition-colors">
-                History
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <main className="min-h-screen bg-white">
+      <Navigation />
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-12 animate-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Batch Payments on{' '}
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="text-gradient-brand">
               Solana
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             Send private payments to multiple recipients in a single transaction. Save time and fees!
           </p>
         </div>
@@ -89,15 +64,8 @@ export default function BatchPage() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="border-t border-white/10 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-400">
-            <p>Built with ❤️ on Solana • Powered by Light Protocol</p>
-          </div>
-        </div>
-      </footer>
+      
+      <Footer />
     </main>
   );
 }

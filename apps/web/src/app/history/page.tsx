@@ -5,6 +5,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { fetchTransactionHistory, exportTransactionsToCSV, downloadCSV } from "@exe-pay/core";
 import type { TransactionRecord } from "@exe-pay/core";
 import { TransactionList } from "@/components/TransactionList";
+import { Navigation, Footer } from '@/components/Navigation';
 
 export default function HistoryPage() {
   const [address, setAddress] = useState("");
@@ -75,14 +76,16 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-white">
+      <Navigation />
+      
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Transaction History
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            Transaction <span className="text-gradient-brand">History</span>
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg sm:text-xl text-gray-600">
             View your payment history on Solana
           </p>
         </div>
@@ -112,7 +115,7 @@ export default function HistoryPage() {
             <button
               onClick={handleFetch}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-primary py-3 px-6 rounded-lg font-semibold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -171,12 +174,14 @@ export default function HistoryPage() {
         <div className="mt-8 text-center">
           <a
             href="/"
-            className="text-cyan-600 hover:text-cyan-700 font-medium"
+            className="text-indigo-600 hover:text-indigo-700 font-medium hover-scale inline-block"
           >
             ← Back to Home
           </a>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
