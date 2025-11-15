@@ -252,19 +252,122 @@ export function BatchPaymentForm() {
 
   const total = calculateTotal();
 
+  if (!mounted) {
+    return (
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 text-center">
+          <p className="text-white">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
-        <h3 className="text-2xl font-bold text-white mb-6">Batch Payment</h3>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Wallet Connection */}
+      {!walletAddress ? (
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl text-center">
+          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">Connect Your Wallet</h3>
+          <p className="text-blue-200 mb-6">
+            To send batch payments, please connect your Phantom wallet
+          </p>
+          <button
+            onClick={connectWallet}
+            disabled={connecting}
+            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all disabled:opacity-50 shadow-lg"
+          >
+            {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
+          </button>
+        </div>
+      ) : (
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
+          {/* Wallet Connected Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-white">Batch Payment</h3>
+            <div className="flex items-center gap-3">
+              <div className="text-sm text-green-300 font-mono">
+                {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
+              </div>
+              <button
+                onClick={disconnectWallet}
+                className="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded text-red-200 hover:bg-red-500/30 text-sm transition-all"
+              >
+                Disconnect
+              </button>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Token Selector */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Select Token
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {tokens.map((token) => (
+                  <button
+                    key={token.symbol}
+                    type="button"
+                    onClick={() => setSelectedToken(token)}
+                    disabled={loading}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      selectedToken?.symbol === token.symbol
+                        ? 'border-cyan-500 bg-cyan-500/20'
+                        : 'border-white/20 bg-white/5 hover:border-cyan-400/50'
+                    } disabled:opacity-50`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{token.logo}</span>
+                      <div className="text-left">
+                        <p className="text-white font-semibold">{token.symbol}</p>
+                        <p className="text-xs text-gray-400">{token.name}</p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           {/* Recipients */}
           <div className="space-y-4">
             {recipients.map((recipient, index) => (
-              <div key={recipient.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div key={recipient.id} className={`bg-white/5 border rounded-xl p-4 transition-all ${
+                recipient.status === 'success' ? 'border-green-500/50 bg-green-500/10' :
+                recipient.status === 'error' ? 'border-red-500/50 bg-red-500/10' :
+                recipient.status === 'sending' ? 'border-cyan-500/50 bg-cyan-500/10' :
+                'border-white/10'
+              }`}>
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-lg font-semibold text-white">Recipient {index + 1}</h4>
-                  {recipients.length > 1 && (
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-lg font-semibold text-white">Recipient {index + 1}</h4>
+                    {recipient.status === 'sending' && (
+                      <span className="flex items-center gap-1 text-cyan-300 text-sm">
+                        <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-300"></span>
+                        Sending...
+                      </span>
+                    )}
+                    {recipient.status === 'success' && (
+                      <span className="flex items-center gap-1 text-green-300 text-sm">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Success
+                      </span>
+                    )}
+                    {recipient.status === 'error' && (
+                      <span className="flex items-center gap-1 text-red-300 text-sm">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                        Failed
+                      </span>
+                    )}
+                  </div>
+                  {recipients.length > 1 && !loading && (
                     <button
                       type="button"
                       onClick={() => removeRecipient(recipient.id)}
@@ -295,7 +398,7 @@ export function BatchPaymentForm() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Amount (SOL)
+                      Amount ({selectedToken?.symbol || 'SOL'})
                     </label>
                     <input
                       type="number"
@@ -304,7 +407,7 @@ export function BatchPaymentForm() {
                       placeholder="0.00"
                       step="0.000000001"
                       min="0"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       required
                       disabled={loading}
                     />
@@ -320,11 +423,30 @@ export function BatchPaymentForm() {
                       onChange={(e) => updateRecipient(recipient.id, 'memo', e.target.value)}
                       placeholder="Payment note"
                       maxLength={50}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       disabled={loading}
                     />
                   </div>
                 </div>
+
+                {/* Success/Error Messages */}
+                {recipient.signature && (
+                  <div className="mt-3 p-2 bg-green-500/20 border border-green-500/50 rounded text-sm">
+                    <a
+                      href={`https://solscan.io/tx/${recipient.signature}${process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'devnet' ? '?cluster=devnet' : ''}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-300 hover:text-green-200 underline"
+                    >
+                      View on Solscan →
+                    </a>
+                  </div>
+                )}
+                {recipient.errorMessage && (
+                  <div className="mt-3 p-2 bg-red-500/20 border border-red-500/50 rounded text-sm text-red-200">
+                    {recipient.errorMessage}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -334,7 +456,7 @@ export function BatchPaymentForm() {
             type="button"
             onClick={addRecipient}
             disabled={loading || recipients.length >= 100}
-            className="w-full py-3 px-6 rounded-lg font-medium text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3 px-6 rounded-lg font-medium text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -343,16 +465,16 @@ export function BatchPaymentForm() {
           </button>
 
           {/* Summary */}
-          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+          <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
             <div className="flex justify-between items-center text-white">
               <span className="font-semibold">Total Amount:</span>
-              <span className="text-2xl font-bold">{total.toFixed(6)} SOL</span>
+              <span className="text-2xl font-bold">{total.toFixed(6)} {selectedToken?.symbol || 'SOL'}</span>
             </div>
-            <div className="flex justify-between items-center text-purple-200 text-sm mt-2">
+            <div className="flex justify-between items-center text-cyan-200 text-sm mt-2">
               <span>Recipients:</span>
               <span>{recipients.length}</span>
             </div>
-            <div className="flex justify-between items-center text-purple-200 text-sm mt-1">
+            <div className="flex justify-between items-center text-cyan-200 text-sm mt-1">
               <span>Estimated Fee:</span>
               <span>~{(recipients.length * 0.000005).toFixed(6)} SOL</span>
             </div>
@@ -369,7 +491,7 @@ export function BatchPaymentForm() {
           {success && (
             <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4">
               <p className="text-green-200 text-sm">
-                ✅ Demo: Would send {total.toFixed(6)} SOL to {recipients.length} recipients!
+                ✅ Successfully sent {total.toFixed(6)} {selectedToken?.symbol || 'SOL'} to {recipients.length} recipients!
               </p>
             </div>
           )}
@@ -378,15 +500,15 @@ export function BatchPaymentForm() {
           <button
             type="submit"
             disabled={loading || recipients.length === 0}
-            className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
-                Processing...
+                Sending to {recipients.length} recipients...
               </span>
             ) : (
-              `🔒 Preview Batch Payment (Demo)`
+              `🚀 Send Batch Payment`
             )}
           </button>
         </form>
@@ -394,10 +516,11 @@ export function BatchPaymentForm() {
         {/* Info */}
         <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
           <p className="text-sm text-blue-200">
-            <span className="font-semibold">📘 Demo Mode:</span> This is a preview. Connect your wallet to send real batch payments. You can send to up to 100 recipients in a single transaction!
+            <span className="font-semibold">💡 Batch Payments:</span> Send to up to 100 recipients. Each transfer is sent sequentially with real-time status updates. Transactions are confirmed on Solana {process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'devnet' ? 'Devnet' : 'Mainnet'}.
           </p>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
