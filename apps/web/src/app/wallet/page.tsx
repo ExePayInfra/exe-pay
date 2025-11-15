@@ -5,6 +5,11 @@ import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } f
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
 
+// Dynamic import to avoid SSR issues
+let createShieldedTransfer: any;
+let createPrivateTransfer: any;
+let encryptRecipientAddress: any;
+
 type PrivacyLevel = 'public' | 'shielded' | 'private';
 
 export default function WalletWorkingPage() {
@@ -28,6 +33,13 @@ export default function WalletWorkingPage() {
     const availableTokens = getTokens(network);
     setTokens(availableTokens);
     setSelectedToken(availableTokens[0]); // Default to SOL
+
+    // Dynamically import privacy functions (client-side only)
+    import('@exe-pay/privacy').then((mod) => {
+      createShieldedTransfer = mod.createShieldedTransfer;
+      createPrivateTransfer = mod.createPrivateTransfer;
+      encryptRecipientAddress = mod.encryptRecipientAddress;
+    });
   }, []);
 
   const connectWallet = async () => {
@@ -96,52 +108,97 @@ export default function WalletWorkingPage() {
       const senderPubkey = new PublicKey(walletAddress!);
 
       let transaction: Transaction;
+      let privacyInfo: { mode: string; isDemo: boolean; commitment?: Uint8Array; nullifier?: Uint8Array } = {
+        mode: privacyLevel,
+        isDemo: false,
+      };
 
-      // Handle native SOL vs SPL tokens
-      if (selectedToken.mint === 'native') {
-        // Native SOL transfer
-        const lamports = Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL);
+      // Calculate amount in lamports/tokens
+      const amountValue = selectedToken.mint === 'native'
+        ? Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
+        : parseTokenAmount(amount, selectedToken.decimals);
+
+      // Handle different privacy levels
+      if (privacyLevel === 'shielded') {
+        // SHIELDED MODE: Amount hidden, addresses visible
+        const result = await createShieldedTransfer({
+          sender: senderPubkey,
+          recipient: recipientPubkey,
+          amount: amountValue,
+          token: selectedToken.mint === 'native' ? undefined : new PublicKey(selectedToken.mint),
+          connection,
+        });
+
+        transaction = result.transaction;
+        privacyInfo = {
+          mode: 'shielded',
+          isDemo: result.isDemo,
+          commitment: result.commitment,
+        };
+      } else if (privacyLevel === 'private') {
+        // PRIVATE MODE: Everything hidden
+        const encryptedRecipient = encryptRecipientAddress(recipientPubkey);
         
-        transaction = new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: senderPubkey,
-            toPubkey: recipientPubkey,
-            lamports,
-          })
-        );
+        const result = await createPrivateTransfer({
+          senderKeypair: senderPubkey,
+          recipientAddress: encryptedRecipient,
+          amount: amountValue,
+          token: selectedToken.mint === 'native' ? undefined : new PublicKey(selectedToken.mint),
+          connection,
+        });
+
+        transaction = result.transaction;
+        privacyInfo = {
+          mode: 'private',
+          isDemo: result.isDemo,
+          nullifier: result.nullifier,
+        };
       } else {
-        // SPL Token transfer
-        const tokenAmount = parseTokenAmount(amount, selectedToken.decimals);
-        const mintPubkey = new PublicKey(selectedToken.mint);
+        // PUBLIC MODE: Standard transfer (current functionality)
+        if (selectedToken.mint === 'native') {
+          // Native SOL transfer
+          transaction = new Transaction().add(
+            SystemProgram.transfer({
+              fromPubkey: senderPubkey,
+              toPubkey: recipientPubkey,
+              lamports: amountValue,
+            })
+          );
+        } else {
+          // SPL Token transfer
+          const mintPubkey = new PublicKey(selectedToken.mint);
 
-        // Get associated token accounts
-        const senderTokenAccount = await getAssociatedTokenAddress(
-          mintPubkey,
-          senderPubkey
-        );
+          // Get associated token accounts
+          const senderTokenAccount = await getAssociatedTokenAddress(
+            mintPubkey,
+            senderPubkey
+          );
 
-        const recipientTokenAccount = await getAssociatedTokenAddress(
-          mintPubkey,
-          recipientPubkey
-        );
+          const recipientTokenAccount = await getAssociatedTokenAddress(
+            mintPubkey,
+            recipientPubkey
+          );
 
-        // Create transfer instruction
-        transaction = new Transaction().add(
-          createTransferInstruction(
-            senderTokenAccount,
-            recipientTokenAccount,
-            senderPubkey,
-            tokenAmount,
-            [],
-            TOKEN_PROGRAM_ID
-          )
-        );
+          // Create transfer instruction
+          transaction = new Transaction().add(
+            createTransferInstruction(
+              senderTokenAccount,
+              recipientTokenAccount,
+              senderPubkey,
+              amountValue,
+              [],
+              TOKEN_PROGRAM_ID
+            )
+          );
+        }
+
+        // Get recent blockhash for public transactions
+        const { blockhash } = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = senderPubkey;
+
+        privacyInfo = { mode: 'public', isDemo: false };
       }
-
-      // Get recent blockhash
-      const { blockhash } = await connection.getLatestBlockhash();
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = senderPubkey;
 
       // Sign and send transaction
       const signed = await solana.signAndSendTransaction(transaction);
@@ -150,9 +207,24 @@ export default function WalletWorkingPage() {
       // Wait for confirmation
       await connection.confirmTransaction(signed.signature, 'confirmed');
 
+      // Build success message based on privacy level
+      let successMessage = `✅ Sent ${amount} ${selectedToken.symbol} successfully!`;
+      
+      if (privacyInfo.mode === 'shielded') {
+        successMessage += privacyInfo.isDemo 
+          ? '\n🛡️ Amount Hidden (Demo Mode)' 
+          : '\n🛡️ Amount Hidden with Pedersen Commitment';
+      } else if (privacyInfo.mode === 'private') {
+        successMessage += privacyInfo.isDemo 
+          ? '\n🔒 Fully Private (Demo Mode)' 
+          : '\n🔒 Fully Private with zk-SNARKs';
+      } else {
+        successMessage += '\n🌐 Public Transaction';
+      }
+
       setTxResult({
         success: true,
-        message: `✅ Sent ${amount} ${selectedToken.symbol} successfully!`,
+        message: successMessage,
         signature: signed.signature,
       });
 

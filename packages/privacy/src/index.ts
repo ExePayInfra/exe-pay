@@ -8,6 +8,10 @@ export interface ShieldedNote {
   readonly encryptedPayload: Uint8Array;
 }
 
+// Export shielded and private transfer modules
+export * from "./shielded.js";
+export * from "./private.js";
+
 export interface ProveSpendResult {
   readonly proof: Uint8Array;
   readonly instruction: TransactionInstruction;
