@@ -5,6 +5,8 @@ import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } f
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
 
+type PrivacyLevel = 'public' | 'shielded' | 'private';
+
 export default function WalletWorkingPage() {
   const [mounted, setMounted] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -15,6 +17,7 @@ export default function WalletWorkingPage() {
   const [memo, setMemo] = useState('');
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [tokens, setTokens] = useState<Token[]>([]);
+  const [privacyLevel, setPrivacyLevel] = useState<PrivacyLevel>('public');
   const [txResult, setTxResult] = useState<{ success: boolean; message: string; signature?: string } | null>(null);
 
   useEffect(() => {
@@ -287,6 +290,118 @@ export default function WalletWorkingPage() {
               <h3 className="text-2xl font-bold text-white mb-6">Send Payment</h3>
               
               <div className="space-y-6">
+                {/* Privacy Level Selector */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Privacy Level
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {/* Public */}
+                    <button
+                      type="button"
+                      onClick={() => setPrivacyLevel('public')}
+                      disabled={sending}
+                      className={`p-4 rounded-lg border-2 transition-all text-left ${
+                        privacyLevel === 'public'
+                          ? 'border-green-500 bg-green-500/20'
+                          : 'border-white/20 bg-white/5 hover:border-green-400/50'
+                      } disabled:opacity-50`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xl">🌐</span>
+                        <span className="text-white font-semibold">Public</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Fast & cheap</p>
+                      <p className="text-xs text-gray-500 mt-1">Fully visible</p>
+                    </button>
+
+                    {/* Shielded */}
+                    <button
+                      type="button"
+                      onClick={() => setPrivacyLevel('shielded')}
+                      disabled={sending}
+                      className={`p-4 rounded-lg border-2 transition-all text-left ${
+                        privacyLevel === 'shielded'
+                          ? 'border-cyan-500 bg-cyan-500/20'
+                          : 'border-white/20 bg-white/5 hover:border-cyan-400/50'
+                      } disabled:opacity-50`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xl">🛡️</span>
+                        <span className="text-white font-semibold">Shielded</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Amount hidden</p>
+                      <p className="text-xs text-gray-500 mt-1">Coming soon</p>
+                    </button>
+
+                    {/* Private */}
+                    <button
+                      type="button"
+                      onClick={() => setPrivacyLevel('private')}
+                      disabled={sending}
+                      className={`p-4 rounded-lg border-2 transition-all text-left ${
+                        privacyLevel === 'private'
+                          ? 'border-purple-500 bg-purple-500/20'
+                          : 'border-white/20 bg-white/5 hover:border-purple-400/50'
+                      } disabled:opacity-50`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xl">🔒</span>
+                        <span className="text-white font-semibold">Private</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Fully hidden</p>
+                      <p className="text-xs text-gray-500 mt-1">Coming soon</p>
+                    </button>
+                  </div>
+
+                  {/* Privacy Explanation */}
+                  <div className={`mt-3 p-3 rounded-lg border ${
+                    privacyLevel === 'public' ? 'bg-green-500/10 border-green-500/30' :
+                    privacyLevel === 'shielded' ? 'bg-cyan-500/10 border-cyan-500/30' :
+                    'bg-purple-500/10 border-purple-500/30'
+                  }`}>
+                    {privacyLevel === 'public' && (
+                      <div className="text-sm">
+                        <p className="text-gray-300 mb-2">
+                          <span className="font-semibold text-white">Public Mode:</span> Standard Solana transfer
+                        </p>
+                        <ul className="space-y-1 text-gray-400 text-xs">
+                          <li>✅ Fastest & cheapest (~0.000005 SOL)</li>
+                          <li>❌ Amount visible on-chain</li>
+                          <li>❌ Addresses visible on-chain</li>
+                        </ul>
+                      </div>
+                    )}
+                    {privacyLevel === 'shielded' && (
+                      <div className="text-sm">
+                        <p className="text-gray-300 mb-2">
+                          <span className="font-semibold text-white">Shielded Mode:</span> Amount hidden
+                        </p>
+                        <ul className="space-y-1 text-gray-400 text-xs">
+                          <li>✅ Transaction amount encrypted</li>
+                          <li>✅ Pedersen commitments</li>
+                          <li>❌ Addresses still visible</li>
+                          <li>💡 Coming in Week 3 with Light Protocol</li>
+                        </ul>
+                      </div>
+                    )}
+                    {privacyLevel === 'private' && (
+                      <div className="text-sm">
+                        <p className="text-gray-300 mb-2">
+                          <span className="font-semibold text-white">Private Mode:</span> Full zero-knowledge privacy
+                        </p>
+                        <ul className="space-y-1 text-gray-400 text-xs">
+                          <li>✅ Amount completely hidden</li>
+                          <li>✅ Sender/receiver hidden</li>
+                          <li>✅ zk-SNARKs + nullifiers</li>
+                          <li>✅ Still verifiable & compliant</li>
+                          <li>💡 Coming in Week 3 with Light Protocol</li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 {/* Token Selector */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
