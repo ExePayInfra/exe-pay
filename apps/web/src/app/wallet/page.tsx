@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
 
 export default function WalletWorkingPage() {
   const [mounted, setMounted] = useState(false);
@@ -11,10 +13,18 @@ export default function WalletWorkingPage() {
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [memo, setMemo] = useState('');
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [tokens, setTokens] = useState<Token[]>([]);
   const [txResult, setTxResult] = useState<{ success: boolean; message: string; signature?: string } | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Load tokens based on network
+    const network = (process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'devnet') as 'mainnet-beta' | 'devnet';
+    const availableTokens = getTokens(network);
+    setTokens(availableTokens);
+    setSelectedToken(availableTokens[0]); // Default to SOL
   }, []);
 
   const connectWallet = async () => {
@@ -65,6 +75,9 @@ export default function WalletWorkingPage() {
       if (!amount || parseFloat(amount) <= 0) {
         throw new Error('Please enter a valid amount');
       }
+      if (!selectedToken) {
+        throw new Error('Please select a token');
+      }
 
       const { solana } = window as any;
       if (!solana) {
@@ -79,17 +92,48 @@ export default function WalletWorkingPage() {
       const recipientPubkey = new PublicKey(recipient);
       const senderPubkey = new PublicKey(walletAddress!);
 
-      // Convert SOL to lamports
-      const lamports = Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL);
+      let transaction: Transaction;
 
-      // Create transaction
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: senderPubkey,
-          toPubkey: recipientPubkey,
-          lamports,
-        })
-      );
+      // Handle native SOL vs SPL tokens
+      if (selectedToken.mint === 'native') {
+        // Native SOL transfer
+        const lamports = Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL);
+        
+        transaction = new Transaction().add(
+          SystemProgram.transfer({
+            fromPubkey: senderPubkey,
+            toPubkey: recipientPubkey,
+            lamports,
+          })
+        );
+      } else {
+        // SPL Token transfer
+        const tokenAmount = parseTokenAmount(amount, selectedToken.decimals);
+        const mintPubkey = new PublicKey(selectedToken.mint);
+
+        // Get associated token accounts
+        const senderTokenAccount = await getAssociatedTokenAddress(
+          mintPubkey,
+          senderPubkey
+        );
+
+        const recipientTokenAccount = await getAssociatedTokenAddress(
+          mintPubkey,
+          recipientPubkey
+        );
+
+        // Create transfer instruction
+        transaction = new Transaction().add(
+          createTransferInstruction(
+            senderTokenAccount,
+            recipientTokenAccount,
+            senderPubkey,
+            tokenAmount,
+            [],
+            TOKEN_PROGRAM_ID
+          )
+        );
+      }
 
       // Get recent blockhash
       const { blockhash } = await connection.getLatestBlockhash();
@@ -105,7 +149,7 @@ export default function WalletWorkingPage() {
 
       setTxResult({
         success: true,
-        message: `✅ Payment sent successfully!`,
+        message: `✅ Sent ${amount} ${selectedToken.symbol} successfully!`,
         signature: signed.signature,
       });
 
@@ -243,6 +287,34 @@ export default function WalletWorkingPage() {
               <h3 className="text-2xl font-bold text-white mb-6">Send Payment</h3>
               
               <div className="space-y-6">
+                {/* Token Selector */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Select Token
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {tokens.map((token) => (
+                      <button
+                        key={token.symbol}
+                        onClick={() => setSelectedToken(token)}
+                        className={`p-4 rounded-lg border-2 transition-all ${
+                          selectedToken?.symbol === token.symbol
+                            ? 'border-cyan-500 bg-cyan-500/20'
+                            : 'border-white/20 bg-white/5 hover:border-cyan-400/50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">{token.logo}</span>
+                          <div className="text-left">
+                            <p className="text-white font-semibold">{token.symbol}</p>
+                            <p className="text-xs text-gray-400">{token.name}</p>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Recipient Address
@@ -258,14 +330,14 @@ export default function WalletWorkingPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Amount (SOL)
+                    Amount ({selectedToken?.symbol || 'Token'})
                   </label>
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    placeholder="0.001"
-                    step="0.000000001"
+                    placeholder={selectedToken?.symbol === 'SOL' ? '0.001' : '1.00'}
+                    step={selectedToken?.decimals === 9 ? '0.000000001' : '0.01'}
                     className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
