@@ -17,8 +17,11 @@ import * as snarkjs from 'snarkjs';
  * Set to false when circuits are compiled and keys are generated
  * 
  * Circuit files are now loaded from /public/circuits/ as static assets
+ * 
+ * NOTE: Temporarily using mock proofs due to circuit compatibility issue
+ * Real proofs will be enabled after regenerating circuit keys
  */
-const USE_MOCK_PROOFS = false;
+const USE_MOCK_PROOFS = true;
 
 /**
  * Proof data structure
