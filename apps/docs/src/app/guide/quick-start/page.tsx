@@ -137,7 +137,7 @@ export default function SendPayment() {
         </pre>
       </div>
 
-      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-12">Step 4: Enable Privacy (Demo)</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-12">Step 4: Enable Privacy</h2>
       <p className="text-lg text-gray-700 mb-4">
         Switch to a shielded transfer to hide the amount:
       </p>
@@ -164,9 +164,9 @@ const signature = await sendTransaction(transaction, connection);`}
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <div>
-            <h3 className="font-bold text-amber-900 mb-2">Demo Mode</h3>
-            <p className="text-amber-800">
-              Shielded and Private transfers are currently in <strong>DEMO MODE</strong>. They simulate privacy features but don't provide real cryptographic privacy yet. Production privacy features are in development.
+            <h3 className="font-bold text-green-900 mb-2">Production Ready</h3>
+            <p className="text-green-800">
+              Shielded and Private transfers are now in <strong>PRODUCTION</strong>! They use real Groth16 ZK-SNARKs to provide cryptographic privacy. Your transactions are truly private.
             </p>
           </div>
         </div>

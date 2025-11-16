@@ -62,8 +62,8 @@ export default function PrivacyModesPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-gray-900">Shielded Mode</h2>
-              <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full border border-amber-300">
-                DEMO MODE
+              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full border border-green-300">
+                PRODUCTION
               </span>
             </div>
             <p className="text-gray-700 mb-4">Hides transaction amounts using encryption. Addresses remain visible.</p>
@@ -120,8 +120,8 @@ export default function PrivacyModesPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-gray-900">Private Mode</h2>
-              <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full border border-amber-300">
-                DEMO MODE
+              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full border border-green-300">
+                PRODUCTION
               </span>
             </div>
             <p className="text-gray-700 mb-4">Fully anonymous transactions. Nothing is visible except that a transaction occurred.</p>
@@ -227,11 +227,11 @@ export default function PrivacyModesPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <div>
-            <h3 className="font-bold text-blue-900 mb-2">Production Status</h3>
-            <p className="text-blue-800 mb-2">
-              <strong>Shielded</strong> and <strong>Private</strong> modes are currently in <strong>DEMO MODE</strong>. They simulate the privacy features but do not provide real cryptographic privacy on mainnet yet.
+            <h3 className="font-bold text-green-900 mb-2">Production Status</h3>
+            <p className="text-green-800 mb-2">
+              <strong>Shielded</strong> and <strong>Private</strong> modes are now in <strong>PRODUCTION</strong>! They use real Groth16 ZK-SNARKs to provide cryptographic privacy on mainnet.
             </p>
-            <p className="text-blue-800">
+            <p className="text-green-800">
               Production-ready privacy features with real zero-knowledge proofs are in active development. Follow our <a href="https://github.com/ExePayInfra/exe-pay" className="underline font-semibold">GitHub</a> for updates.
             </p>
           </div>

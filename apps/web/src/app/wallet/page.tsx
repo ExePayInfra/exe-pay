@@ -192,7 +192,7 @@ export default function WalletPage() {
 
       setTxResult({
         success: true,
-        message: `Payment sent successfully! (${privacyLevel} mode${privacyLevel !== 'public' ? ' - DEMO' : ''})`,
+        message: `Payment sent successfully! (${privacyLevel} mode)`,
         signature,
       });
 
@@ -282,8 +282,8 @@ export default function WalletPage() {
                     <div className="font-semibold text-gray-900 capitalize mb-1">{level}</div>
                     <div className="text-xs text-gray-500">
                       {level === 'public' && 'Standard transfer'}
-                      {level === 'shielded' && 'Hidden amount (Demo)'}
-                      {level === 'private' && 'Fully private (Demo)'}
+                      {level === 'shielded' && 'Hidden amount'}
+                      {level === 'private' && 'Fully private'}
                     </div>
                   </button>
                 ))}
@@ -299,8 +299,8 @@ export default function WalletPage() {
                       </svg>
                       <span className="text-sm font-semibold text-indigo-900">Zero-Knowledge Proofs</span>
                     </div>
-                    <span className="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full border border-amber-300">
-                      DEMO MODE
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full border border-green-300">
+                      PRODUCTION
                     </span>
                   </div>
                   <p className="text-xs text-indigo-700 mb-2">
