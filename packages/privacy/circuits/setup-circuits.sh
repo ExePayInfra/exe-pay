@@ -34,17 +34,8 @@ if ! command -v circom &> /dev/null; then
     exit 1
 fi
 
-# Check if snarkjs is installed globally
-if ! command -v snarkjs &> /dev/null; then
-    echo -e "${YELLOW}⚠️  snarkjs not found globally${NC}"
-    echo "Installing snarkjs locally..."
-    cd ../../..
-    pnpm add -D snarkjs
-    cd packages/privacy/circuits
-    SNARKJS="npx snarkjs"
-else
-    SNARKJS="snarkjs"
-fi
+# Use npx to run snarkjs (already installed in workspace)
+SNARKJS="npx snarkjs"
 
 echo -e "${GREEN}✅ Dependencies OK${NC}"
 echo ""

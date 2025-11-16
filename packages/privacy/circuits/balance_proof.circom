@@ -14,22 +14,24 @@ pragma circom 2.0.0;
  * Inputs:
  * - balance: Sender's current balance (private)
  * - amount: Transfer amount (private)
- * - balance_commitment: Pedersen commitment to balance (public)
- * - amount_commitment: Pedersen commitment to amount (public)
+ * - balance_salt: Random salt for commitment (private)
+ * - amount_salt: Random salt for commitment (private)
+ * - balance_commitment: Hash commitment to balance (public)
+ * - amount_commitment: Hash commitment to amount (public)
  * 
  * Outputs:
  * - valid: 1 if balance >= amount, 0 otherwise (public)
  */
 
 include "../node_modules/circomlib/circuits/comparators.circom";
-include "../node_modules/circomlib/circuits/pedersen.circom";
+include "../node_modules/circomlib/circuits/poseidon.circom";
 
 template BalanceProof(n) {
     // Private inputs
     signal input balance;
     signal input amount;
-    signal input balance_salt;  // Random salt for Pedersen commitment
-    signal input amount_salt;   // Random salt for Pedersen commitment
+    signal input balance_salt;  // Random salt for commitment
+    signal input amount_salt;   // Random salt for commitment
     
     // Public inputs (commitments)
     signal input balance_commitment;
@@ -38,19 +40,19 @@ template BalanceProof(n) {
     // Public output
     signal output valid;
     
-    // Verify balance commitment
-    // commitment = Pedersen(balance, balance_salt)
-    component balanceCommit = Pedersen(256);
-    balanceCommit.in[0] <== balance;
-    balanceCommit.in[1] <== balance_salt;
-    balance_commitment === balanceCommit.out[0];
+    // Verify balance commitment using Poseidon hash
+    // commitment = Poseidon(balance, balance_salt)
+    component balanceCommit = Poseidon(2);
+    balanceCommit.inputs[0] <== balance;
+    balanceCommit.inputs[1] <== balance_salt;
+    balance_commitment === balanceCommit.out;
     
-    // Verify amount commitment
-    // commitment = Pedersen(amount, amount_salt)
-    component amountCommit = Pedersen(256);
-    amountCommit.in[0] <== amount;
-    amountCommit.in[1] <== amount_salt;
-    amount_commitment === amountCommit.out[0];
+    // Verify amount commitment using Poseidon hash
+    // commitment = Poseidon(amount, amount_salt)
+    component amountCommit = Poseidon(2);
+    amountCommit.inputs[0] <== amount;
+    amountCommit.inputs[1] <== amount_salt;
+    amount_commitment === amountCommit.out;
     
     // Check that balance >= amount
     component greaterOrEqual = GreaterEqThan(n);

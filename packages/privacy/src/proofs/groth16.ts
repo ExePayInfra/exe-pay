@@ -18,7 +18,7 @@ import { join } from 'path';
  * Use mock proofs for development/testing
  * Set to false when circuits are compiled and keys are generated
  */
-const USE_MOCK_PROOFS = true;
+const USE_MOCK_PROOFS = false;
 
 /**
  * Proof data structure
