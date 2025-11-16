@@ -381,6 +381,26 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Key Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {[
+              { icon: '⚡', title: 'Instant Settlement', desc: 'Transactions confirm in <1 second' },
+              { icon: '💰', title: 'Ultra-Low Fees', desc: 'Average cost: $0.0001 per transaction' },
+              { icon: '🔒', title: 'Zero-Knowledge', desc: 'Prove without revealing data' },
+              { icon: '🌐', title: 'Multi-Token', desc: 'SOL, USDC, USDT & custom SPL' },
+            ].map((feature, idx) => (
+              <div
+                key={feature.title}
+                className="glass-card p-6 rounded-2xl hover-lift animate-fade-in-up text-center"
+                style={{ animationDelay: `${idx * 0.1}s` }}
+              >
+                <div className="text-4xl mb-3">{feature.icon}</div>
+                <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-600">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
@@ -475,23 +495,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
+      {/* Stats Section - Compact & Animated */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: '<1s', label: 'Transaction Time', delay: '0s' },
-              { value: '$0.0001', label: 'Average Fee', delay: '0.1s' },
-              { value: '100%', label: 'Private', delay: '0.2s' },
-              { value: '5+', label: 'Tokens Supported', delay: '0.3s' },
+              { value: '<1s', label: 'Speed', icon: '⚡', delay: '0s' },
+              { value: '$0.0001', label: 'Fee', icon: '💰', delay: '0.1s' },
+              { value: '100%', label: 'Private', icon: '🔒', delay: '0.2s' },
+              { value: '5+', label: 'Tokens', icon: '🪙', delay: '0.3s' },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="animate-fade-in-up"
+                className="glass-card p-4 rounded-xl text-center hover-lift animate-fade-in-up group"
                 style={{ animationDelay: stat.delay }}
               >
-                <div className="text-5xl font-bold text-gradient-brand mb-2">{stat.value}</div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">{stat.icon}</div>
+                <div className="text-3xl font-bold text-gradient-brand mb-1">{stat.value}</div>
+                <div className="text-xs text-gray-600 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
