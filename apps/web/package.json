@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "vercel-build": "cd ../.. && pnpm build --filter @exe-pay/web"
+    "vercel-build": "cd ../.. && turbo build --filter=@exe-pay/web"
   },
   "dependencies": {
     "@exe-pay/core": "workspace:*",

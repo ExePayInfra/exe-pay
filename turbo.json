@@ -6,7 +6,9 @@
       "outputs": [
         "dist/**",
         "lib/**",
-        "build/**"
+        "build/**",
+        ".next/**",
+        "!.next/cache/**"
       ]
     },
     "dev": {
