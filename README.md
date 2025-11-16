@@ -4,7 +4,7 @@
 
 Build private, efficient, and scalable payment applications with zero-knowledge proofs and compressed accounts powered by [Light Protocol](https://lightprotocol.com).
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://exe-payments-nki63him5-exechainlink-5881s-projects.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://exepay.app)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 
@@ -29,11 +29,11 @@ Build private, efficient, and scalable payment applications with zero-knowledge 
 - 📚 **Comprehensive Docs** - API reference, guides, examples
 
 ### **User Experience:**
-- 🎨 **Beautiful UI** - Coinbase-inspired design
-- 📖 **Educational Content** - "How It Works" section
-- 🛡️ **Trust Indicators** - Technology badges
+- 🎨 **Professional UI** - Modern, clean design with smooth animations
+- 📖 **Educational Content** - Clear explanations of privacy features
+- 🛡️ **Trust Indicators** - Built on audited protocols
 - 📱 **Mobile Optimized** - Responsive on all devices
-- ⚡ **Fast & Smooth** - Animations and loading states
+- ⚡ **Fast & Smooth** - Optimized performance and UX
 
 ---
 

@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* ExePay Brand Colors - PayAI-inspired Deep Blue Theme */
+  /* ExePay Brand Colors - Professional Deep Blue Theme */
   --primary-blue: #0A1628;
   --secondary-blue: #1A2942;
   --accent-blue: #2563EB;
@@ -37,7 +37,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* PayAI-style subtle gradient background */
+/* Subtle gradient background */
 body::before {
   content: '';
   position: fixed;
@@ -58,7 +58,7 @@ body::before {
     text-wrap: balance;
   }
   
-  /* PayAI-inspired gradient utilities */
+  /* Brand gradient utilities */
   .bg-gradient-brand {
     background: linear-gradient(135deg, var(--accent-blue) 0%, var(--electric-blue) 100%);
   }
@@ -74,7 +74,7 @@ body::before {
     background-clip: text;
   }
   
-  /* PayAI-style light cards */
+  /* Glass-morphism cards */
   .glass-card {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
@@ -82,7 +82,7 @@ body::before {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
   
-  /* PayAI-style blue buttons */
+  /* Primary action buttons */
   .btn-primary {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
     color: white;
@@ -96,7 +96,7 @@ body::before {
     transform: translateY(-2px);
   }
   
-  /* PayAI-style outline buttons */
+  /* Secondary outline buttons */
   .btn-outline {
     background: white;
     color: #6366f1;
@@ -111,7 +111,7 @@ body::before {
   }
 }
 
-/* PayAI-inspired smooth animations */
+/* Smooth animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
