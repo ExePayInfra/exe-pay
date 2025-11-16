@@ -437,22 +437,51 @@ export default function Home() {
                     {mode.badge}
                   </div>
                 )}
-                <div className={`glass-card p-8 rounded-3xl hover-lift h-full bg-gradient-to-br ${mode.gradient} text-white transform transition-all duration-300 group-hover:scale-105`}>
-                  <div className={`w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 text-3xl font-bold`}>
-                    {mode.title[0]}
+                <div className={`glass-card p-8 rounded-3xl hover-lift h-full bg-gradient-to-br ${mode.gradient} text-white transform transition-all duration-300 group-hover:scale-105 relative overflow-hidden`}>
+                  {/* Animated background pattern */}
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full filter blur-3xl animate-pulse"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full filter blur-2xl animate-pulse animation-delay-2000"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
-                  <p className="text-sm opacity-90 mb-6">{mode.desc}</p>
-                  <ul className="space-y-3">
-                    {mode.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm">
-                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  
+                  {/* Icon with graphic */}
+                  <div className="relative mb-6">
+                    <div className={`w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-transform duration-300`}>
+                      {mode.title === 'Public' && (
+                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
                         </svg>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                      )}
+                      {mode.title === 'Shielded' && (
+                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                        </svg>
+                      )}
+                      {mode.title === 'Private' && (
+                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                        </svg>
+                      )}
+                    </div>
+                    {/* Decorative circles */}
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-white/30 rounded-full animate-ping"></div>
+                    <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-white/30 rounded-full animate-ping animation-delay-2000"></div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
+                    <p className="text-sm opacity-90 mb-6">{mode.desc}</p>
+                    <ul className="space-y-3">
+                      {mode.features.map((feature, idx) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                          <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}
