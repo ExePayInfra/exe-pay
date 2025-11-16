@@ -88,9 +88,17 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 
 ## 📚 Documentation
 
-- **[Features Guide](./docs/FEATURES.md)** - Complete feature overview with examples
-- **[Getting Started](./docs/GETTING_STARTED.md)** - Setup and installation guide
-- **[API Reference](./docs/development/API.md)** - Full API documentation
+**📖 [Official Documentation](https://docs.exepay.app)** - Complete guides, API reference, and examples
+
+### Quick Links:
+- **[Installation Guide](https://docs.exepay.app/guide/installation)** - Get started in 5 minutes
+- **[Quick Start](https://docs.exepay.app/guide/quick-start)** - Send your first payment
+- **[Privacy Modes](https://docs.exepay.app/guide/privacy-modes)** - Public, Shielded, Private explained
+- **[Code Examples](https://docs.exepay.app/examples)** - Real-world code snippets
+- **[API Reference](https://docs.exepay.app/api)** - Full SDK documentation
+
+### Local Documentation:
+- **[Features Guide](./docs/FEATURES.md)** - Complete feature overview
 - **[Deployment Guide](./docs/guides/DEPLOY_TO_VERCEL.md)** - Deploy to Vercel
 - **[Mainnet Guide](./docs/guides/MAINNET_DEPLOY.md)** - Production deployment
 
@@ -232,7 +240,7 @@ See [LICENSE](./LICENSE) for details.
 
 ## 📞 Support
 
-- **Documentation**: [Full Docs](./docs/FEATURES.md)
+- **Documentation**: [docs.exepay.app](https://docs.exepay.app)
 - **GitHub Issues**: [Report a bug](https://github.com/ExePayInfra/exe-pay/issues)
 - **Email**: exechainlink@outlook.com
 

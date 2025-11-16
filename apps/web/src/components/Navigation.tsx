@@ -32,6 +32,14 @@ export function Navigation() {
               History
             </a>
             <a
+              href="https://docs.exepay.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+            >
+              Docs
+            </a>
+            <a
               href="/wallet"
               className="btn-primary px-6 py-2.5 rounded-lg font-semibold hover-lift"
             >
@@ -100,7 +108,7 @@ export function Footer() {
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
               Twitter
             </a>
-            <a href="/docs" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <a href="https://docs.exepay.app" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
               Docs
             </a>
           </div>
