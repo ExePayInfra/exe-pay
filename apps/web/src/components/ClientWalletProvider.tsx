@@ -47,6 +47,11 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     
     // Only load wallets in the browser
     import('@solana/wallet-adapter-wallets').then(({ PhantomWalletAdapter, SolflareWalletAdapter }) => {
+      // Detect if we're on mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        typeof window !== 'undefined' ? window.navigator.userAgent : ''
+      );
+      
       setWallets([
         new PhantomWalletAdapter(),
         new SolflareWalletAdapter(),
