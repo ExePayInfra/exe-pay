@@ -18,14 +18,9 @@ import { join } from 'path';
  * Use mock proofs for development/testing
  * Set to false when circuits are compiled and keys are generated
  * 
- * Note: Real proofs require circuit files to be loaded, which doesn't work in browser.
- * For production, we need to either:
- * 1. Generate proofs server-side, or
- * 2. Load circuit files as static assets
- * 
- * For now, using enhanced mock proofs that simulate real behavior.
+ * Circuit files are now loaded from /public/circuits/ as static assets
  */
-const USE_MOCK_PROOFS = true;
+const USE_MOCK_PROOFS = false;
 
 /**
  * Proof data structure
@@ -118,15 +113,9 @@ export async function generateRangeProof(
   }
   
   try {
-    // Load circuit artifacts
-    const wasmPath = join(__dirname, '../../circuits/range_proof_js/range_proof.wasm');
-    const zkeyPath = join(__dirname, '../../circuits/range_proof.zkey');
-    
-    // Check if files exist
-    if (!existsSync(wasmPath) || !existsSync(zkeyPath)) {
-      console.warn('⚠️ Circuit artifacts not found, using mock proof');
-      return generateMockRangeProof(inputs);
-    }
+    // Load circuit artifacts from public directory (browser-compatible)
+    const wasmUrl = '/circuits/range_proof.wasm';
+    const zkeyUrl = '/circuits/range_proof.zkey';
     
     // Prepare inputs for circuit
     const circuitInputs = {
@@ -134,12 +123,16 @@ export async function generateRangeProof(
       max_amount: inputs.maxAmount.toString(),
     };
     
-    // Generate proof
+    console.log('🔐 Generating range proof with real ZK-SNARKs...');
+    
+    // Generate proof (snarkjs will fetch from URLs)
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       circuitInputs,
-      wasmPath,
-      zkeyPath
+      wasmUrl,
+      zkeyUrl
     );
+    
+    console.log('✅ Range proof generated successfully!');
     
     return {
       proof,
@@ -209,15 +202,9 @@ export async function generateBalanceProof(
   }
   
   try {
-    // Load circuit artifacts
-    const wasmPath = join(__dirname, '../../circuits/balance_proof_js/balance_proof.wasm');
-    const zkeyPath = join(__dirname, '../../circuits/balance_proof.zkey');
-    
-    // Check if files exist
-    if (!existsSync(wasmPath) || !existsSync(zkeyPath)) {
-      console.warn('⚠️ Circuit artifacts not found, using mock proof');
-      return generateMockBalanceProof(inputs);
-    }
+    // Load circuit artifacts from public directory (browser-compatible)
+    const wasmUrl = '/circuits/balance_proof.wasm';
+    const zkeyUrl = '/circuits/balance_proof.zkey';
     
     // Prepare inputs for circuit
     const circuitInputs = {
@@ -229,12 +216,16 @@ export async function generateBalanceProof(
       amount_commitment: inputs.amountCommitment.toString(),
     };
     
-    // Generate proof
+    console.log('🔐 Generating balance proof with real ZK-SNARKs...');
+    
+    // Generate proof (snarkjs will fetch from URLs)
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       circuitInputs,
-      wasmPath,
-      zkeyPath
+      wasmUrl,
+      zkeyUrl
     );
+    
+    console.log('✅ Balance proof generated successfully!');
     
     return {
       proof,
