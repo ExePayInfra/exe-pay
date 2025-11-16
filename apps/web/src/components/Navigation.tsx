@@ -105,7 +105,7 @@ export function Footer() {
             <a href="https://github.com/ExePayInfra/exe-pay" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
               Github
             </a>
-            <a href="https://x.com/exepayapp" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <a href="https://x.com/exeinfra" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
               Twitter
             </a>
             <a href="https://docs.exepay.app" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
