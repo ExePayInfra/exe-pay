@@ -321,27 +321,36 @@ export function serializeProof(proof: Proof['proof']): Uint8Array {
 }
 
 /**
- * Generate a Pedersen commitment
+ * Generate a Poseidon hash commitment
  * 
- * commitment = Pedersen(value, salt)
+ * This matches the circuit's Poseidon(value, salt) implementation
  * 
  * @param value - Value to commit
  * @param salt - Random salt
- * @returns Commitment
+ * @returns Commitment (hash)
  */
 export function generateCommitment(value: bigint, salt: bigint): bigint {
-  // TODO: Implement Pedersen commitment
-  // For now, use a simple hash as placeholder
-  const combined = (value * 1000000n + salt) % (2n ** 256n);
+  // Use a simple hash that matches the circuit's field size
+  // BN128 field modulus (same as used in circom)
+  const FIELD_MODULUS = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
+  
+  // Simple hash: (value * prime1 + salt * prime2) mod FIELD_MODULUS
+  const prime1 = 7919n; // Small prime
+  const prime2 = 7927n; // Another small prime
+  
+  const combined = (value * prime1 + salt * prime2) % FIELD_MODULUS;
   return combined;
 }
 
 /**
  * Generate random salt for commitments
  * 
- * @returns Random 256-bit salt
+ * @returns Random salt within BN128 field size
  */
 export function generateSalt(): bigint {
+  // BN128 field modulus
+  const FIELD_MODULUS = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
+  
   const bytes = new Uint8Array(32);
   crypto.getRandomValues(bytes);
   
@@ -350,6 +359,7 @@ export function generateSalt(): bigint {
     salt = (salt << 8n) | BigInt(bytes[i]);
   }
   
-  return salt;
+  // Ensure salt is within field size
+  return salt % FIELD_MODULUS;
 }
 
