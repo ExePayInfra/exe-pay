@@ -3,6 +3,8 @@
 import { Navigation, Footer } from '@/components/Navigation';
 import { useEffect, useState } from 'react';
 
+// Force rebuild: Nov 16, 2025 - Enhanced privacy cards with icons & animations
+
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
 
