@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "turbo build --filter=@exe-pay/web",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/web/.next"
+}
+
