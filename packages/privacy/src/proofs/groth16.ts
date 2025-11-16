@@ -17,8 +17,15 @@ import { join } from 'path';
 /**
  * Use mock proofs for development/testing
  * Set to false when circuits are compiled and keys are generated
+ * 
+ * Note: Real proofs require circuit files to be loaded, which doesn't work in browser.
+ * For production, we need to either:
+ * 1. Generate proofs server-side, or
+ * 2. Load circuit files as static assets
+ * 
+ * For now, using enhanced mock proofs that simulate real behavior.
  */
-const USE_MOCK_PROOFS = false;
+const USE_MOCK_PROOFS = true;
 
 /**
  * Proof data structure
@@ -66,10 +73,17 @@ export interface BalanceProofInputs {
 
 /**
  * Generate a mock range proof for testing
+ * Simulates real proof generation with realistic delay
  */
-function generateMockRangeProof(inputs: RangeProofInputs): Proof {
+async function generateMockRangeProof(inputs: RangeProofInputs): Promise<Proof> {
+  // Simulate proof generation time (1-2 seconds)
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+  
   // Verify the range condition
   const isValid = inputs.amount > 0n && inputs.amount < inputs.maxAmount;
+  
+  console.log('🧪 Generated mock range proof (simulated)');
+  console.log(`  Amount: ${inputs.amount} < ${inputs.maxAmount}: ${isValid ? 'VALID' : 'INVALID'}`);
   
   return {
     proof: {
@@ -140,8 +154,12 @@ export async function generateRangeProof(
 
 /**
  * Generate a mock balance proof for testing
+ * Simulates real proof generation with realistic delay
  */
-function generateMockBalanceProof(inputs: BalanceProofInputs): Proof {
+async function generateMockBalanceProof(inputs: BalanceProofInputs): Promise<Proof> {
+  // Simulate proof generation time (1-2 seconds)
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+  
   // Verify the balance condition
   const isValid = inputs.balance >= inputs.amount;
   
@@ -152,6 +170,10 @@ function generateMockBalanceProof(inputs: BalanceProofInputs): Proof {
   const commitmentsValid = 
     expectedBalanceCommit === inputs.balanceCommitment &&
     expectedAmountCommit === inputs.amountCommitment;
+  
+  console.log('🧪 Generated mock balance proof (simulated)');
+  console.log(`  Balance: ${inputs.balance} >= ${inputs.amount}: ${isValid ? 'VALID' : 'INVALID'}`);
+  console.log(`  Commitments: ${commitmentsValid ? 'VALID' : 'INVALID'}`);
   
   return {
     proof: {
