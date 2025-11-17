@@ -37,13 +37,15 @@ function PartnerLogo({ partner, onError }: { partner: typeof partners[0]; onErro
 
   return (
     <div className="group cursor-pointer flex flex-col items-center gap-3" title={partner.name}>
-      <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${partner.gradient} shadow-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 grayscale hover:grayscale-0 overflow-hidden`}>
+      <div className="w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
         {useTextLogo ? (
-          <div className="text-white font-bold text-xs text-center px-2">
-            {partner.name.split(' ').map(word => word[0]).join('')}
+          <div className={`w-full h-full rounded-full bg-gradient-to-br ${partner.gradient} shadow-lg flex items-center justify-center`}>
+            <div className="text-white font-bold text-sm text-center px-2">
+              {partner.name.split(' ').map(word => word[0]).join('')}
+            </div>
           </div>
         ) : !imageError ? (
-          <div className="relative w-14 h-14">
+          <div className="relative w-full h-full">
             <Image
               src={`/logos/${partner.file}.svg`}
               alt={partner.name}
@@ -54,7 +56,7 @@ function PartnerLogo({ partner, onError }: { partner: typeof partners[0]; onErro
             />
           </div>
         ) : (
-          <div className="relative w-14 h-14">
+          <div className="relative w-full h-full">
             <Image
               src={`/logos/${partner.file}.png`}
               alt={partner.name}
