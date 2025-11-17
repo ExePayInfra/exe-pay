@@ -2,11 +2,84 @@
 
 import { Navigation, Footer } from '@/components/Navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-// Force rebuild: Nov 16, 2025 - Enhanced privacy cards with icons & animations
+// Force rebuild: Nov 17, 2025 - Professional partner logos with fallback system
+
+// Partner logo configuration
+const partners = [
+  { name: 'Light Protocol', file: 'light-protocol', gradient: 'from-indigo-500 to-purple-600' },
+  { name: 'Solana', file: 'solana', gradient: 'from-purple-600 to-cyan-400' },
+  { name: 'Phantom', file: 'phantom', gradient: 'from-purple-500 to-indigo-600' },
+  { name: 'Helius', file: 'helius', gradient: 'from-blue-500 to-cyan-500' },
+  { name: 'Raydium', file: 'raydium', gradient: 'from-cyan-500 to-blue-600' },
+  { name: 'Jupiter', file: 'jupiter', gradient: 'from-orange-500 to-yellow-500' },
+  { name: 'Magic Eden', file: 'magic-eden', gradient: 'from-pink-500 to-purple-600' },
+  { name: 'Pump.fun', file: 'pump-fun', gradient: 'from-green-500 to-emerald-600' },
+];
+
+// Partner Logo Component with fallback
+function PartnerLogo({ partner, onError }: { partner: typeof partners[0]; onError: (file: string) => void }) {
+  const [imageError, setImageError] = useState(false);
+  const [pngError, setPngError] = useState(false);
+  
+  const handleSvgError = () => {
+    setImageError(true);
+    onError(partner.file);
+  };
+
+  const handlePngError = () => {
+    setPngError(true);
+  };
+
+  // Use text-based logo for Light Protocol (no logo file available)
+  const useTextLogo = partner.file === 'light-protocol' || (imageError && pngError);
+
+  return (
+    <div className="group cursor-pointer flex flex-col items-center gap-3" title={partner.name}>
+      <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${partner.gradient} shadow-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 grayscale hover:grayscale-0 overflow-hidden`}>
+        {useTextLogo ? (
+          <div className="text-white font-bold text-xs text-center px-2">
+            {partner.name.split(' ').map(word => word[0]).join('')}
+          </div>
+        ) : !imageError ? (
+          <div className="relative w-14 h-14">
+            <Image
+              src={`/logos/${partner.file}.svg`}
+              alt={partner.name}
+              fill
+              className="object-contain"
+              onError={handleSvgError}
+              unoptimized
+            />
+          </div>
+        ) : (
+          <div className="relative w-14 h-14">
+            <Image
+              src={`/logos/${partner.file}.png`}
+              alt={partner.name}
+              fill
+              className="object-contain"
+              onError={handlePngError}
+              unoptimized
+            />
+          </div>
+        )}
+      </div>
+      <span className="text-xs font-semibold text-gray-600 whitespace-nowrap group-hover:text-gray-800 transition-colors">
+        {partner.name}
+      </span>
+    </div>
+  );
+}
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [logoErrors, setLogoErrors] = useState<Record<string, boolean>>({});
+
+  const handleLogoError = (file: string) => {
+    setLogoErrors(prev => ({ ...prev, [file]: true }));
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -79,162 +152,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Built With - Sliding Carousel with Logos */}
-      <section className="py-16 bg-gradient-to-r from-indigo-50 via-purple-50 to-blue-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <h3 className="text-center text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8">
-            Powered By
+      {/* Powered By - Clean Marquee with Official Partner Logos */}
+      <section className="py-20 bg-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+          <h3 className="text-center text-sm font-semibold text-gray-400 uppercase tracking-wider">
+            Powered By Leading Protocols
           </h3>
         </div>
         
-        {/* Infinite Scroll Animation */}
+        {/* Infinite Marquee */}
         <div className="relative">
+          {/* Fade overlays */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10"></div>
+          
           <div className="flex animate-scroll-left">
-            {/* First set */}
-            <div className="flex items-center gap-12 px-8">
-              {/* Light Protocol */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">L</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Light Protocol</span>
-                <span className="text-xs text-gray-500">ZK Compression</span>
-              </div>
-              
-              {/* Solana */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg className="w-12 h-12" viewBox="0 0 397.7 311.7" fill="none">
-                    <linearGradient id="solanaGrad" x1="360" y1="351" x2="141" y2="61" gradientUnits="userSpaceOnUse">
-                      <stop offset="0" stopColor="#00FFA3"/>
-                      <stop offset="1" stopColor="#DC1FFF"/>
-                    </linearGradient>
-                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGrad)"/>
-                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGrad)"/>
-                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGrad)"/>
-                  </svg>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Solana</span>
-                <span className="text-xs text-gray-500">Blockchain</span>
-              </div>
-              
-              {/* Phantom */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                    </svg>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Phantom</span>
-                <span className="text-xs text-gray-500">Wallet</span>
-              </div>
-              
-              {/* Helius */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">H</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Helius</span>
-                <span className="text-xs text-gray-500">RPC Provider</span>
-              </div>
-              
-              {/* Raydium */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Raydium</span>
-                <span className="text-xs text-gray-500">DEX</span>
-              </div>
-              
-              {/* Pump.fun */}
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">P</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Pump.fun</span>
-                <span className="text-xs text-gray-500">Token Launch</span>
-              </div>
+            {/* Set 1 */}
+            <div className="flex items-center gap-16 px-8 shrink-0">
+              {partners.map((partner) => (
+                <PartnerLogo key={`set1-${partner.file}`} partner={partner} onError={handleLogoError} />
+              ))}
             </div>
             
-            {/* Duplicate for seamless infinite scroll */}
-            <div className="flex items-center gap-12 px-8">
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">L</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Light Protocol</span>
-                <span className="text-xs text-gray-500">ZK Compression</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg className="w-12 h-12" viewBox="0 0 397.7 311.7" fill="none">
-                    <linearGradient id="solanaGrad2" x1="360" y1="351" x2="141" y2="61" gradientUnits="userSpaceOnUse">
-                      <stop offset="0" stopColor="#00FFA3"/>
-                      <stop offset="1" stopColor="#DC1FFF"/>
-                    </linearGradient>
-                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGrad2)"/>
-                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGrad2)"/>
-                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGrad2)"/>
-                  </svg>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Solana</span>
-                <span className="text-xs text-gray-500">Blockchain</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                    </svg>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Phantom</span>
-                <span className="text-xs text-gray-500">Wallet</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">H</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Helius</span>
-                <span className="text-xs text-gray-500">RPC Provider</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Raydium</span>
-                <span className="text-xs text-gray-500">DEX</span>
-              </div>
-              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
-                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white">P</span>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">Pump.fun</span>
-                <span className="text-xs text-gray-500">Token Launch</span>
-              </div>
+            {/* Set 2 - Duplicate for seamless scroll */}
+            <div className="flex items-center gap-16 px-8 shrink-0">
+              {partners.map((partner) => (
+                <PartnerLogo key={`set2-${partner.file}`} partner={partner} onError={handleLogoError} />
+              ))}
             </div>
           </div>
         </div>
