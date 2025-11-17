@@ -299,8 +299,8 @@ export default function WalletPage() {
                       </svg>
                       <span className="text-sm font-semibold text-indigo-900">Zero-Knowledge Proofs</span>
                     </div>
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full border border-blue-300">
-                      SIMULATED
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full border border-green-300">
+                      PRODUCTION
                     </span>
                   </div>
                   <p className="text-xs text-indigo-700 mb-2">
