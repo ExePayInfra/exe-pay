@@ -46,15 +46,23 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     setMounted(true);
     
     // Only load wallets in the browser
-    import('@solana/wallet-adapter-wallets').then(({ PhantomWalletAdapter, SolflareWalletAdapter }) => {
+    import('@solana/wallet-adapter-wallets').then(({ 
+      PhantomWalletAdapter, 
+      SolflareWalletAdapter,
+      CoinbaseWalletAdapter,
+      TrustWalletAdapter
+    }) => {
       // Detect if we're on mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         typeof window !== 'undefined' ? window.navigator.userAgent : ''
       );
       
+      // Configure wallets with mobile support
       setWallets([
-        new PhantomWalletAdapter(),
-        new SolflareWalletAdapter(),
+        new PhantomWalletAdapter(), // Auto deep-linking enabled
+        new SolflareWalletAdapter(), // Auto deep-linking enabled
+        new CoinbaseWalletAdapter(), // Mobile support
+        new TrustWalletAdapter(), // Mobile support
       ]);
     }).catch(err => {
       console.error('Failed to load wallet adapters:', err);
