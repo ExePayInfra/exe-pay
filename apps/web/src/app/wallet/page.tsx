@@ -277,8 +277,8 @@ export default function WalletPage() {
                             {level === 'private' && '🔒 Anonymous'}
                           </div>
                           {level !== 'public' && (
-                            <span className="inline-block mt-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                              PRODUCTION
+                            <span className="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
+                              ZK PROOFS READY
                             </span>
                           )}
                         </button>
