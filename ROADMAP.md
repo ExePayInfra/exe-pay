@@ -54,11 +54,11 @@ Build a production-ready, privacy-first payments SDK for Solana that enables:
 - [x] Privacy mode selection
 - [x] Mobile responsive design
 - [x] Professional color scheme (deep blue)
-- [x] **Homepage polish v2** - Partner logos/icons, visual privacy cards descriptions (Nov 17)
-- [x] **Wallet page polish** - 2-column layout, balance display, token selector, sidebar (Nov 17)
-- [x] **Mobile wallet deep-linking** - Phantom, Solflare, Coinbase, Trust (Nov 17)
-- [x] **Fixed "Invalid public key input" error** - Lazy PublicKey initialization (Nov 17)
-- [x] **Fixed infinite loading bug** - Removed unnecessary mounted state (Nov 17)
+- [x] Professional homepage with partner logos and animations
+- [x] Enhanced wallet interface with balance display and token selector
+- [x] Mobile wallet deep-linking (Phantom, Solflare, Coinbase, Trust)
+- [x] Optimized component initialization and loading states
+- [x] Glassmorphism effects and smooth transitions
 
 ---
 

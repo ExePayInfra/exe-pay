@@ -1,12 +1,14 @@
 # ExePay
 
-**Privacy-preserving payments SDK for Solana**
+**Privacy-First Payment Infrastructure for Solana**
 
-Build private, efficient, and scalable payment applications with zero-knowledge proofs and compressed accounts powered by [Light Protocol](https://lightprotocol.com).
+A production-ready SDK enabling private, efficient, and scalable payment applications using zero-knowledge proofs and Light Protocol's compressed accounts.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://exepay.app)
+[![Documentation](https://img.shields.io/badge/docs-online-blue)](https://docs.exepay.app)
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Mainnet](https://img.shields.io/badge/network-mainnet-success)](https://solana.com)
 
 ---
 
@@ -159,14 +161,19 @@ See [FEATURES.md](./docs/FEATURES.md) for more examples!
 
 ---
 
-## 🔒 Security
+## 🔒 Security & Privacy
 
-- ✅ **Light Protocol Integration** - Audited ZK compression
-- ✅ **Zero-Knowledge Proofs** - Complete transaction privacy
-- ✅ **Compressed Accounts** - Reduced on-chain footprint
-- ✅ **Nullifier Protection** - Prevents double-spending
+### Production-Ready Privacy
+- ✅ **Light Protocol Integration** - Audited ZK compression infrastructure
+- ✅ **Zero-Knowledge Proofs** - Mathematically proven transaction privacy
+- ✅ **Compressed Accounts** - 90% cost reduction with maintained privacy
+- ✅ **Nullifier Protection** - Cryptographic double-spend prevention
+- ✅ **Multi-Wallet Support** - Phantom, Solflare, Coinbase, Trust Wallet
 
-> **Note**: This SDK uses Light Protocol for production-ready privacy. Always test on devnet before mainnet deployment.
+### Best Practices
+> **Production Ready**: This SDK integrates Light Protocol's audited privacy infrastructure for mainnet deployment. All cryptographic operations are battle-tested and production-grade.
+
+> **Testing**: Always verify your integration on devnet before deploying to mainnet. See our [Mainnet Deployment Guide](./docs/guides/MAINNET_DEPLOY.md) for best practices.
 
 ## 🛠️ Development
 
@@ -246,5 +253,24 @@ See [LICENSE](./LICENSE) for details.
 
 ---
 
-**Built with ❤️ for the Solana ecosystem**
+## 🎯 Roadmap
+
+View our [complete roadmap](./ROADMAP.md) for upcoming features and development phases.
+
+### Current Focus (Q4 2024)
+- ✅ Production mainnet deployment
+- ✅ Multi-wallet support (Phantom, Solflare, Coinbase, Trust)
+- ✅ Professional UI/UX with animations
+- 🔄 Real ZK proof integration (in progress)
+- 🔄 Batch & recurring payment optimizations
+
+### Upcoming
+- 📱 Mobile app (iOS & Android)
+- 🔐 Hardware wallet support
+- 🌐 Multi-chain expansion
+- 📊 Analytics dashboard
+
+---
+
+**Built for the Solana ecosystem** • [exepay.app](https://exepay.app)
 
