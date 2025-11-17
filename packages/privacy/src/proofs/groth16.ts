@@ -18,9 +18,10 @@ import * as snarkjs from 'snarkjs';
  * 
  * Circuit files are now loaded from /public/circuits/ as static assets
  * 
- * Real ZK proofs enabled! Circuit keys regenerated successfully.
+ * NOTE: Using mock proofs due to "Invalid public key input" error
+ * Circuit keys need debugging - possible Poseidon hash mismatch
  */
-const USE_MOCK_PROOFS = false;
+const USE_MOCK_PROOFS = true;
 
 /**
  * Proof data structure
