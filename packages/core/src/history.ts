@@ -111,28 +111,32 @@ export async function fetchTransactionHistory(
     }
 
     // Fetch full transaction details with retry
-    // Split into smaller batches to avoid rate limits
-    const batchSize = 5; // Reduced from 10 to 5 for better rate limit handling
+    // Fetch one at a time to avoid batch request limitation on free Helius tier
     const allTransactions: (ParsedTransactionWithMeta | null)[] = [];
     
-    for (let i = 0; i < signatures.length; i += batchSize) {
-      const batch = signatures.slice(i, i + batchSize);
+    for (let i = 0; i < signatures.length; i++) {
+      const sig = signatures[i];
       
-      const batchTransactions = await retryWithBackoff(async () => {
-        return await connection.getParsedTransactions(
-          batch.map(sig => sig.signature),
-          {
-            maxSupportedTransactionVersion: 0,
-            commitment: commitment === "processed" ? "confirmed" : commitment
-          }
-        );
-      });
-      
-      allTransactions.push(...batchTransactions);
-      
-      // Longer delay between batches to avoid rate limiting
-      if (i + batchSize < signatures.length) {
-        await sleep(500); // Increased from 100ms to 500ms
+      try {
+        const transaction = await retryWithBackoff(async () => {
+          return await connection.getParsedTransaction(
+            sig.signature,
+            {
+              maxSupportedTransactionVersion: 0,
+              commitment: commitment === "processed" ? "confirmed" : commitment
+            }
+          );
+        });
+        
+        allTransactions.push(transaction);
+        
+        // Small delay between requests to avoid rate limiting
+        if (i < signatures.length - 1) {
+          await sleep(100);
+        }
+      } catch (error) {
+        console.error(`Failed to fetch transaction ${sig.signature}:`, error);
+        allTransactions.push(null);
       }
     }
 
@@ -161,6 +165,8 @@ export async function fetchTransactionHistory(
         throw new Error("Rate limit exceeded. Please use a dedicated RPC endpoint (Helius, QuickNode, etc.) or try again later.");
       } else if (error.message.includes("timeout")) {
         throw new Error("Request timed out. Please check your connection or try a different RPC endpoint.");
+      } else if (error.message.includes("403") || error.message.includes("Batch requests")) {
+        throw new Error("RPC endpoint does not support batch requests. Fetching transactions individually...");
       }
       throw error;
     }
