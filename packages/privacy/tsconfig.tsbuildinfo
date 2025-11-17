@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/private.ts","./src/shielded.ts","./src/__tests__/groth16.test.ts","./src/proofs/groth16.ts"],"version":"5.9.3"}

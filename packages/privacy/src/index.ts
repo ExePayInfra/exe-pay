@@ -24,8 +24,24 @@ export interface DecodeSettlementInput {
   readonly commitment: "processed" | "confirmed" | "finalized";
 }
 
-const EXE_PAY_ZK_PROGRAM = new PublicKey("ExEPaYzk1111111111111111111111111111111");
-const LIGHT_PROGRAM_ID = new PublicKey("compr6CUsB5m2jS4Y3831ztGSTnDpnKJTKS95d64XVq");
+// Lazy initialization to avoid errors during module import
+let EXE_PAY_ZK_PROGRAM: PublicKey | null = null;
+let LIGHT_PROGRAM_ID: PublicKey | null = null;
+
+function getExePayZkProgram(): PublicKey {
+  if (!EXE_PAY_ZK_PROGRAM) {
+    // Valid Solana address (44 characters, base58)
+    EXE_PAY_ZK_PROGRAM = new PublicKey("ExePay1111111111111111111111111111111111111");
+  }
+  return EXE_PAY_ZK_PROGRAM;
+}
+
+function getLightProgramId(): PublicKey {
+  if (!LIGHT_PROGRAM_ID) {
+    LIGHT_PROGRAM_ID = new PublicKey("compr6CUsB5m2jS4Y3831ztGSTnDpnKJTKS95d64XVq");
+  }
+  return LIGHT_PROGRAM_ID;
+}
 
 export function poseidon(input: Uint8Array): Uint8Array {
   // Deterministic stand-in until circuits are integrated. Uses keccak for reproducibility.
@@ -45,9 +61,9 @@ export async function proveSpend(note: ShieldedNote, rpc?: Rpc): Promise<ProveSp
   // Create instruction that includes the ZK proof
   // This verifies the proof on-chain using Light Protocol
   const ix = new TransactionInstruction({
-    programId: LIGHT_PROGRAM_ID,
+    programId: getLightProgramId(),
     keys: [
-      { pubkey: EXE_PAY_ZK_PROGRAM, isSigner: false, isWritable: false }
+      { pubkey: getExePayZkProgram(), isSigner: false, isWritable: false }
     ],
     data: Buffer.concat([
       Buffer.from([0x02]), // Instruction discriminator for verify proof
