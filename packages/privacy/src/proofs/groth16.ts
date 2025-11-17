@@ -16,12 +16,11 @@ import * as snarkjs from 'snarkjs';
  * Use mock proofs for development/testing
  * Set to false when circuits are compiled and keys are generated
  * 
- * Circuit files are now loaded from /public/circuits/ as static assets
+ * Circuit files are loaded from /public/circuits/ as static assets
  * 
- * NOTE: Using mock proofs due to "Invalid public key input" error
- * Circuit keys need debugging - possible Poseidon hash mismatch
+ * Status: Testing real ZK proofs with fixed PublicKey initialization
  */
-const USE_MOCK_PROOFS = true;
+const USE_MOCK_PROOFS = false;
 
 /**
  * Proof data structure
