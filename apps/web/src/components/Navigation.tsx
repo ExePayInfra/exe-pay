@@ -114,7 +114,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center text-gray-500 text-sm">
-          © 2025 ExePay. Built with ❤️ on Solana • Powered by Light Protocol
+          © 2025 ExePay. Privacy-preserving payments infrastructure powered by Solana & Light Protocol
         </div>
       </div>
     </footer>

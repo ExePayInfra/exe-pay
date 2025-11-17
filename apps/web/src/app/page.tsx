@@ -79,11 +79,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Built With - Sliding Carousel */}
+      {/* Built With - Sliding Carousel with Logos */}
       <section className="py-16 bg-gradient-to-r from-indigo-50 via-purple-50 to-blue-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <h3 className="text-center text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8">
-            Built With
+            Powered By
           </h3>
         </div>
         
@@ -91,41 +91,149 @@ export default function Home() {
         <div className="relative">
           <div className="flex animate-scroll-left">
             {/* First set */}
-            <div className="flex items-center gap-16 px-8">
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-indigo-600">Light Protocol</div>
+            <div className="flex items-center gap-12 px-8">
+              {/* Light Protocol */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">L</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Light Protocol</span>
                 <span className="text-xs text-gray-500">ZK Compression</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-purple-600">Solana</div>
+              
+              {/* Solana */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <svg className="w-12 h-12" viewBox="0 0 397.7 311.7" fill="none">
+                    <linearGradient id="solanaGrad" x1="360" y1="351" x2="141" y2="61" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stopColor="#00FFA3"/>
+                      <stop offset="1" stopColor="#DC1FFF"/>
+                    </linearGradient>
+                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGrad)"/>
+                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGrad)"/>
+                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGrad)"/>
+                  </svg>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Solana</span>
                 <span className="text-xs text-gray-500">Blockchain</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-green-600">Pump.fun</div>
-                <span className="text-xs text-gray-500">Token Launch</span>
+              
+              {/* Phantom */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Phantom</span>
+                <span className="text-xs text-gray-500">Wallet</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-blue-600">Helius</div>
+              
+              {/* Helius */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">H</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Helius</span>
                 <span className="text-xs text-gray-500">RPC Provider</span>
+              </div>
+              
+              {/* Raydium */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Raydium</span>
+                <span className="text-xs text-gray-500">DEX</span>
+              </div>
+              
+              {/* Pump.fun */}
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">P</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Pump.fun</span>
+                <span className="text-xs text-gray-500">Token Launch</span>
               </div>
             </div>
-            {/* Duplicate for seamless loop */}
-            <div className="flex items-center gap-16 px-8">
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-indigo-600">Light Protocol</div>
+            
+            {/* Duplicate for seamless infinite scroll */}
+            <div className="flex items-center gap-12 px-8">
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">L</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Light Protocol</span>
                 <span className="text-xs text-gray-500">ZK Compression</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-purple-600">Solana</div>
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <svg className="w-12 h-12" viewBox="0 0 397.7 311.7" fill="none">
+                    <linearGradient id="solanaGrad2" x1="360" y1="351" x2="141" y2="61" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stopColor="#00FFA3"/>
+                      <stop offset="1" stopColor="#DC1FFF"/>
+                    </linearGradient>
+                    <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="url(#solanaGrad2)"/>
+                    <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#solanaGrad2)"/>
+                    <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#solanaGrad2)"/>
+                  </svg>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Solana</span>
                 <span className="text-xs text-gray-500">Blockchain</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-green-600">Pump.fun</div>
-                <span className="text-xs text-gray-500">Token Launch</span>
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Phantom</span>
+                <span className="text-xs text-gray-500">Wallet</span>
               </div>
-              <div className="flex flex-col items-center gap-2 min-w-[200px]">
-                <div className="text-4xl font-bold text-blue-600">Helius</div>
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">H</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Helius</span>
                 <span className="text-xs text-gray-500">RPC Provider</span>
+              </div>
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Raydium</span>
+                <span className="text-xs text-gray-500">DEX</span>
+              </div>
+              <div className="flex flex-col items-center gap-3 min-w-[180px] group">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">P</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-gray-700">Pump.fun</span>
+                <span className="text-xs text-gray-500">Token Launch</span>
               </div>
             </div>
           </div>
@@ -411,6 +519,7 @@ export default function Home() {
                 gradient: 'from-gray-400 to-gray-600',
                 features: ['Visible amounts', 'Visible addresses', 'Instant & cheap'],
                 delay: '0s',
+                visualDesc: 'Fast & transparent - Best for everyday payments',
               },
               {
                 title: 'Shielded',
@@ -419,6 +528,7 @@ export default function Home() {
                 features: ['Hidden amounts', 'Visible addresses', 'ZK-SNARK proofs'],
                 badge: 'Popular',
                 delay: '0.1s',
+                visualDesc: 'Most used - Hide amounts, show addresses',
               },
               {
                 title: 'Private',
@@ -427,6 +537,7 @@ export default function Home() {
                 features: ['Hidden amounts', 'Anonymous addresses', 'Maximum privacy'],
                 badge: 'Recommended',
                 delay: '0.2s',
+                visualDesc: 'Maximum security - Complete anonymity',
               },
             ].map((mode) => (
               <div
@@ -472,7 +583,13 @@ export default function Home() {
                   
                   <div className="relative z-10">
                     <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
-                    <p className="text-sm opacity-90 mb-6">{mode.desc}</p>
+                    <p className="text-sm opacity-90 mb-4">{mode.desc}</p>
+                    
+                    {/* Visual Description Box */}
+                    <div className="mb-6 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                      <p className="text-xs font-semibold opacity-90">{mode.visualDesc}</p>
+                    </div>
+                    
                     <ul className="space-y-3">
                       {mode.features.map((feature, idx) => (
                         <li key={feature} className="flex items-center gap-2 text-sm animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
