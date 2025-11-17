@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
@@ -14,9 +16,8 @@ let encryptRecipientAddress: any;
 type PrivacyLevel = 'public' | 'shielded' | 'private';
 
 export default function WalletPage() {
+  const { publicKey, signTransaction, connected } = useWallet();
   const [mounted, setMounted] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [connecting, setConnecting] = useState(false);
   const [sending, setSending] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
@@ -45,38 +46,6 @@ export default function WalletPage() {
     });
   }, []);
 
-  const connectWallet = async () => {
-    setConnecting(true);
-    try {
-      const { solana } = window as any;
-      
-      if (!solana?.isPhantom) {
-        alert('Please install Phantom wallet from https://phantom.app/');
-        setConnecting(false);
-        return;
-      }
-
-      const response = await solana.connect();
-      setWalletAddress(response.publicKey.toString());
-    } catch (err) {
-      console.error('Failed to connect wallet:', err);
-      alert('Failed to connect wallet. Please try again.');
-    } finally {
-      setConnecting(false);
-    }
-  };
-
-  const disconnectWallet = async () => {
-    try {
-      const { solana } = window as any;
-      if (solana) {
-        await solana.disconnect();
-        setWalletAddress(null);
-      }
-    } catch (err) {
-      console.error('Failed to disconnect:', err);
-    }
-  };
 
   const sendPayment = async () => {
     setSending(true);
@@ -87,15 +56,14 @@ export default function WalletPage() {
       if (!recipient) throw new Error('Please enter a recipient address');
       if (!amount || parseFloat(amount) <= 0) throw new Error('Please enter a valid amount');
       if (!selectedToken) throw new Error('Please select a token');
-
-      const { solana } = window as any;
-      if (!solana) throw new Error('Phantom wallet not found');
+      if (!publicKey) throw new Error('Please connect your wallet first');
+      if (!signTransaction) throw new Error('Wallet does not support signing');
 
       const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
       const connection = new Connection(rpcUrl, 'confirmed');
 
       const recipientPubkey = new PublicKey(recipient);
-      const senderPubkey = new PublicKey(walletAddress!);
+      const senderPubkey = publicKey;
 
       let transaction: Transaction;
       const amountValue = selectedToken.mint === 'native'
@@ -186,7 +154,7 @@ export default function WalletPage() {
       transaction.feePayer = senderPubkey;
 
       // Sign and send
-      const signed = await solana.signTransaction(transaction);
+      const signed = await signTransaction(transaction);
       const signature = await connection.sendRawTransaction(signed.serialize());
       await connection.confirmTransaction(signature, 'confirmed');
 
@@ -235,35 +203,24 @@ export default function WalletPage() {
 
         {/* Wallet Connection */}
         <div className="glass-card p-6 rounded-2xl mb-8 animate-slide-up hover-lift">
-          {!walletAddress ? (
+          {!connected ? (
             <div className="text-center">
               <p className="text-gray-600 mb-4">Connect your wallet to start sending payments</p>
-              <button
-                onClick={connectWallet}
-                disabled={connecting}
-                className="btn-primary px-8 py-3 rounded-lg font-semibold hover-lift disabled:opacity-50"
-              >
-                {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
-              </button>
+              <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !mx-auto" />
             </div>
           ) : (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <p className="text-sm text-gray-500 mb-1">Connected Wallet</p>
-                <p className="font-mono text-sm text-gray-900">{walletAddress.slice(0, 8)}...{walletAddress.slice(-8)}</p>
+                <p className="font-mono text-sm text-gray-900">{publicKey?.toString().slice(0, 8)}...{publicKey?.toString().slice(-8)}</p>
               </div>
-              <button
-                onClick={disconnectWallet}
-                className="btn-outline px-6 py-2 rounded-lg font-semibold hover-scale"
-              >
-                Disconnect
-              </button>
+              <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700" />
             </div>
           )}
         </div>
 
         {/* Payment Form */}
-        {walletAddress && (
+        {connected && (
           <div className="glass-card p-8 rounded-2xl animate-slide-up hover-lift" style={{animationDelay: '0.1s'}}>
             {/* Privacy Level Toggle */}
             <div className="mb-8">
