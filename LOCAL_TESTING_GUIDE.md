@@ -118,6 +118,17 @@ The development server is now running at:
 
 ## 🐛 Common Issues & Fixes
 
+### Issue: "Invalid public key input" error (FIXED ✅)
+This error has been fixed! The problem was:
+- Lazy loading of PublicKey instances
+- Fixed invalid program ID (44 chars required)
+If you still see it, restart dev server:
+```bash
+pkill -f "next dev"
+cd /Users/kingchief/Documents/EXE
+pnpm dev
+```
+
 ### Issue: Dev server won't start
 ```bash
 # Kill existing process
