@@ -1,6 +1,6 @@
 # ExePay Development Roadmap
 
-**Last Updated:** November 16, 2025  
+**Last Updated:** November 17, 2025  
 **Current Status:** Production (Mainnet)  
 **Version:** 0.1.0  
 
@@ -54,6 +54,11 @@ Build a production-ready, privacy-first payments SDK for Solana that enables:
 - [x] Privacy mode selection
 - [x] Mobile responsive design
 - [x] Professional color scheme (deep blue)
+- [x] **Homepage polish v2** - Partner logos/icons, visual privacy cards descriptions (Nov 17)
+- [x] **Wallet page polish** - 2-column layout, balance display, token selector, sidebar (Nov 17)
+- [x] **Mobile wallet deep-linking** - Phantom, Solflare, Coinbase, Trust (Nov 17)
+- [x] **Fixed "Invalid public key input" error** - Lazy PublicKey initialization (Nov 17)
+- [x] **Fixed infinite loading bug** - Removed unnecessary mounted state (Nov 17)
 
 ---
 
