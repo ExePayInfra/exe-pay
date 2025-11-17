@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getTokens, parseTokenAmount, type Token } from '@/lib/tokens';
 
@@ -20,9 +22,8 @@ interface Subscription {
 }
 
 export function RecurringPaymentForm() {
+  const { publicKey, signTransaction } = useWallet();
   const [mounted, setMounted] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [connecting, setConnecting] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
@@ -68,38 +69,6 @@ export function RecurringPaymentForm() {
     }
   }, []);
 
-  const connectWallet = async () => {
-    setConnecting(true);
-    try {
-      const { solana } = window as any;
-      
-      if (!solana?.isPhantom) {
-        alert('Please install Phantom wallet from https://phantom.app/');
-        setConnecting(false);
-        return;
-      }
-
-      const response = await solana.connect();
-      setWalletAddress(response.publicKey.toString());
-    } catch (err) {
-      console.error('Failed to connect wallet:', err);
-      alert('Failed to connect wallet. Please try again.');
-    } finally {
-      setConnecting(false);
-    }
-  };
-
-  const disconnectWallet = async () => {
-    try {
-      const { solana } = window as any;
-      if (solana) {
-        await solana.disconnect();
-        setWalletAddress(null);
-      }
-    } catch (err) {
-      console.error('Failed to disconnect:', err);
-    }
-  };
 
   const getNextPaymentDate = () => {
     const now = new Date();
@@ -152,8 +121,13 @@ export function RecurringPaymentForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!walletAddress) {
+    if (!publicKey) {
       setError('Please connect your wallet first');
+      return;
+    }
+
+    if (!signTransaction) {
+      setError('Wallet does not support signing');
       return;
     }
 
@@ -270,15 +244,14 @@ export function RecurringPaymentForm() {
 
   const executePayment = async (subscription: Subscription) => {
     try {
-      const { solana } = window as any;
-      if (!solana) {
-        throw new Error('Phantom wallet not found');
+      if (!publicKey || !signTransaction) {
+        throw new Error('Wallet not connected');
       }
 
       const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
       const connection = new Connection(rpcUrl, 'confirmed');
       
-      const senderPubkey = new PublicKey(walletAddress!);
+      const senderPubkey = publicKey;
       const recipientPubkey = new PublicKey(subscription.recipient);
       const lamports = Math.floor(parseFloat(subscription.amount) * LAMPORTS_PER_SOL);
 
@@ -294,8 +267,9 @@ export function RecurringPaymentForm() {
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = senderPubkey;
 
-      const signed = await solana.signAndSendTransaction(transaction);
-      await connection.confirmTransaction(signed.signature, 'confirmed');
+      const signed = await signTransaction(transaction);
+      const signature = await connection.sendRawTransaction(signed.serialize());
+      await connection.confirmTransaction(signature, 'confirmed');
 
       // Update subscription
       const updated = subscriptions.map(sub => {
@@ -349,41 +323,30 @@ export function RecurringPaymentForm() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Wallet Connection */}
-      {!walletAddress ? (
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl text-center">
-          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {!publicKey ? (
+        <div className="bg-white rounded-2xl p-8 shadow-2xl text-center border border-gray-200">
+          <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">Connect Your Wallet</h3>
-          <p className="text-blue-200 mb-6">
-            To set up recurring payments, please connect your Phantom wallet
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">Connect Your Wallet</h3>
+          <p className="text-gray-600 mb-6">
+            To set up recurring payments, please connect your wallet
           </p>
-          <button
-            onClick={connectWallet}
-            disabled={connecting}
-            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all disabled:opacity-50 shadow-lg"
-          >
-            {connecting ? 'Connecting...' : 'Connect Phantom Wallet'}
-          </button>
+          <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700" />
         </div>
       ) : (
         <>
           {/* Create Subscription Form */}
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-white">Create Recurring Payment</h3>
+              <h3 className="text-2xl font-bold text-gray-900">Create Recurring Payment</h3>
               <div className="flex items-center gap-3">
-                <div className="text-sm text-green-300 font-mono">
-                  {walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}
+                <div className="text-sm text-gray-700 font-mono bg-gray-100 px-3 py-1 rounded">
+                  {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
                 </div>
-                <button
-                  onClick={disconnectWallet}
-                  className="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded text-red-200 hover:bg-red-500/30 text-sm transition-all"
-                >
-                  Disconnect
-                </button>
+                <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700" />
               </div>
             </div>
             
