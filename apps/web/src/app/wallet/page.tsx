@@ -17,7 +17,6 @@ type PrivacyLevel = 'public' | 'shielded' | 'private';
 
 export default function WalletPage() {
   const { publicKey, signTransaction, connected } = useWallet();
-  const [mounted, setMounted] = useState(false);
   const [sending, setSending] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
@@ -29,8 +28,6 @@ export default function WalletPage() {
   const [balance, setBalance] = useState<number | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    
     // Load tokens based on network
     const network = (process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'mainnet-beta') as 'mainnet-beta' | 'devnet';
     const availableTokens = getTokens(network);
@@ -42,6 +39,8 @@ export default function WalletPage() {
       createShieldedTransfer = mod.createShieldedTransfer;
       createPrivateTransfer = mod.createPrivateTransfer;
       encryptRecipientAddress = mod.encryptRecipientAddress;
+    }).catch(err => {
+      console.error('Failed to load privacy module:', err);
     });
   }, []);
 
@@ -152,17 +151,6 @@ export default function WalletPage() {
       setSending(false);
     }
   };
-
-  if (!mounted) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
-          <p className="text-gray-600">Loading wallet...</p>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
