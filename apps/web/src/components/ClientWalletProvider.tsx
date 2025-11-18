@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { ConnectionProvider, WalletProvider as SolanaWalletProvider } from '@solana/wallet-adapter-react';
@@ -42,6 +42,41 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
   // Lazy-load wallet adapters only on client side
   const [wallets, setWallets] = useState<Adapter[]>([]);
   
+  // Custom onError handler to force full disconnect
+  const handleError = useCallback((error: any) => {
+    console.error('[ExePay Security] Wallet error:', error);
+    // Force full disconnect on error
+    if (typeof window !== 'undefined') {
+      window.solana?.disconnect?.();
+      window.solflare?.disconnect?.();
+    }
+  }, []);
+
+  // Force disconnect from Phantom/Solflare on page load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Disconnect Phantom if connected
+      if (window.solana?.isPhantom && window.solana.isConnected) {
+        try {
+          window.solana.disconnect();
+          console.log('[ExePay Security] Disconnected Phantom on page load');
+        } catch (e) {
+          console.error('[ExePay Security] Failed to disconnect Phantom:', e);
+        }
+      }
+      
+      // Disconnect Solflare if connected
+      if (window.solflare?.isConnected) {
+        try {
+          window.solflare.disconnect();
+          console.log('[ExePay Security] Disconnected Solflare on page load');
+        } catch (e) {
+          console.error('[ExePay Security] Failed to disconnect Solflare:', e);
+        }
+      }
+    }
+  }, []);
+  
   useEffect(() => {
     setMounted(true);
     
@@ -50,23 +85,76 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       PhantomWalletAdapter, 
       SolflareWalletAdapter,
       CoinbaseWalletAdapter,
-      TrustWalletAdapter
+      TrustWalletAdapter,
+      LedgerWalletAdapter,
+      TorusWalletAdapter,
+      SlopeWalletAdapter,
+      GlowWalletAdapter,
+      BackpackWalletAdapter,
+      BraveWalletAdapter
     }) => {
       // Detect if we're on mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         typeof window !== 'undefined' ? window.navigator.userAgent : ''
       );
       
-      // Configure wallets with mobile support
+      // Configure wallets with mobile and web support
       setWallets([
-        new PhantomWalletAdapter(), // Auto deep-linking enabled
-        new SolflareWalletAdapter(), // Auto deep-linking enabled
-        new CoinbaseWalletAdapter(), // Mobile support
-        new TrustWalletAdapter(), // Mobile support
+        new PhantomWalletAdapter(), // Popular, mobile + web
+        new SolflareWalletAdapter(), // Popular, mobile + web
+        new BackpackWalletAdapter(), // Popular, web
+        new GlowWalletAdapter(), // Popular, web
+        new CoinbaseWalletAdapter(), // Mobile + web
+        new TrustWalletAdapter(), // Mobile + web
+        new BraveWalletAdapter(), // Web (built into Brave)
+        new SlopeWalletAdapter(), // Mobile + web
+        new TorusWalletAdapter(), // Web
+        new LedgerWalletAdapter(), // Hardware wallet
       ]);
     }).catch(err => {
       console.error('Failed to load wallet adapters:', err);
     });
+
+    // Clear ALL wallet-related cache on mount to force fresh connections
+    if (typeof window !== 'undefined') {
+      // Clear our app's wallet session
+      localStorage.removeItem('exepay-wallet-session');
+      localStorage.removeItem('walletName');
+      
+      // Clear Phantom's cached permission
+      localStorage.removeItem('phantom_permission');
+      
+      // Clear Solflare's cached permission
+      localStorage.removeItem('solflare_permission');
+      
+      // Clear any other wallet adapter cache
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.toLowerCase().includes('wallet') && key.includes('permission')) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+      
+      console.log('[ExePay Security] Cleared cached wallet permissions for fresh session');
+    }
+
+    // Clear wallet connection on tab/window close (session-based)
+    const handleBeforeUnload = () => {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('exepay-wallet-session');
+        localStorage.removeItem('walletName');
+        localStorage.removeItem('phantom_permission');
+        localStorage.removeItem('solflare_permission');
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   // Don't render wallet provider until we're mounted on the client
@@ -76,7 +164,12 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <SolanaWalletProvider wallets={wallets} autoConnect={false}>
+      <SolanaWalletProvider 
+        wallets={wallets} 
+        autoConnect={false}
+        localStorageKey={null} // Don't use localStorage at all - forces fresh connection
+        onError={handleError}
+      >
         <WalletModalProvider>
           {children}
         </WalletModalProvider>

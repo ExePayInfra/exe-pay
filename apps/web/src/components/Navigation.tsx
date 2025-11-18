@@ -2,9 +2,12 @@
 
 import { LogoText } from './Logo';
 import { useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { SecureWalletButton } from './SecureWalletButton';
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { publicKey } = useWallet();
 
   return (
     <nav className="border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
@@ -39,12 +42,20 @@ export function Navigation() {
             >
               Docs
             </a>
-            <a
-              href="/wallet"
-              className="btn-primary px-6 py-2.5 rounded-lg font-semibold hover-lift"
-            >
-              Launch App
-            </a>
+            <div className="flex items-center gap-3">
+              {!publicKey ? (
+                <a
+                  href="/wallet"
+                  className="btn-primary px-6 py-2.5 rounded-lg font-semibold hover-lift"
+                >
+                  Launch App
+                </a>
+              ) : (
+                <>
+                  <SecureWalletButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !transition-all" />
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -81,12 +92,18 @@ export function Navigation() {
               <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 History
               </a>
-              <a
-                href="/wallet"
-                className="btn-primary px-6 py-2.5 rounded-lg font-semibold text-center"
-              >
-                Launch App
-              </a>
+              {!publicKey ? (
+                <a
+                  href="/wallet"
+                  className="btn-primary px-6 py-2.5 rounded-lg font-semibold text-center"
+                >
+                  Launch App
+                </a>
+              ) : (
+                <div className="w-full">
+                  <SecureWalletButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !w-full !transition-all" />
+                </div>
+              )}
             </div>
           </div>
         )}

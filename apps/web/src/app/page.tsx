@@ -104,19 +104,6 @@ export default function Home() {
       <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center animate-fade-in-up">
-            {/* ExePay Logo */}
-            <div className="flex justify-center mb-8 animate-scale-in">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 hover:scale-105 transition-transform duration-300">
-                <Image
-                  src="/exepay-logo-full.png"
-                  alt="ExePay Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
-
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 rounded-full mb-8 border border-indigo-100 animate-scale-in">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-sm font-semibold text-indigo-900">Powered by Light Protocol & Solana</span>
@@ -418,7 +405,7 @@ export default function Home() {
 <span className="text-purple-400">function</span> <span className="text-blue-400">PrivatePayment</span><span className="text-gray-400">() {'{'}</span>
   <span className="text-purple-400">const</span> <span className="text-gray-400">{'{'}</span> <span className="text-blue-300">sendTransaction</span> <span className="text-gray-400">{'}'} =</span> <span className="text-blue-400">useSendTransaction</span><span className="text-gray-400">();</span>
 
-  <span className="text-purple-400">const</span> <span className="text-blue-400">sendPrivate</span> <span className="text-purple-400">=</span> <span className="text-purple-400">async</span> <span className="text-gray-400">() => {'{'}</span>
+  <span className="text-purple-400">const</span> <span className="text-blue-400">sendPrivate</span> <span className="text-purple-400">=</span> <span className="text-purple-400">async</span> <span className="text-gray-400">() {'=>'} {'{'}</span>
     <span className="text-purple-400">await</span> <span className="text-blue-300">sendTransaction</span><span className="text-gray-400">({'{'}</span>
       <span className="text-blue-300">recipient</span><span className="text-gray-400">:</span> <span className="text-green-400">'7xKXt...9rX'</span><span className="text-gray-400">,</span>
       <span className="text-blue-300">amount</span><span className="text-gray-400">:</span> <span className="text-orange-400">0.1</span> <span className="text-gray-400">*</span> <span className="text-blue-300">LAMPORTS_PER_SOL</span><span className="text-gray-400">,</span>
@@ -452,22 +439,43 @@ export default function Home() {
 
           {/* Key Features Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {[
-              { icon: '⚡', title: 'Instant Settlement', desc: 'Transactions confirm in <1 second' },
-              { icon: '💰', title: 'Ultra-Low Fees', desc: 'Average cost: $0.0001 per transaction' },
-              { icon: '🔒', title: 'Zero-Knowledge', desc: 'Prove without revealing data' },
-              { icon: '🌐', title: 'Multi-Token', desc: 'SOL, USDC, USDT & custom SPL' },
-            ].map((feature, idx) => (
-              <div
-                key={feature.title}
-                className="glass-card p-6 rounded-2xl hover-lift animate-fade-in-up text-center"
-                style={{ animationDelay: `${idx * 0.1}s` }}
-              >
-                <div className="text-4xl mb-3">{feature.icon}</div>
-                <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-600">{feature.desc}</p>
+            {/* ExePay Logo Card - Blue */}
+            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center perspective-1000 bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl" style={{ animationDelay: '0s' }}>
+              <div className="relative w-full h-20 mb-3 transform-3d hover:rotate-y-12 transition-all duration-700" style={{ transformStyle: 'preserve-3d' }}>
+                <Image
+                  src="/exepay-logo.png"
+                  alt="ExePay"
+                  fill
+                  className="object-contain"
+                  style={{ 
+                    filter: 'brightness(0) saturate(100%) invert(100%) drop-shadow(0 10px 20px rgba(255, 255, 255, 0.3))'
+                  }}
+                />
               </div>
-            ))}
+              <h3 className="font-bold text-black mb-2">ExePay Platform</h3>
+              <p className="text-sm text-black">Privacy-first payment infrastructure</p>
+            </div>
+            
+            {/* Instant Settlement - Purple Gradient */}
+            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center bg-gradient-to-br from-indigo-600 to-purple-600 shadow-xl" style={{ animationDelay: '0.1s' }}>
+              <div className="text-4xl mb-3">⚡</div>
+              <h3 className="font-bold text-white mb-2">Instant Settlement</h3>
+              <p className="text-sm text-white/90">Transactions confirm in &lt;1 second</p>
+            </div>
+            
+            {/* Ultra-Low Fees - White */}
+            <div className="glass-card p-6 rounded-2xl hover-lift animate-fade-in-up text-center shadow-xl" style={{ animationDelay: '0.2s' }}>
+              <div className="text-4xl mb-3">💰</div>
+              <h3 className="font-bold text-gray-900 mb-2">Ultra-Low Fees</h3>
+              <p className="text-sm text-gray-600">Average cost: $0.0001 per transaction</p>
+            </div>
+            
+            {/* Zero-Knowledge - Indigo Gradient */}
+            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center bg-gradient-to-br from-purple-600 to-indigo-600 shadow-xl" style={{ animationDelay: '0.3s' }}>
+              <div className="text-4xl mb-3">🔒</div>
+              <h3 className="font-bold text-white mb-2">Zero-Knowledge</h3>
+              <p className="text-sm text-white/90">Prove without revealing data</p>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
