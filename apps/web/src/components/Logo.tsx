@@ -27,10 +27,19 @@ export function Logo({ size = 40, className = '', animated = false, variant = 't
 
 export function LogoText({ className = '' }: { className?: string }) {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <Logo size={40} animated />
-      <span className="text-2xl font-bold text-gray-900 tracking-tight">
-        Exe<span className="text-blue-600">Pay</span>
+    <div className={`flex items-center gap-0 ${className} group cursor-pointer`}>
+      <div className="relative w-20 h-12 transition-all duration-500 group-hover:scale-110">
+        <Image
+          src="/exepay-logo.png"
+          alt="Exe"
+          fill
+          className="object-contain object-left"
+          priority
+          style={{ filter: 'brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(2381%) hue-rotate(217deg) brightness(96%) contrast(101%)' }}
+        />
+      </div>
+      <span className="text-3xl font-bold text-[#4F46E5] -ml-1 tracking-tight transition-all duration-500 group-hover:scale-110" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+        Pay
       </span>
     </div>
   );
