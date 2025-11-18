@@ -104,6 +104,19 @@ export default function Home() {
       <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center animate-fade-in-up">
+            {/* ExePay Logo */}
+            <div className="flex justify-center mb-8 animate-scale-in">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 hover:scale-105 transition-transform duration-300">
+                <Image
+                  src="/exepay-logo-full.png"
+                  alt="ExePay Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
+
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 rounded-full mb-8 border border-indigo-100 animate-scale-in">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-sm font-semibold text-indigo-900">Powered by Light Protocol & Solana</span>

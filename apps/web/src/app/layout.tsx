@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "ExePay - Privacy-Preserving Payments on Solana",
   description: "Send and receive private payments on Solana with zero-knowledge proofs",
+  icons: {
+    icon: '/exepay-logo.png',
+    apple: '/exepay-logo.png',
+  },
 };
 
 export default function RootLayout({
