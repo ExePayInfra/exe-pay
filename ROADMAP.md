@@ -94,45 +94,92 @@ Build a production-ready, privacy-first payments SDK for Solana that enables:
 
 ---
 
-## 🚀 Phase 1: Real Privacy (High Priority)
+## 🚀 Phase 1: Light Protocol Integration - TRUE On-Chain Privacy (HIGHEST PRIORITY)
 
-**Goal:** Enable production-ready zero-knowledge proofs  
-**Timeline:** 2-3 hours  
-**Status:** Ready to implement  
+**Goal:** Achieve real privacy where transactions are invisible on Solscan  
+**Timeline:** 8-12 hours  
+**Status:** ⚠️ CRITICAL - Currently transactions are still visible on-chain  
+**Priority:** 🔥 MUST DO - This is the core value proposition
+
+### Current Problem
+- ✅ ZK proofs are generated locally
+- ✅ Cryptographic commitments work
+- ❌ **BUT:** Transactions still use standard SOL transfers
+- ❌ **Result:** Sender, receiver, and amount are visible on Solscan
+- ❌ **Issue:** Not truly private - just generating proofs that aren't used on-chain
+
+### Solution: Light Protocol Integration
+
+Light Protocol provides **compressed accounts** and **shielded pools** for true on-chain privacy.
 
 ### Tasks
 
-#### 1.1 Regenerate Circuit Keys
-- [ ] Fix Poseidon hash parameters
-- [ ] Regenerate range_proof.zkey
-- [ ] Regenerate balance_proof.zkey
-- [ ] Ensure browser compatibility
-- [ ] Test with snarkjs in browser
+#### 1.1 Research & Setup (2 hours)
+- [ ] Study Light Protocol documentation (https://docs.lightprotocol.com)
+- [ ] Review compressed token SDK (`@lightprotocol/compressed-token`)
+- [ ] Understand shielded pool architecture
+- [ ] Review example implementations
+- [ ] Install Light Protocol dependencies
 
-**Commands:**
-```bash
-cd packages/privacy/circuits
-./setup-circuits.sh
-cp *.wasm *.zkey ../../apps/web/public/circuits/
+**Resources:**
+- Light Protocol Docs: https://docs.lightprotocol.com
+- SDK: https://www.npmjs.com/package/@lightprotocol/compressed-token
+- GitHub: https://github.com/Lightprotocol
+
+#### 1.2 Implement Shielded Pool (4-6 hours)
+- [ ] Create compressed account for users
+- [ ] Implement deposit to shielded pool
+- [ ] Implement shielded transfer (inside pool)
+- [ ] Implement withdraw from shielded pool
+- [ ] Integrate with existing ZK proof generation
+- [ ] Update UI to show "Shielded Pool" balance
+
+**Key Functions to Implement:**
+```typescript
+// packages/privacy/src/lightprotocol.ts (NEW FILE)
+- createCompressedAccount()
+- depositToShieldedPool()
+- createShieldedTransfer() // Uses our ZK proofs
+- withdrawFromShieldedPool()
+- getShieldedBalance()
 ```
 
-#### 1.2 Enable Real Proofs
-- [ ] Set `USE_MOCK_PROOFS = false` in groth16.ts
-- [ ] Test locally with real proofs
-- [ ] Verify proof generation time (<3s)
-- [ ] Update badge to "PRODUCTION"
+#### 1.3 Update UI & Testing (2-3 hours)
+- [ ] Add "Deposit to Shielded Pool" button
+- [ ] Show shielded pool balance separately
+- [ ] Update privacy mode selector (Public, Shielded Pool, Private)
+- [ ] Test on devnet thoroughly
+- [ ] Verify transactions are NOT visible on Solscan
+- [ ] Test edge cases (insufficient funds, etc.)
 
-#### 1.3 Deploy & Verify
+#### 1.4 Deploy & Verify (1 hour)
 - [ ] Deploy to Vercel
-- [ ] Test on mainnet
-- [ ] Monitor for errors
+- [ ] Test on mainnet with small amounts
+- [ ] Verify Solscan shows NO sender/receiver/amount
 - [ ] Update documentation
+- [ ] Update badge to "TRUE PRIVACY"
 
 **Success Criteria:**
-- ✅ Real ZK proofs working in browser
-- ✅ Proof generation <3 seconds
-- ✅ Badge shows "PRODUCTION"
-- ✅ No console errors
+- ✅ Transactions invisible on Solscan (sender/receiver/amount hidden)
+- ✅ Shielded pool working on mainnet
+- ✅ Users can deposit, transfer, and withdraw
+- ✅ ZK proofs verified on-chain by Light Protocol
+- ✅ Badge shows "TRUE PRIVACY" or "LIGHT PROTOCOL ENABLED"
+
+**Alternative Approaches (if Light Protocol is too complex):**
+1. **Tornado Cash-style mixer** (simpler but less elegant)
+2. **Aztec Protocol** (Ethereum-focused, may have Solana port)
+3. **Custom Solana program** (most work, but full control)
+
+**Recommended:** Start with Light Protocol - it's the most mature solution for Solana privacy.
+
+---
+
+## 🎨 Phase 2: UI/UX Polish (Medium Priority)
+
+**Goal:** Make all pages as beautiful as homepage  
+**Timeline:** 4-6 hours  
+**Status:** Planned
 
 ---
 
