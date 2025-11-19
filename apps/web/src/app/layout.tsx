@@ -22,15 +22,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Temporary mobile console for debugging */}
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script dangerouslySetInnerHTML={{ __html: `
-          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            eruda.init();
-          }
-        ` }} />
-      </head>
       <body className={inter.className}>
         <ClientWalletProvider>
           <WalletConnectionGuard>

@@ -7,6 +7,7 @@ import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } f
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
 import { Navigation, Footer } from '@/components/Navigation';
+import Image from 'next/image';
 
 // Dynamic import to avoid SSR issues
 let createShieldedTransfer: any;
@@ -16,7 +17,7 @@ let encryptRecipientAddress: any;
 type PrivacyLevel = 'public' | 'shielded' | 'private';
 
 export default function WalletPage() {
-  const { publicKey, signTransaction, connected } = useWallet();
+  const { publicKey, signTransaction, connected, disconnect, select, wallets, wallet } = useWallet();
   const [sending, setSending] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
@@ -27,6 +28,8 @@ export default function WalletPage() {
   const [txResult, setTxResult] = useState<{ success: boolean; message: string; signature?: string } | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
   const [showBalance, setShowBalance] = useState(true);
+  const [showWalletSelector, setShowWalletSelector] = useState(false);
+  const [connectingWallet, setConnectingWallet] = useState<string | null>(null);
 
   useEffect(() => {
     // Load tokens based on network
@@ -68,6 +71,36 @@ export default function WalletPage() {
       }
     } catch (err) {
       console.error('Failed to fetch balance:', err);
+    }
+  };
+
+  const handleWalletSelect = async (walletName: string) => {
+    try {
+      setConnectingWallet(walletName);
+      const selectedWallet = wallets.find(w => w.adapter.name === walletName);
+      if (selectedWallet) {
+        select(selectedWallet.adapter.name);
+        // Give it a moment to connect
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    } catch (err) {
+      console.error('Failed to select wallet:', err);
+      setTxResult({
+        success: false,
+        message: `Failed to connect to ${walletName}. Please make sure it's installed.`,
+      });
+    } finally {
+      setConnectingWallet(null);
+      setShowWalletSelector(false);
+    }
+  };
+
+  const handleChangeWallet = async () => {
+    try {
+      await disconnect();
+      setShowWalletSelector(true);
+    } catch (err) {
+      console.error('Failed to disconnect:', err);
     }
   };
 
@@ -168,47 +201,173 @@ export default function WalletPage() {
           </p>
         </div>
 
-        {!connected ? (
-          /* Wallet Connect Card */
+        {!connected || showWalletSelector ? (
+          /* Wallet Connect/Selector Card */
           <div className="max-w-md mx-auto">
-            <div className="glass-card p-8 rounded-3xl animate-scale-in text-center shadow-xl">
-              <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-                <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Connect Your Wallet</h3>
-              <p className="text-gray-600 mb-6">
-                Connect your Solana wallet to start sending secure and private payments
-              </p>
-              <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-xl !px-8 !py-4 !text-lg !font-semibold !mx-auto" />
-              
-              <div className="mt-8 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                <p className="text-xs text-indigo-900 font-semibold mb-2">Supported Wallets</p>
-                <div className="flex items-center justify-center gap-3 flex-wrap">
-                  <span className="px-3 py-1 bg-white rounded-lg text-xs font-medium text-gray-700">Phantom</span>
-                  <span className="px-3 py-1 bg-white rounded-lg text-xs font-medium text-gray-700">Solflare</span>
-                  <span className="px-3 py-1 bg-white rounded-lg text-xs font-medium text-gray-700">Coinbase</span>
-                  <span className="px-3 py-1 bg-white rounded-lg text-xs font-medium text-gray-700">Trust</span>
+            <div className="glass-card p-6 sm:p-8 rounded-3xl animate-scale-in shadow-xl">
+              {/* Header */}
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
                 </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                  {showWalletSelector ? 'Choose a Different Wallet' : 'Connect Your Wallet'}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  {showWalletSelector ? 'Select a wallet to connect' : 'Choose your preferred Solana wallet'}
+                </p>
+              </div>
+
+              {/* Wallet List */}
+              <div className="space-y-3 mb-6">
+                {wallets.filter(w => w.readyState === 'Installed' || w.readyState === 'Loadable').map((w) => (
+                  <button
+                    key={w.adapter.name}
+                    onClick={() => handleWalletSelect(w.adapter.name)}
+                    disabled={connectingWallet !== null}
+                    className="w-full p-4 bg-white hover:bg-indigo-50 border-2 border-gray-200 hover:border-indigo-500 rounded-xl transition-all duration-200 flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed group"
+                  >
+                    {w.adapter.icon && (
+                      <div className="w-10 h-10 flex-shrink-0">
+                        <Image 
+                          src={w.adapter.icon} 
+                          alt={w.adapter.name}
+                          width={40}
+                          height={40}
+                          className="rounded-lg"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 text-left">
+                      <p className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                        {w.adapter.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {w.readyState === 'Installed' ? '✅ Detected' : '📲 Available'}
+                      </p>
+                    </div>
+                    {connectingWallet === w.adapter.name ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-indigo-600 border-t-transparent"></div>
+                    ) : (
+                      <svg className="w-5 h-5 text-gray-400 group-hover:text-indigo-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* Cancel Button (only show when changing wallet) */}
+              {showWalletSelector && (
+                <button
+                  onClick={() => setShowWalletSelector(false)}
+                  className="w-full py-3 px-6 rounded-xl font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all duration-200"
+                >
+                  Cancel
+                </button>
+              )}
+
+              {/* Help Text */}
+              <div className="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                <p className="text-xs text-indigo-900 font-semibold mb-2">💡 Don't see your wallet?</p>
+                <p className="text-xs text-gray-600">
+                  Make sure your wallet app is installed. On mobile, you may be redirected to install it.
+                </p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Main Payment Form - Takes 2 columns */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {/* Wallet Info Card */}
-              <div className="glass-card p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                      </svg>
+              <div className="glass-card p-4 sm:p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50">
+                {/* Mobile Layout */}
+                <div className="flex flex-col sm:hidden gap-4">
+                  {/* Wallet Info */}
+                  <div className="flex items-center gap-3">
+                    {wallet?.adapter.icon && (
+                      <div className="w-10 h-10 flex-shrink-0">
+                        <Image 
+                          src={wallet.adapter.icon} 
+                          alt={wallet.adapter.name}
+                          width={40}
+                          height={40}
+                          className="rounded-lg"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500">Connected: {wallet?.adapter.name}</p>
+                      <p className="font-mono text-sm font-semibold text-gray-900 truncate">
+                        {publicKey?.toString().slice(0, 8)}...{publicKey?.toString().slice(-8)}
+                      </p>
                     </div>
+                  </div>
+
+                  {/* Balance */}
+                  {balance !== null && (
+                    <div className="flex items-center justify-between p-3 bg-indigo-50 rounded-xl">
+                      <div className="flex-1">
+                        <p className="text-xs text-gray-500">Balance</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          {showBalance ? `${balance.toFixed(4)} SOL` : '••••••'}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setShowBalance(!showBalance)}
+                        className="p-2 hover:bg-white rounded-lg transition-colors"
+                        title={showBalance ? "Hide balance" : "Show balance"}
+                      >
+                        {showBalance ? (
+                          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleChangeWallet}
+                      className="flex-1 py-2.5 px-4 rounded-xl font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-all duration-200 text-sm"
+                    >
+                      🔄 Change Wallet
+                    </button>
+                    <button
+                      onClick={() => disconnect()}
+                      className="flex-1 py-2.5 px-4 rounded-xl font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-200 text-sm"
+                    >
+                      🚪 Disconnect
+                    </button>
+                  </div>
+                </div>
+
+                {/* Desktop Layout */}
+                <div className="hidden sm:flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {wallet?.adapter.icon && (
+                      <div className="w-12 h-12 flex-shrink-0">
+                        <Image 
+                          src={wallet.adapter.icon} 
+                          alt={wallet.adapter.name}
+                          width={48}
+                          height={48}
+                          className="rounded-xl"
+                        />
+                      </div>
+                    )}
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">Connected Wallet</p>
+                      <p className="text-xs text-gray-500 mb-1">Connected: {wallet?.adapter.name}</p>
                       <p className="font-mono text-sm font-semibold text-gray-900">
                         {publicKey?.toString().slice(0, 6)}...{publicKey?.toString().slice(-6)}
                       </p>
@@ -241,20 +400,31 @@ export default function WalletPage() {
                         </button>
                       </div>
                     )}
-                    <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-lg !px-4 !py-2 !text-sm !font-semibold" />
+                    <button
+                      onClick={handleChangeWallet}
+                      className="py-2 px-4 rounded-lg font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-all duration-200 text-sm"
+                    >
+                      Change Wallet
+                    </button>
+                    <button
+                      onClick={() => disconnect()}
+                      className="py-2 px-4 rounded-lg font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-200 text-sm"
+                    >
+                      Disconnect
+                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Payment Form Card */}
-              <div className="glass-card p-8 rounded-2xl animate-slide-up shadow-lg border border-white/50" style={{animationDelay: '0.1s'}}>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Payment</h2>
+              <div className="glass-card p-4 sm:p-8 rounded-2xl animate-slide-up shadow-lg border border-white/50" style={{animationDelay: '0.1s'}}>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Send Payment</h2>
                 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Token Selector */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-3">Select Token</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <label className="block text-sm font-semibold text-gray-900 mb-2 sm:mb-3">Select Token</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                       {tokens.map((token) => (
                         <button
                           key={token.symbol}
@@ -263,13 +433,13 @@ export default function WalletPage() {
                             fetchBalance();
                           }}
                           disabled={sending}
-                          className={`p-4 rounded-xl border-2 transition-all hover-scale ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all active:scale-95 ${
                             selectedToken?.symbol === token.symbol
                               ? 'border-indigo-500 bg-indigo-50 shadow-lg'
                               : 'border-gray-200 hover:border-indigo-300 bg-white'
                           } disabled:opacity-50`}
                         >
-                          <div className="text-2xl mb-2">{token.logo}</div>
+                          <div className="text-xl sm:text-2xl mb-1 sm:mb-2">{token.logo}</div>
                           <div className="text-xs font-semibold text-gray-900">{token.symbol}</div>
                         </button>
                       ))}
@@ -278,28 +448,35 @@ export default function WalletPage() {
 
                   {/* Privacy Level */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-3">Privacy Level</label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <label className="block text-sm font-semibold text-gray-900 mb-2 sm:mb-3">Privacy Level</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                       {(['public', 'shielded', 'private'] as PrivacyLevel[]).map((level) => (
                         <button
                           key={level}
                           onClick={() => setPrivacyLevel(level)}
                           disabled={sending}
-                          className={`p-4 rounded-xl border-2 transition-all hover-scale ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all active:scale-95 ${
                             privacyLevel === level
                               ? 'border-indigo-500 bg-indigo-50 shadow-md'
                               : 'border-gray-200 hover:border-indigo-300 bg-white'
-                          } disabled:opacity-50`}
+                          } disabled:opacity-50 text-left`}
                         >
-                          <div className="text-lg font-semibold text-gray-900 capitalize mb-1">{level}</div>
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="text-base sm:text-lg font-semibold text-gray-900 capitalize">{level}</div>
+                            <div className="text-base">
+                              {level === 'public' && '⚡'}
+                              {level === 'shielded' && '🛡️'}
+                              {level === 'private' && '🔒'}
+                            </div>
+                          </div>
                           <div className="text-xs text-gray-600">
-                            {level === 'public' && '⚡ Fast'}
-                            {level === 'shielded' && '🛡️ Hidden amount'}
-                            {level === 'private' && '🔒 Anonymous'}
+                            {level === 'public' && 'Fast & visible'}
+                            {level === 'shielded' && 'Hidden amount'}
+                            {level === 'private' && 'Fully anonymous'}
                           </div>
                           {level !== 'public' && (
                             <span className="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
-                              ZK PROOFS READY
+                              ZK READY
                             </span>
                           )}
                         </button>
@@ -314,9 +491,9 @@ export default function WalletPage() {
                       type="text"
                       value={recipient}
                       onChange={(e) => setRecipient(e.target.value)}
-                      placeholder="Enter Solana wallet address"
+                      placeholder="Solana wallet address"
                       disabled={sending}
-                      className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
+                      className="w-full px-4 py-3 sm:py-3.5 bg-white border-2 border-gray-200 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                     />
                   </div>
 
@@ -332,15 +509,15 @@ export default function WalletPage() {
                         step="0.000000001"
                         min="0"
                         disabled={sending}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50 pr-20"
+                        className="w-full px-4 py-3 sm:py-3.5 bg-white border-2 border-gray-200 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50 pr-16 sm:pr-20"
                       />
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-500">
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm font-semibold text-gray-500">
                         {selectedToken?.symbol || 'TOKEN'}
                       </div>
                     </div>
-                    {balance !== null && amount && (
+                    {balance !== null && amount && parseFloat(amount) > 0 && (
                       <p className="text-xs text-gray-500 mt-2">
-                        Remaining: {(balance - parseFloat(amount)).toFixed(4)} {selectedToken?.symbol}
+                        Remaining: {Math.max(0, balance - parseFloat(amount)).toFixed(4)} {selectedToken?.symbol}
                       </p>
                     )}
                   </div>
@@ -352,10 +529,10 @@ export default function WalletPage() {
                       type="text"
                       value={memo}
                       onChange={(e) => setMemo(e.target.value)}
-                      placeholder="Add a note (optional)"
+                      placeholder="Add a note"
                       maxLength={50}
                       disabled={sending}
-                      className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
+                      className="w-full px-4 py-3 sm:py-3.5 bg-white border-2 border-gray-200 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                     />
                   </div>
 
@@ -363,7 +540,7 @@ export default function WalletPage() {
                   <button
                     onClick={sendPayment}
                     disabled={sending || !recipient || !amount}
-                    className="w-full py-4 px-6 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover-lift"
+                    className="w-full py-4 sm:py-4 px-6 rounded-xl font-semibold text-base sm:text-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-95 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {sending ? (
                       <span className="flex items-center justify-center gap-2">
@@ -379,16 +556,16 @@ export default function WalletPage() {
 
               {/* Transaction Result */}
               {txResult && (
-                <div className={`glass-card p-6 rounded-2xl animate-scale-in shadow-lg border-2 ${
+                <div className={`glass-card p-4 sm:p-6 rounded-2xl animate-scale-in shadow-lg border-2 ${
                   txResult.success
                     ? 'border-green-500 bg-green-50'
                     : 'border-red-500 bg-red-50'
                 }`}>
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
                       txResult.success ? 'bg-green-500' : 'bg-red-500'
                     }`}>
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         {txResult.success ? (
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         ) : (
@@ -396,11 +573,11 @@ export default function WalletPage() {
                         )}
                       </svg>
                     </div>
-                    <div className="flex-1">
-                      <h3 className={`font-bold text-lg mb-1 ${txResult.success ? 'text-green-900' : 'text-red-900'}`}>
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-bold text-base sm:text-lg mb-1 ${txResult.success ? 'text-green-900' : 'text-red-900'}`}>
                         {txResult.success ? '🎉 Payment Successful!' : '❌ Payment Failed'}
                       </h3>
-                      <p className={`text-sm mb-3 ${txResult.success ? 'text-green-700' : 'text-red-700'}`}>
+                      <p className={`text-xs sm:text-sm mb-3 ${txResult.success ? 'text-green-700' : 'text-red-700'}`}>
                         {txResult.message}
                       </p>
                       {txResult.signature && (
@@ -408,10 +585,10 @@ export default function WalletPage() {
                           href={`https://solscan.io/tx/${txResult.signature}${process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'devnet' ? '?cluster=devnet' : ''}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+                          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-indigo-600 hover:text-indigo-700 active:text-indigo-800"
                         >
                           View on Solscan
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </a>
@@ -422,8 +599,8 @@ export default function WalletPage() {
               )}
             </div>
 
-            {/* Sidebar - Info & Features */}
-            <div className="space-y-6">
+            {/* Sidebar - Info & Features (Hidden on mobile, shown on desktop) */}
+            <div className="hidden lg:block space-y-6">
               {/* Privacy Features */}
               <div className="glass-card p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50" style={{animationDelay: '0.2s'}}>
                 <h3 className="text-lg font-bold text-gray-900 mb-4">🔒 Privacy Features</h3>
