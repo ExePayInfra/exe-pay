@@ -3,7 +3,7 @@
 import { LogoText } from './Logo';
 import { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SecureWalletButton } from './SecureWalletButton';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,7 +52,7 @@ export function Navigation() {
                 </a>
               ) : (
                 <>
-                  <SecureWalletButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !transition-all" />
+                  <WalletMultiButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !transition-all" />
                 </>
               )}
             </div>
@@ -101,7 +101,7 @@ export function Navigation() {
                 </a>
               ) : (
                 <div className="w-full">
-                  <SecureWalletButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !w-full !transition-all" />
+                  <WalletMultiButton className="!bg-indigo-600 hover:!bg-indigo-700 !rounded-lg !font-semibold !px-6 !py-2.5 !w-full !transition-all" />
                 </div>
               )}
             </div>

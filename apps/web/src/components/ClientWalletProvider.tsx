@@ -91,25 +91,32 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     setMounted(true);
     
     // Only load wallets in the browser
-    import('@solana/wallet-adapter-wallets').then(({ 
-      PhantomWalletAdapter, 
-      SolflareWalletAdapter,
-      CoinbaseWalletAdapter,
-      TrustWalletAdapter,
-      LedgerWalletAdapter,
-      TorusWalletAdapter,
-      SlopeWalletAdapter,
-      GlowWalletAdapter,
-      BackpackWalletAdapter,
-      BraveWalletAdapter
-    }) => {
+    console.log('[ExePay] Loading wallet adapters...');
+    import('@solana/wallet-adapter-wallets').then((walletModule) => {
+      console.log('[ExePay] Wallet module loaded:', Object.keys(walletModule));
+      
+      const { 
+        PhantomWalletAdapter, 
+        SolflareWalletAdapter,
+        CoinbaseWalletAdapter,
+        TrustWalletAdapter,
+        LedgerWalletAdapter,
+        TorusWalletAdapter,
+        SlopeWalletAdapter,
+        GlowWalletAdapter,
+        BackpackWalletAdapter,
+        BraveWalletAdapter
+      } = walletModule;
+      
       // Detect if we're on mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         typeof window !== 'undefined' ? window.navigator.userAgent : ''
       );
       
+      console.log('[ExePay] Is mobile:', isMobile);
+      
       // Configure wallets with mobile and web support
-      setWallets([
+      const walletList = [
         new PhantomWalletAdapter(), // Popular, mobile + web
         new SolflareWalletAdapter(), // Popular, mobile + web
         new BackpackWalletAdapter(), // Popular, web
@@ -120,9 +127,13 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
         new SlopeWalletAdapter(), // Mobile + web
         new TorusWalletAdapter(), // Web
         new LedgerWalletAdapter(), // Hardware wallet
-      ]);
+      ];
+      
+      console.log('[ExePay] Wallets configured:', walletList.length);
+      setWallets(walletList);
     }).catch(err => {
-      console.error('Failed to load wallet adapters:', err);
+      console.error('[ExePay] Failed to load wallet adapters:', err);
+      console.error('[ExePay] Error details:', err.message, err.stack);
     });
 
     // Clear ALL wallet-related cache on mount to force fresh connections (DESKTOP ONLY)
