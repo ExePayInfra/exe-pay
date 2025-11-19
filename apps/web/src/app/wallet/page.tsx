@@ -111,6 +111,39 @@ export default function WalletPage() {
         throw new Error('Connection failed - no public key received. Please try again.');
       }
       
+      // CRITICAL SECURITY CHECK: Verify wallet is actually unlocked by checking the extension directly
+      // Some wallets cache the connection even when locked, so we need to verify
+      if (walletName === 'Phantom' && typeof window !== 'undefined' && window.solana?.isPhantom) {
+        // Check if we can actually access the wallet (not just cached data)
+        try {
+          // Try to get fresh data from the wallet - this will fail if locked
+          const testConnection = await window.solana.connect({ onlyIfTrusted: false });
+          if (!testConnection || !testConnection.publicKey) {
+            throw new Error('Wallet is locked');
+          }
+          console.log(`[ExePay Security] Phantom wallet verified as unlocked`);
+        } catch (verifyErr: any) {
+          console.error('[ExePay Security] Phantom verification failed:', verifyErr);
+          // Disconnect the cached connection
+          await selectedWallet.adapter.disconnect();
+          throw new Error('Phantom wallet is locked. Please unlock your wallet and try again.');
+        }
+      }
+      
+      if (walletName === 'Solflare' && typeof window !== 'undefined' && window.solflare) {
+        try {
+          const testConnection = await window.solflare.connect();
+          if (!testConnection || !testConnection.publicKey) {
+            throw new Error('Wallet is locked');
+          }
+          console.log(`[ExePay Security] Solflare wallet verified as unlocked`);
+        } catch (verifyErr: any) {
+          console.error('[ExePay Security] Solflare verification failed:', verifyErr);
+          await selectedWallet.adapter.disconnect();
+          throw new Error('Solflare wallet is locked. Please unlock your wallet and try again.');
+        }
+      }
+      
       console.log(`[ExePay] Successfully connected to ${walletName}`);
       console.log(`[ExePay] Public Key: ${selectedWallet.adapter.publicKey.toString()}`);
     } catch (err: any) {
