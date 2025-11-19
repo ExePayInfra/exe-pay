@@ -30,6 +30,7 @@ export default function WalletPage() {
   const [showBalance, setShowBalance] = useState(true);
   const [showWalletSelector, setShowWalletSelector] = useState(false);
   const [connectingWallet, setConnectingWallet] = useState<string | null>(null);
+  const [verifiedConnection, setVerifiedConnection] = useState(false);
 
   useEffect(() => {
     // Load tokens based on network
@@ -111,36 +112,47 @@ export default function WalletPage() {
         throw new Error('Connection failed - no public key received. Please try again.');
       }
       
-      // CRITICAL SECURITY CHECK: Verify wallet is actually unlocked by checking the extension directly
-      // Some wallets cache the connection even when locked, so we need to verify
-      if (walletName === 'Phantom' && typeof window !== 'undefined' && window.solana?.isPhantom) {
-        // Check if we can actually access the wallet (not just cached data)
-        try {
-          // Try to get fresh data from the wallet - this will fail if locked
-          const testConnection = await window.solana.connect({ onlyIfTrusted: false });
-          if (!testConnection || !testConnection.publicKey) {
-            throw new Error('Wallet is locked');
-          }
-          console.log(`[ExePay Security] Phantom wallet verified as unlocked`);
-        } catch (verifyErr: any) {
-          console.error('[ExePay Security] Phantom verification failed:', verifyErr);
-          // Disconnect the cached connection
-          await selectedWallet.adapter.disconnect();
-          throw new Error('Phantom wallet is locked. Please unlock your wallet and try again.');
+      // CRITICAL SECURITY CHECK: Verify wallet is actually unlocked by requesting a signature
+      // This is the ONLY way to guarantee the wallet is unlocked and user has approved
+      try {
+        console.log(`[ExePay Security] Verifying ${walletName} is unlocked by requesting test signature...`);
+        
+        // Create a simple test message
+        const testMessage = new TextEncoder().encode(
+          `ExePay Security Check - ${Date.now()}\n\nThis signature verifies your wallet is unlocked.\nNo transaction will be made.`
+        );
+        
+        // Request signature - this will ONLY work if wallet is unlocked
+        // If locked, it will show unlock screen first
+        const signature = await selectedWallet.adapter.signMessage!(testMessage);
+        
+        if (!signature || signature.length === 0) {
+          throw new Error('Signature verification failed');
         }
-      }
-      
-      if (walletName === 'Solflare' && typeof window !== 'undefined' && window.solflare) {
+        
+        console.log(`[ExePay Security] ${walletName} wallet verified as unlocked ✅`);
+        console.log(`[ExePay Security] Signature received (${signature.length} bytes)`);
+        
+        // Mark connection as verified
+        setVerifiedConnection(true);
+      } catch (verifyErr: any) {
+        console.error(`[ExePay Security] ${walletName} verification failed:`, verifyErr);
+        
+        // Disconnect the connection since we couldn't verify it's unlocked
         try {
-          const testConnection = await window.solflare.connect();
-          if (!testConnection || !testConnection.publicKey) {
-            throw new Error('Wallet is locked');
-          }
-          console.log(`[ExePay Security] Solflare wallet verified as unlocked`);
-        } catch (verifyErr: any) {
-          console.error('[ExePay Security] Solflare verification failed:', verifyErr);
           await selectedWallet.adapter.disconnect();
-          throw new Error('Solflare wallet is locked. Please unlock your wallet and try again.');
+        } catch (disconnectErr) {
+          console.error('Failed to disconnect:', disconnectErr);
+        }
+        
+        // Reset verified connection state
+        setVerifiedConnection(false);
+        
+        // Provide user-friendly error message
+        if (verifyErr.message?.includes('User rejected') || verifyErr.code === 4001) {
+          throw new Error('Signature request rejected. Connection cancelled for security.');
+        } else {
+          throw new Error(`Could not verify ${walletName} is unlocked. Please make sure your wallet is unlocked and try again.`);
         }
       }
       
@@ -178,12 +190,20 @@ export default function WalletPage() {
 
   const handleChangeWallet = async () => {
     try {
+      setVerifiedConnection(false);
       await disconnect();
       setShowWalletSelector(true);
     } catch (err) {
       console.error('Failed to disconnect:', err);
     }
   };
+
+  // Reset verified connection when wallet disconnects
+  useEffect(() => {
+    if (!connected) {
+      setVerifiedConnection(false);
+    }
+  }, [connected]);
 
   const sendPayment = async () => {
     setSending(true);
@@ -282,7 +302,7 @@ export default function WalletPage() {
           </p>
         </div>
 
-        {!connected || showWalletSelector ? (
+        {(!connected || !verifiedConnection) || showWalletSelector ? (
           /* Wallet Connect/Selector Card */
           <div className="max-w-md mx-auto">
             <div className="glass-card p-6 sm:p-8 rounded-3xl animate-scale-in shadow-xl">
