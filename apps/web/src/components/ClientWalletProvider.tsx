@@ -93,20 +93,7 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     // Only load wallets in the browser
     console.log('[ExePay] Loading wallet adapters...');
     import('@solana/wallet-adapter-wallets').then((walletModule) => {
-      console.log('[ExePay] Wallet module loaded:', Object.keys(walletModule));
-      
-      const { 
-        PhantomWalletAdapter, 
-        SolflareWalletAdapter,
-        CoinbaseWalletAdapter,
-        TrustWalletAdapter,
-        LedgerWalletAdapter,
-        TorusWalletAdapter,
-        SlopeWalletAdapter,
-        GlowWalletAdapter,
-        BackpackWalletAdapter,
-        BraveWalletAdapter
-      } = walletModule;
+      console.log('[ExePay] Wallet module loaded');
       
       // Detect if we're on mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -115,21 +102,37 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       
       console.log('[ExePay] Is mobile:', isMobile);
       
-      // Configure wallets with mobile and web support
-      const walletList = [
-        new PhantomWalletAdapter(), // Popular, mobile + web
-        new SolflareWalletAdapter(), // Popular, mobile + web
-        new BackpackWalletAdapter(), // Popular, web
-        new GlowWalletAdapter(), // Popular, web
-        new CoinbaseWalletAdapter(), // Mobile + web
-        new TrustWalletAdapter(), // Mobile + web
-        new BraveWalletAdapter(), // Web (built into Brave)
-        new SlopeWalletAdapter(), // Mobile + web
-        new TorusWalletAdapter(), // Web
-        new LedgerWalletAdapter(), // Hardware wallet
+      // Safely instantiate wallets - only add ones that exist
+      const walletList: Adapter[] = [];
+      
+      // Try each wallet adapter individually
+      const adapters = [
+        { name: 'Phantom', Adapter: walletModule.PhantomWalletAdapter },
+        { name: 'Solflare', Adapter: walletModule.SolflareWalletAdapter },
+        { name: 'Coinbase', Adapter: walletModule.CoinbaseWalletAdapter },
+        { name: 'Trust', Adapter: walletModule.TrustWalletAdapter },
+        { name: 'Backpack', Adapter: walletModule.BackpackWalletAdapter },
+        { name: 'Glow', Adapter: walletModule.GlowWalletAdapter },
+        { name: 'Brave', Adapter: walletModule.BraveWalletAdapter },
+        { name: 'Slope', Adapter: walletModule.SlopeWalletAdapter },
+        { name: 'Torus', Adapter: walletModule.TorusWalletAdapter },
+        { name: 'Ledger', Adapter: walletModule.LedgerWalletAdapter },
       ];
       
-      console.log('[ExePay] Wallets configured:', walletList.length);
+      for (const { name, Adapter: WalletAdapter } of adapters) {
+        try {
+          if (WalletAdapter && typeof WalletAdapter === 'function') {
+            walletList.push(new WalletAdapter());
+            console.log(`[ExePay] ✅ ${name} adapter loaded`);
+          } else {
+            console.log(`[ExePay] ⚠️ ${name} adapter not available`);
+          }
+        } catch (err) {
+          console.error(`[ExePay] ❌ Failed to load ${name}:`, err);
+        }
+      }
+      
+      console.log('[ExePay] Total wallets configured:', walletList.length);
       setWallets(walletList);
     }).catch(err => {
       console.error('[ExePay] Failed to load wallet adapters:', err);
