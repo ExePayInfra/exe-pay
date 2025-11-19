@@ -78,16 +78,64 @@ export default function WalletPage() {
     try {
       setConnectingWallet(walletName);
       const selectedWallet = wallets.find(w => w.adapter.name === walletName);
-      if (selectedWallet) {
-        select(selectedWallet.adapter.name);
-        // Give it a moment to connect
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!selectedWallet) {
+        throw new Error('Wallet not found');
       }
-    } catch (err) {
-      console.error('Failed to select wallet:', err);
+
+      // Check if wallet is already connected (shouldn't happen, but safety check)
+      if (selectedWallet.adapter.connected) {
+        console.warn(`[ExePay Security] ${walletName} already connected - disconnecting first`);
+        try {
+          await selectedWallet.adapter.disconnect();
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (disconnectErr) {
+          console.error('Failed to disconnect:', disconnectErr);
+        }
+      }
+
+      // First select the wallet
+      select(selectedWallet.adapter.name);
+      // Wait a moment for the selection to register
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Then trigger the connection
+      // This will automatically:
+      // 1. Open the wallet popup
+      // 2. Show unlock screen if wallet is locked
+      // 3. Show approval screen if wallet is unlocked
+      console.log(`[ExePay] Attempting to connect to ${walletName}...`);
+      await selectedWallet.adapter.connect();
+      
+      // Verify the connection actually worked and we have a public key
+      if (!selectedWallet.adapter.publicKey) {
+        throw new Error('Connection failed - no public key received. Please try again.');
+      }
+      
+      console.log(`[ExePay] Successfully connected to ${walletName}`);
+      console.log(`[ExePay] Public Key: ${selectedWallet.adapter.publicKey.toString()}`);
+    } catch (err: any) {
+      console.error('Failed to connect wallet:', err);
+      
+      // Provide user-friendly error messages
+      let errorMessage = `Failed to connect to ${walletName}.`;
+      
+      if (err.message?.includes('User rejected') || err.message?.includes('User cancelled') || err.code === 4001) {
+        errorMessage = 'Connection rejected. Please approve the connection in your wallet.';
+      } else if (err.message?.includes('User closed') || err.message?.includes('closed')) {
+        errorMessage = 'Connection cancelled. Please try again and approve the connection.';
+      } else if (err.message?.includes('no public key')) {
+        errorMessage = 'Connection failed. Please make sure your wallet is unlocked and try again.';
+      } else if (err.message?.includes('Wallet not found')) {
+        errorMessage = 'Wallet not found. Please make sure it\'s installed.';
+      } else if (err.message?.includes('not installed')) {
+        errorMessage = `${walletName} is not installed. Please install it and try again.`;
+      } else {
+        errorMessage += ` ${err.message || 'Please make sure it\'s installed and try again.'}`;
+      }
+      
       setTxResult({
         success: false,
-        message: `Failed to connect to ${walletName}. Please make sure it's installed.`,
+        message: errorMessage,
       });
     } finally {
       setConnectingWallet(null);
@@ -222,7 +270,23 @@ export default function WalletPage() {
 
               {/* Wallet List */}
               <div className="space-y-3 mb-6">
-                {wallets.filter(w => w.readyState === 'Installed' || w.readyState === 'Loadable').map((w) => (
+                {wallets
+                  .filter(w => w.readyState === 'Installed' || w.readyState === 'Loadable')
+                  // Remove duplicate wallets (especially MetaMask which appears multiple times)
+                  .filter((w, index, self) => 
+                    index === self.findIndex(wallet => wallet.adapter.name === w.adapter.name)
+                  )
+                  // Prioritize Phantom and Solflare at the top
+                  .sort((a, b) => {
+                    const priority = ['Phantom', 'Solflare', 'Coinbase', 'Trust'];
+                    const aIndex = priority.indexOf(a.adapter.name);
+                    const bIndex = priority.indexOf(b.adapter.name);
+                    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                    if (aIndex !== -1) return -1;
+                    if (bIndex !== -1) return 1;
+                    return 0;
+                  })
+                  .map((w) => (
                   <button
                     key={w.adapter.name}
                     onClick={() => handleWalletSelect(w.adapter.name)}
