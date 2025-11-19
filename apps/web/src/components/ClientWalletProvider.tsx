@@ -52,24 +52,34 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Force disconnect from Phantom/Solflare on page load
+  // Force disconnect from Phantom/Solflare on page load (DESKTOP ONLY)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Disconnect Phantom if connected
+      // Check if we're on mobile - DON'T force disconnect on mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        window.navigator.userAgent
+      );
+      
+      if (isMobile) {
+        console.log('[ExePay Security] Mobile detected - skipping force disconnect for better UX');
+        return;
+      }
+      
+      // Desktop only: Disconnect Phantom if connected
       if (window.solana?.isPhantom && window.solana.isConnected) {
         try {
           window.solana.disconnect();
-          console.log('[ExePay Security] Disconnected Phantom on page load');
+          console.log('[ExePay Security] Disconnected Phantom on page load (Desktop)');
         } catch (e) {
           console.error('[ExePay Security] Failed to disconnect Phantom:', e);
         }
       }
       
-      // Disconnect Solflare if connected
+      // Desktop only: Disconnect Solflare if connected
       if (window.solflare?.isConnected) {
         try {
           window.solflare.disconnect();
-          console.log('[ExePay Security] Disconnected Solflare on page load');
+          console.log('[ExePay Security] Disconnected Solflare on page load (Desktop)');
         } catch (e) {
           console.error('[ExePay Security] Failed to disconnect Solflare:', e);
         }
@@ -115,19 +125,29 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       console.error('Failed to load wallet adapters:', err);
     });
 
-    // Clear ALL wallet-related cache on mount to force fresh connections
+    // Clear ALL wallet-related cache on mount to force fresh connections (DESKTOP ONLY)
     if (typeof window !== 'undefined') {
-      // Clear our app's wallet session
+      // Check if we're on mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        window.navigator.userAgent
+      );
+      
+      if (isMobile) {
+        console.log('[ExePay Security] Mobile detected - preserving wallet cache for better UX');
+        return;
+      }
+      
+      // Desktop only: Clear our app's wallet session
       localStorage.removeItem('exepay-wallet-session');
       localStorage.removeItem('walletName');
       
-      // Clear Phantom's cached permission
+      // Desktop only: Clear Phantom's cached permission
       localStorage.removeItem('phantom_permission');
       
-      // Clear Solflare's cached permission
+      // Desktop only: Clear Solflare's cached permission
       localStorage.removeItem('solflare_permission');
       
-      // Clear any other wallet adapter cache
+      // Desktop only: Clear any other wallet adapter cache
       const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -137,7 +157,7 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       }
       keysToRemove.forEach(key => localStorage.removeItem(key));
       
-      console.log('[ExePay Security] Cleared cached wallet permissions for fresh session');
+      console.log('[ExePay Security] Cleared cached wallet permissions for fresh session (Desktop)');
     }
 
     // Clear wallet connection on tab/window close (session-based)
