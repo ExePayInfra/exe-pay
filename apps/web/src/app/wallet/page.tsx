@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { SecureWalletButton } from '@/components/SecureWalletButton';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
@@ -182,7 +181,7 @@ export default function WalletPage() {
               <p className="text-gray-600 mb-6">
                 Connect your Solana wallet to start sending secure and private payments
               </p>
-              <SecureWalletButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-xl !px-8 !py-4 !text-lg !font-semibold !mx-auto" />
+              <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-xl !px-8 !py-4 !text-lg !font-semibold !mx-auto" />
               
               <div className="mt-8 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
                 <p className="text-xs text-indigo-900 font-semibold mb-2">Supported Wallets</p>
@@ -242,7 +241,7 @@ export default function WalletPage() {
                         </button>
                       </div>
                     )}
-                    <SecureWalletButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-lg !px-4 !py-2 !text-sm !font-semibold" />
+                    <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700 !rounded-lg !px-4 !py-2 !text-sm !font-semibold" />
                   </div>
                 </div>
               </div>
