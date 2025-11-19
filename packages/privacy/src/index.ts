@@ -13,6 +13,9 @@ export * from "./shielded.js";
 export * from "./private.js";
 export * from "./proofs/groth16.js";
 
+// Export Light Protocol integration (TRUE on-chain privacy)
+export * from "./lightprotocol.js";
+
 export interface ProveSpendResult {
   readonly proof: Uint8Array;
   readonly instruction: TransactionInstruction;
