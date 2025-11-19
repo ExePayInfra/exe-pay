@@ -13,8 +13,12 @@ import Image from 'next/image';
 let createShieldedTransfer: any;
 let createPrivateTransfer: any;
 let encryptRecipientAddress: any;
+// Light Protocol functions for TRUE on-chain privacy
+let initializeLightProtocol: any;
+let createLightShieldedTransfer: any;
+let getShieldedBalance: any;
 
-type PrivacyLevel = 'public' | 'shielded' | 'private';
+type PrivacyLevel = 'public' | 'shielded' | 'private' | 'light';
 
 export default function WalletPage() {
   const { publicKey, signTransaction, connected, disconnect, select, wallets, wallet } = useWallet();
@@ -44,6 +48,11 @@ export default function WalletPage() {
       createShieldedTransfer = mod.createShieldedTransfer;
       createPrivateTransfer = mod.createPrivateTransfer;
       encryptRecipientAddress = mod.encryptRecipientAddress;
+      // Light Protocol functions for TRUE privacy
+      initializeLightProtocol = mod.initializeLightProtocol;
+      createLightShieldedTransfer = mod.createLightShieldedTransfer;
+      getShieldedBalance = mod.getShieldedBalance;
+      console.log('✅ Light Protocol functions loaded');
     }).catch(err => {
       console.error('Failed to load privacy module:', err);
     });
@@ -225,10 +234,52 @@ export default function WalletPage() {
       const recipientPubkey = new PublicKey(recipient);
       const senderPubkey = publicKey;
 
-      let transaction: Transaction;
       const amountValue = selectedToken.mint === 'native'
         ? Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL)
         : parseTokenAmount(amount, selectedToken.decimals);
+
+      // Handle Light Protocol (TRUE privacy)
+      if (privacyLevel === 'light') {
+        console.log('🌟 Light Protocol mode selected - TRUE privacy!');
+        
+        if (!initializeLightProtocol || !createLightShieldedTransfer) {
+          throw new Error('Light Protocol functions not loaded. Please refresh and try again.');
+        }
+
+        // Initialize Light Protocol RPC
+        const lightRpc = await initializeLightProtocol({
+          rpcEndpoint: rpcUrl,
+          network: process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'mainnet-beta',
+        });
+
+        // Create shielded transfer (TRUE private - invisible on Solscan)
+        const signature = await createLightShieldedTransfer(
+          lightRpc,
+          connection,
+          senderPubkey,
+          recipientPubkey,
+          BigInt(amountValue)
+        );
+
+        setTxResult({
+          success: true,
+          message: `🌟 TRUE PRIVATE payment sent! Sender, receiver, and amount are HIDDEN on Solscan. (${privacyLevel} mode)`,
+          signature,
+        });
+
+        // Refresh balance
+        fetchBalance();
+        
+        // Clear form
+        setRecipient('');
+        setAmount('');
+        setMemo('');
+
+        return; // Exit early - Light Protocol handled
+      }
+
+      // Standard or ZK-proof mode (not true privacy)
+      let transaction: Transaction;
 
       // Build transaction based on token type
       if (selectedToken.mint === 'native') {
@@ -569,32 +620,43 @@ export default function WalletPage() {
                   {/* Privacy Level */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-900 mb-2 sm:mb-3">Privacy Level</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-                      {(['public', 'shielded', 'private'] as PrivacyLevel[]).map((level) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                      {(['public', 'shielded', 'private', 'light'] as PrivacyLevel[]).map((level) => (
                         <button
                           key={level}
                           onClick={() => setPrivacyLevel(level)}
                           disabled={sending}
                           className={`p-3 sm:p-4 rounded-xl border-2 transition-all active:scale-95 ${
                             privacyLevel === level
-                              ? 'border-indigo-500 bg-indigo-50 shadow-md'
+                              ? level === 'light'
+                                ? 'border-purple-500 bg-purple-50 shadow-md'
+                                : 'border-indigo-500 bg-indigo-50 shadow-md'
                               : 'border-gray-200 hover:border-indigo-300 bg-white'
                           } disabled:opacity-50 text-left`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <div className="text-base sm:text-lg font-semibold text-gray-900 capitalize">{level}</div>
+                            <div className="text-base sm:text-lg font-semibold text-gray-900 capitalize">
+                              {level === 'light' ? 'Light Protocol' : level}
+                            </div>
                             <div className="text-base">
                               {level === 'public' && '⚡'}
                               {level === 'shielded' && '🛡️'}
                               {level === 'private' && '🔒'}
+                              {level === 'light' && '🌟'}
                             </div>
                           </div>
                           <div className="text-xs text-gray-600">
                             {level === 'public' && 'Fast & visible'}
-                            {level === 'shielded' && 'Hidden amount'}
-                            {level === 'private' && 'Fully anonymous'}
+                            {level === 'shielded' && 'Hidden amount (ZK proofs)'}
+                            {level === 'private' && 'Fully anonymous (ZK proofs)'}
+                            {level === 'light' && 'TRUE privacy - invisible on Solscan'}
                           </div>
-                          {level !== 'public' && (
+                          {level === 'light' && (
+                            <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
+                              🔥 TRUE PRIVACY
+                            </span>
+                          )}
+                          {(level === 'shielded' || level === 'private') && (
                             <span className="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
                               ZK READY
                             </span>
