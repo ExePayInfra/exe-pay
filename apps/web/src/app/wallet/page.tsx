@@ -114,6 +114,9 @@ export default function WalletPage() {
       
       // CRITICAL SECURITY CHECK: Verify wallet is actually unlocked by requesting a signature
       // This is the ONLY way to guarantee the wallet is unlocked and user has approved
+      // ✅ Works for ALL wallets (Phantom, Solflare, Coinbase, Trust, etc.)
+      // ✅ Works on BOTH desktop and mobile
+      // ✅ Prevents silent connections with locked wallets
       try {
         console.log(`[ExePay Security] Verifying ${walletName} is unlocked by requesting test signature...`);
         
