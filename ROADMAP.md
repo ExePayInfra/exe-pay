@@ -1,8 +1,8 @@
 # ExePay Development Roadmap
 
-**Last Updated:** November 18, 2025  
+**Last Updated:** November 19, 2025  
 **Current Status:** Production (Mainnet)  
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 
 ---
 
@@ -67,12 +67,30 @@ Build a production-ready, privacy-first payments SDK for Solana that enables:
 #### Security Features
 - [x] Secure wallet connection system with disconnect functionality
 - [x] Session-based wallet management (auto-disconnect on browser close)
-- [x] Force-disconnect on page load for fresh authorization
+- [x] Force-disconnect on page load for fresh authorization (desktop only)
 - [x] Multi-wallet support with easy switching
 - [x] Secure transaction approval flow
 - [x] Custom wallet button with enhanced security (SecureWalletButton)
 - [x] Wallet connection guard for monitoring and cleanup
-- [x] localStorage permission cache clearing
+- [x] localStorage permission cache clearing (desktop only)
+- [x] Mobile-optimized wallet detection (preserves state for better UX)
+- [x] Safe wallet adapter instantiation with error handling
+
+#### Mobile UX (NEW - November 19, 2025)
+- [x] Custom wallet selector with visual wallet list
+- [x] "Change Wallet" button for easy switching
+- [x] Cancel button to abort wallet selection
+- [x] Loading states for wallet connections
+- [x] Error handling with user-friendly messages
+- [x] Separate mobile/desktop layouts
+- [x] Larger touch targets (44px minimum)
+- [x] Single-column privacy selector on mobile
+- [x] Responsive text sizes and spacing
+- [x] Touch feedback animations (active:scale-95)
+- [x] Sidebar hidden on mobile (lg:block)
+- [x] Truncated addresses on small screens
+- [x] Wallet icons displayed throughout
+- [x] Mobile-first form design
 
 ---
 
@@ -488,21 +506,36 @@ cp *.wasm *.zkey ../../apps/web/public/circuits/
 
 ## 🚀 Next Session Plan
 
-### November 18, 2025 - Session Complete ✅
+### November 19, 2025 - Mobile UX & Wallet Optimization Complete ✅
 
 **Accomplished Today:**
+1. ✅ Fixed mobile wallet detection and connection issues
+2. ✅ Implemented custom wallet selector with visual wallet list
+3. ✅ Added "Change Wallet" functionality for easy switching
+4. ✅ Created comprehensive mobile-friendly wallet page
+5. ✅ Optimized touch targets and responsive layouts
+6. ✅ Added loading states and error handling
+7. ✅ Separated mobile/desktop security logic
+8. ✅ Safe wallet adapter instantiation with fallbacks
+9. ✅ Professional documentation updates
+10. ✅ Deployed all improvements to Vercel
+
+**Current Status:**
+- Mobile UX: Fully optimized with custom wallet selector ✅
+- Desktop UX: Enhanced security while maintaining usability ✅
+- Wallet Support: 10 adapters with proper error handling ✅
+- Documentation: Professional and comprehensive ✅
+- Deployment: Live on exepay.app ✅
+
+### November 18, 2025 - Logo & Security Complete ✅
+
+**Accomplished:**
 1. ✅ Enhanced homepage UI with ExePay logo and professional styling
 2. ✅ Implemented secure wallet connection system with 10 wallet adapters
 3. ✅ Added balance privacy toggle (show/hide feature)
 4. ✅ Fixed all wallet security issues (disconnect, reconnect, session management)
 5. ✅ Deployed to Vercel successfully
 6. ✅ Cleaned up all amateur documentation
-
-**Current Status:**
-- Logo: Professional ExePay branding integrated ✅
-- Security: Multi-wallet support with secure disconnect ✅
-- UI: Homepage polished with animations ✅
-- Deployment: Live on Vercel ✅
 
 ### Next Session Priorities
 
