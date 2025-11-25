@@ -105,7 +105,7 @@ export function ShieldedPoolManager({ onBalanceChange }: ShieldedPoolManagerProp
 
       // Update demo balance if in demonstration mode
       if (signature.startsWith('demo_')) {
-        updateDemoShieldedBalance(publicKey, lamports);
+        await updateDemoShieldedBalance(publicKey, lamports);
       }
 
       setSuccess(`Successfully deposited ${amount} SOL to shielded pool!`);
@@ -172,7 +172,7 @@ export function ShieldedPoolManager({ onBalanceChange }: ShieldedPoolManagerProp
 
       // Update demo balance if in demonstration mode
       if (signature.startsWith('demo_')) {
-        updateDemoShieldedBalance(publicKey, -lamports);
+        await updateDemoShieldedBalance(publicKey, -lamports);
       }
 
       setSuccess(`Successfully withdrew ${amount} SOL from shielded pool!`);

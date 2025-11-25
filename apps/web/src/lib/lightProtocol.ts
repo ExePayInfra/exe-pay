@@ -233,15 +233,14 @@ export async function getShieldedBalance(
  * @param walletPublicKey - User's wallet public key
  * @param amount - Amount to add/subtract
  */
-export function updateDemoShieldedBalance(
+export async function updateDemoShieldedBalance(
   walletPublicKey: import('@solana/web3.js').PublicKey,
   amount: bigint
-): void {
+): Promise<void> {
   try {
     // Import the function from the privacy package
-    import('@exe-pay/privacy').then(({ updateDemoShieldedBalance: update }) => {
-      update(walletPublicKey, amount);
-    });
+    const { updateDemoShieldedBalance: update } = await import('@exe-pay/privacy');
+    update(walletPublicKey, amount);
   } catch (error) {
     console.error('[Light Protocol] Error updating demo balance:', error);
   }
