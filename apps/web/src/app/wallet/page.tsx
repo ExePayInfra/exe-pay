@@ -7,6 +7,8 @@ import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } f
 import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib/tokens';
 import { Navigation, Footer } from '@/components/Navigation';
+import { CompressedAccountManager } from '@/components/CompressedAccountManager';
+import { ShieldedPoolManager } from '@/components/ShieldedPoolManager';
 import Image from 'next/image';
 
 // Dynamic import to avoid SSR issues
@@ -511,6 +513,12 @@ export default function WalletPage() {
           <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Main Payment Form - Takes 2 columns */}
             <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+              {/* Light Protocol Components */}
+              <div className="space-y-4 animate-slide-up">
+                <CompressedAccountManager />
+                <ShieldedPoolManager />
+              </div>
+
               {/* Wallet Info Card */}
               <div className="glass-card p-4 sm:p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50">
                 {/* Mobile Layout */}
