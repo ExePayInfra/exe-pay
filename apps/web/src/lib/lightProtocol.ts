@@ -176,6 +176,78 @@ export async function createCompressedAccount(
 }
 
 /**
+ * Deposit funds to shielded pool
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param connection - Solana connection
+ * @param walletPublicKey - User's wallet public key
+ * @param signTransaction - Function to sign transactions
+ * @param amount - Amount to deposit (in lamports)
+ * @returns Transaction signature
+ */
+export async function depositToShieldedPool(
+  rpc: Rpc,
+  connection: import('@solana/web3.js').Connection,
+  walletPublicKey: import('@solana/web3.js').PublicKey,
+  signTransaction: (tx: import('@solana/web3.js').Transaction) => Promise<import('@solana/web3.js').Transaction>,
+  amount: bigint
+): Promise<string> {
+  try {
+    // Import the function from the privacy package
+    const { depositToShieldedPool: deposit } = await import('@exe-pay/privacy');
+    return await deposit(rpc, connection, walletPublicKey, signTransaction, amount);
+  } catch (error: any) {
+    console.error('[Light Protocol] Error depositing to shielded pool:', error);
+    throw new Error(`Failed to deposit: ${error.message}`);
+  }
+}
+
+/**
+ * Get shielded balance for a wallet
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param walletPublicKey - User's wallet public key
+ * @returns Shielded balance information
+ */
+export async function getShieldedBalance(
+  rpc: Rpc,
+  walletPublicKey: import('@solana/web3.js').PublicKey
+): Promise<{ amount: bigint; compressedAccount: string; commitment: string }> {
+  try {
+    // Import the function from the privacy package
+    const { getShieldedBalance: getBalance } = await import('@exe-pay/privacy');
+    return await getBalance(rpc, walletPublicKey);
+  } catch (error: any) {
+    console.error('[Light Protocol] Error getting shielded balance:', error);
+    return {
+      amount: 0n,
+      compressedAccount: walletPublicKey.toString(),
+      commitment: '',
+    };
+  }
+}
+
+/**
+ * Update demonstration mode shielded balance
+ * 
+ * @param walletPublicKey - User's wallet public key
+ * @param amount - Amount to add/subtract
+ */
+export function updateDemoShieldedBalance(
+  walletPublicKey: import('@solana/web3.js').PublicKey,
+  amount: bigint
+): void {
+  try {
+    // Import the function from the privacy package
+    import('@exe-pay/privacy').then(({ updateDemoShieldedBalance: update }) => {
+      update(walletPublicKey, amount);
+    });
+  } catch (error) {
+    console.error('[Light Protocol] Error updating demo balance:', error);
+  }
+}
+
+/**
  * Get Light Protocol network info
  * 
  * @returns Network information
