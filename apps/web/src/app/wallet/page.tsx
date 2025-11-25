@@ -43,6 +43,46 @@ export default function WalletPage() {
     setTokens(availableTokens);
     setSelectedToken(availableTokens[0]); // Default to SOL
 
+    // Initialize Light Protocol
+    const initLight = async () => {
+      try {
+        // Import Light Protocol utilities
+        const { 
+          initializeLightProtocol: initLP,
+          testLightProtocolConnection,
+          getLightProtocolConfig,
+          getLightProtocolNetworkInfo 
+        } = await import('@/lib/lightProtocol');
+
+        // Get configuration
+        const config = getLightProtocolConfig();
+        const networkInfo = getLightProtocolNetworkInfo();
+
+        console.log('[ExePay] Light Protocol Configuration:');
+        console.log('[ExePay]   Network:', networkInfo.network);
+        console.log('[ExePay]   Devnet:', networkInfo.isDevnet ? 'Yes' : 'No');
+        console.log('[ExePay]   Explorer:', networkInfo.solscanUrl);
+
+        // Test connection
+        const connected = await testLightProtocolConnection();
+        if (connected) {
+          console.log('[ExePay] ✅ Light Protocol ready for use');
+          
+          // Initialize RPC client
+          const lightRpc = initLP();
+          console.log('[ExePay] ✅ Light Protocol RPC client initialized');
+        } else {
+          console.warn('[ExePay] ⚠️  Light Protocol connection test failed');
+          console.warn('[ExePay] Privacy features will use demonstration mode');
+        }
+      } catch (error) {
+        console.error('[ExePay] Failed to initialize Light Protocol:', error);
+        console.warn('[ExePay] Privacy features will use demonstration mode');
+      }
+    };
+
+    initLight();
+
     // Dynamically import privacy functions (client-side only)
     import('@exe-pay/privacy').then((mod) => {
       createShieldedTransfer = mod.createShieldedTransfer;
@@ -52,9 +92,9 @@ export default function WalletPage() {
       initializeLightProtocol = mod.initializeLightProtocol;
       createLightShieldedTransfer = mod.createLightShieldedTransfer;
       getShieldedBalance = mod.getShieldedBalance;
-      console.log('✅ Light Protocol functions loaded');
+      console.log('[ExePay] ✅ Privacy functions loaded');
     }).catch(err => {
-      console.error('Failed to load privacy module:', err);
+      console.error('[ExePay] Failed to load privacy module:', err);
     });
   }, []);
 
