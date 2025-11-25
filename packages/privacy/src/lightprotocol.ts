@@ -401,7 +401,7 @@ export async function depositToShieldedPool(
       console.warn('[Light Protocol] ⚠️  Light Protocol SDK error:', sdkError.message);
       console.warn('[Light Protocol] 🔄 Falling back to demonstration mode');
       
-      return useDemonstrationDeposit(amount);
+      return useDemonstrationDeposit(walletPublicKey, amount);
     }
     
   } catch (error: any) {
@@ -416,7 +416,7 @@ export async function depositToShieldedPool(
  * @param amount - Amount to deposit
  * @returns Mock signature
  */
-function useDemonstrationDeposit(amount: bigint): string {
+function useDemonstrationDeposit(walletPublicKey: PublicKey, amount: bigint): string {
   console.log('[Light Protocol] 🎭 DEMONSTRATION DEPOSIT MODE');
   console.log('[Light Protocol] ');
   console.log('[Light Protocol] ℹ️  What would happen in production:');
@@ -432,6 +432,9 @@ function useDemonstrationDeposit(amount: bigint): string {
   console.log('[Light Protocol]   ❌ Amount: HIDDEN');
   console.log('[Light Protocol]   ❌ Recipient: HIDDEN');
   console.log('[Light Protocol] ');
+  
+  // Update demo shielded balance
+  updateDemoShieldedBalance(walletPublicKey, amount);
   
   const mockSignature = `demo_deposit_${Date.now()}_${amount.toString()}`;
   console.log('[Light Protocol] ✅ Deposit simulation complete');
