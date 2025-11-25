@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getTokens, parseTokenAmount, type Token } from '@/lib/tokens';
+import { SecureWalletConnect } from './SecureWalletConnect';
 
 type Interval = 'daily' | 'weekly' | 'monthly';
 
@@ -324,31 +324,14 @@ export function RecurringPaymentForm() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Wallet Connection */}
       {!publicKey ? (
-        <div className="bg-white rounded-2xl p-8 shadow-2xl text-center border border-gray-200">
-          <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">Connect Your Wallet</h3>
-          <p className="text-gray-600 mb-6">
-            To set up recurring payments, please connect your wallet
-          </p>
-          <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700" />
-        </div>
+        <SecureWalletConnect />
       ) : (
         <>
           {/* Create Subscription Form */}
           <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-gray-900">Create Recurring Payment</h3>
-              <div className="flex items-center gap-3">
-                <div className="text-sm text-gray-700 font-mono bg-gray-100 px-3 py-1 rounded">
-                  {publicKey.toString().slice(0, 4)}...{publicKey.toString().slice(-4)}
-                </div>
-                <WalletMultiButton className="!bg-gradient-to-r !from-indigo-600 !to-purple-600 hover:!from-indigo-700 hover:!to-purple-700" />
-              </div>
-            </div>
+            <SecureWalletConnect showHeader={true} />
+            
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Create Recurring Payment</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Token Selector */}
