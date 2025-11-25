@@ -277,6 +277,33 @@ export async function createLightShieldedTransfer(
 }
 
 /**
+ * Withdraw funds from shielded pool
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param connection - Solana connection
+ * @param walletPublicKey - User's wallet public key
+ * @param signTransaction - Function to sign transactions
+ * @param amount - Amount to withdraw (in lamports)
+ * @returns Transaction signature
+ */
+export async function withdrawFromShieldedPool(
+  rpc: Rpc,
+  connection: import('@solana/web3.js').Connection,
+  walletPublicKey: import('@solana/web3.js').PublicKey,
+  signTransaction: (tx: import('@solana/web3.js').Transaction) => Promise<import('@solana/web3.js').Transaction>,
+  amount: bigint
+): Promise<string> {
+  try {
+    // Import the function from the privacy package
+    const { withdrawFromShieldedPool: withdraw } = await import('@exe-pay/privacy');
+    return await withdraw(rpc, connection, walletPublicKey, signTransaction, amount);
+  } catch (error: any) {
+    console.error('[Light Protocol] Error withdrawing from shielded pool:', error);
+    throw new Error(`Failed to withdraw: ${error.message}`);
+  }
+}
+
+/**
  * Get Light Protocol network info
  * 
  * @returns Network information
