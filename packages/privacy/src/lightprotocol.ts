@@ -947,23 +947,42 @@ export function updateDemoShieldedBalance(
   walletPublicKey: PublicKey,
   amount: bigint
 ): void {
-  if (typeof window === 'undefined') return;
+  console.log('[Light Protocol] 🔄 updateDemoShieldedBalance called');
+  console.log('[Light Protocol] Wallet:', walletPublicKey.toString());
+  console.log('[Light Protocol] Amount to add:', amount.toString());
+  
+  if (typeof window === 'undefined') {
+    console.warn('[Light Protocol] ⚠️ window is undefined, cannot update localStorage');
+    return;
+  }
   
   try {
     const key = `light_balance_${walletPublicKey.toString()}`;
+    console.log('[Light Protocol] localStorage key:', key);
+    
     const stored = localStorage.getItem(key);
+    console.log('[Light Protocol] Current stored value:', stored);
+    
     const currentBalance = stored ? BigInt(stored) : 0n;
+    console.log('[Light Protocol] Current balance:', currentBalance.toString());
+    
     const newBalance = currentBalance + amount;
+    console.log('[Light Protocol] New balance:', newBalance.toString());
     
     if (newBalance < 0n) {
-      console.error('[Light Protocol] Cannot have negative balance');
+      console.error('[Light Protocol] ❌ Cannot have negative balance');
       return;
     }
     
     localStorage.setItem(key, newBalance.toString());
+    console.log('[Light Protocol] ✅ localStorage.setItem successful');
     console.log('[Light Protocol] 📊 Demo balance updated:', newBalance.toString(), 'lamports');
+    
+    // Verify it was actually stored
+    const verification = localStorage.getItem(key);
+    console.log('[Light Protocol] 🔍 Verification - stored value:', verification);
   } catch (e) {
-    console.error('[Light Protocol] Failed to update demo balance:', e);
+    console.error('[Light Protocol] ❌ Failed to update demo balance:', e);
   }
 }
 
