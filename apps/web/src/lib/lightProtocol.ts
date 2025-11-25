@@ -8,6 +8,8 @@
 import { Connection } from '@solana/web3.js';
 import { Rpc, createRpc } from '@lightprotocol/stateless.js';
 
+console.log('[Light Protocol] 📚 Module loaded');
+
 /**
  * Light Protocol client singleton
  */

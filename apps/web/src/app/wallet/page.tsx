@@ -45,7 +45,11 @@ export default function WalletPage() {
 
     // Initialize Light Protocol
     const initLight = async () => {
+      console.log('[ExePay] 🚀 Starting Light Protocol initialization...');
+      
       try {
+        console.log('[ExePay] 📦 Importing Light Protocol utilities...');
+        
         // Import Light Protocol utilities
         const { 
           initializeLightProtocol: initLP,
@@ -53,6 +57,8 @@ export default function WalletPage() {
           getLightProtocolConfig,
           getLightProtocolNetworkInfo 
         } = await import('@/lib/lightProtocol');
+
+        console.log('[ExePay] ✅ Light Protocol utilities imported successfully');
 
         // Get configuration
         const config = getLightProtocolConfig();
@@ -64,23 +70,29 @@ export default function WalletPage() {
         console.log('[ExePay]   Explorer:', networkInfo.solscanUrl);
 
         // Test connection
+        console.log('[ExePay] 🔌 Testing RPC connection...');
         const connected = await testLightProtocolConnection();
+        
         if (connected) {
           console.log('[ExePay] ✅ Light Protocol ready for use');
           
           // Initialize RPC client
+          console.log('[ExePay] 🔧 Initializing RPC client...');
           const lightRpc = initLP();
           console.log('[ExePay] ✅ Light Protocol RPC client initialized');
+          console.log('[ExePay] 🎉 Phase 1 Complete - Light Protocol is ready!');
         } else {
           console.warn('[ExePay] ⚠️  Light Protocol connection test failed');
           console.warn('[ExePay] Privacy features will use demonstration mode');
         }
       } catch (error) {
-        console.error('[ExePay] Failed to initialize Light Protocol:', error);
+        console.error('[ExePay] ❌ Failed to initialize Light Protocol:', error);
+        console.error('[ExePay] Error details:', error instanceof Error ? error.message : String(error));
         console.warn('[ExePay] Privacy features will use demonstration mode');
       }
     };
 
+    console.log('[ExePay] 🎬 Wallet page mounted - initializing...');
     initLight();
 
     // Dynamically import privacy functions (client-side only)
