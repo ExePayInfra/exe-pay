@@ -323,7 +323,7 @@ export default function WalletPage() {
 
         setTxResult({
           success: true,
-          message: `🌟 TRUE PRIVATE payment sent! Sender, receiver, and amount are HIDDEN on-chain. This is real privacy powered by Light Protocol.`,
+          message: `🌟 TRUE PRIVATE payment sent! Sender, receiver, and amount are HIDDEN on-chain. Powered by Light Protocol (Beta).`,
           signature,
         });
 
@@ -719,7 +719,7 @@ export default function WalletPage() {
                           </div>
                           {level === 'light' && (
                             <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
-                              🔥 TRUE PRIVACY
+                              🔬 BETA
                             </span>
                           )}
                           {(level === 'shielded' || level === 'private') && (
