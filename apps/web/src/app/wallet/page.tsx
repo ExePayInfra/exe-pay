@@ -294,28 +294,34 @@ export default function WalletPage() {
       if (privacyLevel === 'light') {
         console.log('🌟 Light Protocol mode selected - TRUE privacy!');
         
-        if (!initializeLightProtocol || !createLightShieldedTransfer) {
+        if (!createLightShieldedTransfer) {
           throw new Error('Light Protocol functions not loaded. Please refresh and try again.');
         }
 
-        // Initialize Light Protocol RPC
-        const lightRpc = await initializeLightProtocol({
-          rpcEndpoint: rpcUrl,
-          network: process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'mainnet-beta',
-        });
+        // Import Light Protocol utilities
+        const { getLightProtocolClient } = await import('@/lib/lightProtocol');
+        const lightRpc = getLightProtocolClient();
 
         // Create shielded transfer (TRUE private - invisible on Solscan)
+        console.log('[ExePay] 🔐 Creating Light Protocol private transfer...');
+        console.log('[ExePay] Amount:', amountValue, 'lamports');
+        console.log('[ExePay] Recipient:', recipientPubkey.toString().slice(0, 8) + '...');
+        
         const signature = await createLightShieldedTransfer(
           lightRpc,
           connection,
           senderPubkey,
+          signTransaction,
           recipientPubkey,
           BigInt(amountValue)
         );
 
+        console.log('[ExePay] ✅ Light Protocol transfer complete!');
+        console.log('[ExePay] Signature:', signature);
+
         setTxResult({
           success: true,
-          message: `🌟 TRUE PRIVATE payment sent! Sender, receiver, and amount are HIDDEN on Solscan. (${privacyLevel} mode)`,
+          message: `🌟 TRUE PRIVATE payment sent! Sender, receiver, and amount are HIDDEN on-chain. This is real privacy powered by Light Protocol.`,
           signature,
         });
 

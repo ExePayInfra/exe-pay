@@ -248,6 +248,35 @@ export function updateDemoShieldedBalance(
 }
 
 /**
+ * Create a Light Protocol shielded transfer (TRUE private payment)
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param connection - Solana connection
+ * @param senderPublicKey - Sender's wallet public key
+ * @param signTransaction - Function to sign transactions
+ * @param recipientPublicKey - Recipient's public key
+ * @param amount - Amount to transfer (in lamports)
+ * @returns Transaction signature
+ */
+export async function createLightShieldedTransfer(
+  rpc: Rpc,
+  connection: import('@solana/web3.js').Connection,
+  senderPublicKey: import('@solana/web3.js').PublicKey,
+  signTransaction: (tx: import('@solana/web3.js').Transaction) => Promise<import('@solana/web3.js').Transaction>,
+  recipientPublicKey: import('@solana/web3.js').PublicKey,
+  amount: bigint
+): Promise<string> {
+  try {
+    // Import the function from the privacy package
+    const { createLightShieldedTransfer: transfer } = await import('@exe-pay/privacy');
+    return await transfer(rpc, connection, senderPublicKey, signTransaction, recipientPublicKey, amount);
+  } catch (error: any) {
+    console.error('[Light Protocol] Error creating shielded transfer:', error);
+    throw new Error(`Failed to create private transfer: ${error.message}`);
+  }
+}
+
+/**
  * Get Light Protocol network info
  * 
  * @returns Network information
