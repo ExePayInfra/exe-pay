@@ -394,6 +394,9 @@ export async function depositToShieldedPool(
       console.log('[Light Protocol] 🔗 Signature:', signature);
       console.log('[Light Protocol] 💰 Amount shielded:', amount.toString(), 'lamports');
       
+      // Update demo shielded balance (even for real transactions in demo mode)
+      updateDemoShieldedBalance(walletPublicKey, amount);
+      
       return signature;
       
     } catch (sdkError: any) {
