@@ -130,6 +130,52 @@ export function isLightProtocolAvailable(): boolean {
 }
 
 /**
+ * Check if a wallet has a compressed account
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param walletPublicKey - User's wallet public key
+ * @returns true if compressed account exists
+ */
+export async function hasCompressedAccount(
+  rpc: Rpc,
+  walletPublicKey: import('@solana/web3.js').PublicKey
+): Promise<boolean> {
+  try {
+    // Import the function from the privacy package
+    const { hasCompressedAccount: checkAccount } = await import('@exe-pay/privacy');
+    return await checkAccount(rpc, walletPublicKey);
+  } catch (error) {
+    console.error('[Light Protocol] Error checking compressed account:', error);
+    return false;
+  }
+}
+
+/**
+ * Create a compressed account for the user
+ * 
+ * @param rpc - Light Protocol RPC client
+ * @param connection - Solana connection
+ * @param walletPublicKey - User's wallet public key
+ * @param signTransaction - Function to sign transactions
+ * @returns Compressed account result
+ */
+export async function createCompressedAccount(
+  rpc: Rpc,
+  connection: import('@solana/web3.js').Connection,
+  walletPublicKey: import('@solana/web3.js').PublicKey,
+  signTransaction: (tx: import('@solana/web3.js').Transaction) => Promise<import('@solana/web3.js').Transaction>
+): Promise<{ account: import('@solana/web3.js').PublicKey; signature: string }> {
+  try {
+    // Import the function from the privacy package
+    const { createCompressedAccount: createAccount } = await import('@exe-pay/privacy');
+    return await createAccount(rpc, connection, walletPublicKey, signTransaction);
+  } catch (error: any) {
+    console.error('[Light Protocol] Error creating compressed account:', error);
+    throw new Error(`Failed to create compressed account: ${error.message}`);
+  }
+}
+
+/**
  * Get Light Protocol network info
  * 
  * @returns Network information
