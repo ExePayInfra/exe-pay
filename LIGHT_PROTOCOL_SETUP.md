@@ -1,8 +1,21 @@
-# 🌟 Light Protocol Setup Guide
+# Light Protocol Setup Guide
 
-**Goal:** Configure Light Protocol for TRUE on-chain privacy  
-**Status:** Phase 1 - Setup & Configuration  
-**Time:** 30 minutes
+**Objective:** Configure Light Protocol for true on-chain privacy  
+**Phase:** 1 - Setup & Configuration  
+**Estimated Time:** 30 minutes  
+**Prerequisites:** Node.js 18+, pnpm installed, dev server running
+
+---
+
+## ⚠️ Important: Local Testing Required
+
+**All Light Protocol features must be tested locally before deployment to production.**
+
+This guide will help you:
+1. Configure Light Protocol RPC endpoints
+2. Set up environment variables
+3. Test the configuration locally
+4. Verify privacy features work correctly
 
 ---
 
@@ -238,12 +251,58 @@ pnpm dev
 
 ---
 
-## ✅ **READY?**
+---
 
-**Once you've created `.env.local`, tell me and we'll:**
-1. Test the configuration
-2. Initialize Light Protocol client
-3. Move to Phase 2: Compressed Accounts
+## Testing Checklist
 
-**Create the file now!** 🚀
+**After configuration, verify locally:**
+
+- [ ] `.env.local` file created with correct values
+- [ ] Dev server restarted (`pnpm dev`)
+- [ ] Can access http://localhost:3000
+- [ ] Wallet connection works
+- [ ] No console errors related to RPC
+- [ ] Environment variables loaded correctly
+
+**Check console for:**
+```
+[ExePay] Solana RPC: https://api.devnet.solana.com
+[ExePay] Light Protocol RPC: https://devnet.helius-rpc.com
+```
+
+---
+
+## Next Steps
+
+**After successful local testing:**
+
+1. ✅ Configuration verified locally
+2. ✅ Move to Phase 2: Initialize Light Protocol client
+3. ✅ Implement compressed accounts
+4. ✅ Test shielded pool functionality
+5. ✅ Verify privacy on Solscan devnet
+
+**Do not proceed to Phase 2 until local testing is complete.**
+
+---
+
+## Support
+
+**If you encounter issues:**
+
+1. Review the troubleshooting section
+2. Check console for error messages
+3. Verify `.env.local` file syntax
+4. Ensure dev server restarted
+5. Test RPC endpoint connectivity
+
+**Common mistakes:**
+- File named incorrectly (must be `.env.local`)
+- Forgot to restart dev server
+- Typos in environment variable names
+- Missing `NEXT_PUBLIC_` prefix
+
+---
+
+**Ready to proceed?** Ensure all testing checklist items are complete.
 
