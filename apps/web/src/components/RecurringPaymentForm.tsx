@@ -323,14 +323,10 @@ export function RecurringPaymentForm() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Wallet Connection */}
-      {!publicKey ? (
-        <SecureWalletConnect />
-      ) : (
+      <SecureWalletConnect showHeader={true}>
         <>
           {/* Create Subscription Form */}
           <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
-            <SecureWalletConnect showHeader={true} />
-            
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Create Recurring Payment</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -643,7 +639,7 @@ export function RecurringPaymentForm() {
         </div>
       )}
         </>
-      )}
+      </SecureWalletConnect>
     </div>
   );
 }

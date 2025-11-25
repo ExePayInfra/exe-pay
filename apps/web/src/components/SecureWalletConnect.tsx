@@ -7,6 +7,7 @@ import Image from 'next/image';
 interface SecureWalletConnectProps {
   onConnected?: () => void;
   showHeader?: boolean;
+  children?: React.ReactNode;
 }
 
 /**
@@ -20,7 +21,7 @@ interface SecureWalletConnectProps {
  * 
  * Use this component for ALL wallet connections across the app.
  */
-export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWalletConnectProps) {
+export function SecureWalletConnect({ onConnected, showHeader = true, children }: SecureWalletConnectProps) {
   const { publicKey, connected, disconnect, select, wallets, wallet } = useWallet();
   const [showWalletSelector, setShowWalletSelector] = useState(false);
   const [connectingWallet, setConnectingWallet] = useState<string | null>(null);
@@ -301,6 +302,7 @@ export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWa
           </div>
         </div>
       )}
+      {children}
     </>
   );
 }

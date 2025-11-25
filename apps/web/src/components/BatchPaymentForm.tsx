@@ -234,13 +234,8 @@ export function BatchPaymentForm() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Wallet Connection - Using Shared Secure Component */}
-      {!connected ? (
-        <SecureWalletConnect />
-      ) : (
+      <SecureWalletConnect showHeader={true}>
         <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
-          {/* Wallet Connected Header */}
-          <SecureWalletConnect showHeader={true} />
-
           <h3 className="text-2xl font-bold text-gray-900 mb-6">Batch Payment</h3>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -464,7 +459,7 @@ export function BatchPaymentForm() {
           </p>
         </div>
         </div>
-      )}
+      </SecureWalletConnect>
     </div>
   );
 }
