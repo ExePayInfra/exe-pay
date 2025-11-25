@@ -27,12 +27,20 @@ export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWa
   const [verifiedConnection, setVerifiedConnection] = useState(false);
   const [error, setError] = useState('');
 
-  // Reset verified connection when wallet disconnects
+  // Check if wallet is already connected and verified on mount
   useEffect(() => {
-    if (!connected) {
+    if (connected && publicKey) {
+      // Check sessionStorage for verified connection
+      const verifiedKey = sessionStorage.getItem('exepay_verified_wallet');
+      if (verifiedKey === publicKey.toString()) {
+        console.log('[ExePay Security] Wallet already verified in this session');
+        setVerifiedConnection(true);
+      }
+    } else {
       setVerifiedConnection(false);
+      sessionStorage.removeItem('exepay_verified_wallet');
     }
-  }, [connected]);
+  }, [connected, publicKey]);
 
   // Call onConnected callback when wallet is verified
   useEffect(() => {
@@ -88,6 +96,12 @@ export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWa
         
         console.log(`[ExePay Security] ${walletName} wallet verified as unlocked ✅`);
         console.log(`[ExePay Security] Signature received (${signature.length} bytes)`);
+        
+        // Store verified connection in sessionStorage
+        if (selectedWallet.adapter.publicKey) {
+          sessionStorage.setItem('exepay_verified_wallet', selectedWallet.adapter.publicKey.toString());
+        }
+        
         setVerifiedConnection(true);
       } catch (verifyErr: any) {
         console.error(`[ExePay Security] ${walletName} verification failed:`, verifyErr);
@@ -131,9 +145,20 @@ export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWa
   const handleChangeWallet = async () => {
     try {
       setVerifiedConnection(false);
+      sessionStorage.removeItem('exepay_verified_wallet');
       await disconnect();
       setShowWalletSelector(true);
       setError('');
+    } catch (err) {
+      console.error('Failed to disconnect:', err);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      setVerifiedConnection(false);
+      sessionStorage.removeItem('exepay_verified_wallet');
+      await disconnect();
     } catch (err) {
       console.error('Failed to disconnect:', err);
     }
@@ -268,7 +293,7 @@ export function SecureWalletConnect({ onConnected, showHeader = true }: SecureWa
               Change Wallet
             </button>
             <button
-              onClick={() => disconnect()}
+              onClick={handleDisconnect}
               className="py-2 px-4 rounded-lg font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-200 text-sm whitespace-nowrap"
             >
               Disconnect
