@@ -1,6 +1,8 @@
 import { Connection, PublicKey, Transaction, Keypair } from "@solana/web3.js";
 import { keccak_256 } from "@noble/hashes/sha3";
 import { randomBytes } from "@noble/hashes/utils";
+import { ed25519, x25519 } from "@noble/curves/ed25519";
+import { chacha20poly1305 } from "@noble/ciphers/chacha.js";
 
 /**
  * Relayer Network Implementation
@@ -104,7 +106,13 @@ export function selectBestRelayer(relayers: RelayerConfig[]): RelayerConfig {
 }
 
 /**
- * Encrypt payment request for relayer
+ * Encrypt payment request for relayer using ChaCha20-Poly1305
+ * 
+ * Uses battle-tested authenticated encryption:
+ * - X25519 ECDH for shared secret
+ * - ChaCha20-Poly1305 (IETF RFC 8439)
+ * - 12-byte nonce (standard for ChaCha20-Poly1305)
+ * - 16-byte authentication tag (automatic)
  */
 export function encryptPaymentRequest(
   request: PaymentRequest,
@@ -116,26 +124,25 @@ export function encryptPaymentRequest(
   // Generate ephemeral keypair for this request
   const ephemeralKeypair = Keypair.generate();
   
-  // Derive shared secret
-  const sharedSecret = deriveSharedSecret(
-    ephemeralKeypair.publicKey,
-    relayerPublicKey
+  // Derive shared secret using proper ECDH
+  const sharedSecret = deriveSharedSecretECDH(
+    ephemeralKeypair.secretKey,
+    relayerPublicKey.toBytes()
   );
   
-  // Generate nonce
-  const nonce = randomBytes(24);
+  // Generate 12-byte nonce for ChaCha20-Poly1305 (IETF standard)
+  const nonce = randomBytes(12);
   
   // Serialize request
   const requestData = serializePaymentRequest(request);
   
-  // Encrypt using XOR with shared secret (simplified)
-  // In production: use proper authenticated encryption (e.g., ChaCha20-Poly1305)
-  const encryptedData = xorEncrypt(requestData, sharedSecret, nonce);
+  // Encrypt using ChaCha20-Poly1305 authenticated encryption
+  const encryptedData = encryptChaCha20Poly1305(requestData, sharedSecret, nonce);
   
-  // Sign the encrypted data
+  // Sign the encrypted data with sender's key (proves authorization)
   const signature = signData(encryptedData, senderKeypair);
   
-  console.log('[Relayer] ✓ Payment request encrypted');
+  console.log('[Relayer] ✓ Payment request encrypted with ChaCha20-Poly1305');
   
   return {
     encryptedData,
@@ -210,17 +217,29 @@ export async function verifyRelayedPayment(
 
 // Helper functions
 
-function deriveSharedSecret(
-  ephemeralPubkey: PublicKey,
-  relayerPubkey: PublicKey
+/**
+ * Derive shared secret using proper X25519 ECDH
+ * Same as stealth addresses, but for relayer communication
+ */
+function deriveSharedSecretECDH(
+  ephemeralPrivateKey: Uint8Array,  // Ed25519 private key
+  relayerPublicKey: Uint8Array      // Ed25519 public key
 ): Uint8Array {
-  const combined = new Uint8Array(
-    ephemeralPubkey.toBytes().length + relayerPubkey.toBytes().length
-  );
-  combined.set(ephemeralPubkey.toBytes(), 0);
-  combined.set(relayerPubkey.toBytes(), ephemeralPubkey.toBytes().length);
-  
-  return keccak_256(combined);
+  try {
+    // Convert Ed25519 keys to X25519 for ECDH
+    const relayerX25519Pub = ed25519.utils.toMontgomery(relayerPublicKey);
+    const ephemeralPriv = ephemeralPrivateKey.slice(0, 32);
+    const ephemeralX25519Priv = ed25519.utils.toMontgomerySecret(ephemeralPriv);
+    
+    // Perform X25519 ECDH
+    const sharedSecret = x25519.getSharedSecret(ephemeralX25519Priv, relayerX25519Pub);
+    
+    // Hash for key derivation
+    return keccak_256(sharedSecret);
+  } catch (error) {
+    console.error('[Relayer ECDH] Error deriving shared secret:', error);
+    throw new Error('Failed to derive shared secret');
+  }
 }
 
 function serializePaymentRequest(request: PaymentRequest): Uint8Array {
@@ -249,17 +268,61 @@ function serializePaymentRequest(request: PaymentRequest): Uint8Array {
   return total;
 }
 
-function xorEncrypt(data: Uint8Array, key: Uint8Array, nonce: Uint8Array): Uint8Array {
-  // Simple XOR encryption (for demonstration)
-  // In production: use ChaCha20-Poly1305 or similar
-  const encrypted = new Uint8Array(data.length);
-  const keyStream = keccak_256(Buffer.concat([key, nonce]));
-  
-  for (let i = 0; i < data.length; i++) {
-    encrypted[i] = data[i] ^ keyStream[i % keyStream.length];
+/**
+ * Encrypt data using ChaCha20-Poly1305 authenticated encryption
+ * 
+ * ChaCha20-Poly1305 is an IETF standard (RFC 8439) that provides:
+ * - Confidentiality (ChaCha20 stream cipher)
+ * - Authenticity (Poly1305 MAC)
+ * - Constant-time operations
+ * - Side-channel resistance
+ * 
+ * Used by: TLS 1.3, WireGuard, Signal, SSH
+ */
+function encryptChaCha20Poly1305(
+  data: Uint8Array,
+  key: Uint8Array,      // 32 bytes
+  nonce: Uint8Array     // 12 bytes (IETF standard)
+): Uint8Array {
+  try {
+    // Ensure key is 32 bytes
+    const encryptionKey = key.slice(0, 32);
+    
+    // Create cipher instance
+    const cipher = chacha20poly1305(encryptionKey, nonce);
+    
+    // Encrypt and authenticate
+    // Returns: ciphertext + 16-byte authentication tag
+    const encrypted = cipher.encrypt(data);
+    
+    return encrypted;
+  } catch (error) {
+    console.error('[ChaCha20-Poly1305] Encryption failed:', error);
+    throw new Error('Encryption failed');
   }
-  
-  return encrypted;
+}
+
+/**
+ * Decrypt data using ChaCha20-Poly1305 authenticated encryption
+ * Verifies authentication tag before returning plaintext
+ */
+function decryptChaCha20Poly1305(
+  encrypted: Uint8Array,
+  key: Uint8Array,
+  nonce: Uint8Array
+): Uint8Array {
+  try {
+    const encryptionKey = key.slice(0, 32);
+    const cipher = chacha20poly1305(encryptionKey, nonce);
+    
+    // Decrypt and verify authentication tag
+    const decrypted = cipher.decrypt(encrypted);
+    
+    return decrypted;
+  } catch (error) {
+    console.error('[ChaCha20-Poly1305] Decryption failed:', error);
+    throw new Error('Decryption failed or authentication tag invalid');
+  }
 }
 
 function signData(data: Uint8Array, keypair: Keypair): Uint8Array {

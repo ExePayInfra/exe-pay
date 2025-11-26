@@ -1,6 +1,7 @@
 import { Connection, PublicKey, Keypair } from "@solana/web3.js";
 import { keccak_256 } from "@noble/hashes/sha3";
 import { randomBytes } from "@noble/hashes/utils";
+import { ed25519, x25519 } from "@noble/curves/ed25519";
 
 /**
  * Stealth Address Implementation
@@ -67,10 +68,10 @@ export function generateStealthAddress(
   // Generate ephemeral keypair
   const ephemeralKeypair = Keypair.generate();
   
-  // Derive shared secret
-  const sharedSecret = deriveSharedSecret(
-    ephemeralKeypair.publicKey,
-    metaAddress.viewingKey
+  // Derive shared secret using proper ECDH
+  const sharedSecret = deriveSharedSecretECDH(
+    ephemeralKeypair.secretKey,
+    metaAddress.viewingKey.toBytes()
   );
   
   // Generate stealth address from shared secret
@@ -124,8 +125,12 @@ export function isStealthAddressForUser(
   userPrivateKey: Uint8Array
 ): boolean {
   try {
-    // Derive shared secret
-    const sharedSecret = deriveSharedSecret(ephemeralPubkey, metaAddress.viewingKey);
+    // Derive shared secret using proper ECDH
+    // User's private key is used to compute shared secret with ephemeral public key
+    const sharedSecret = deriveSharedSecretECDH(
+      userPrivateKey,
+      ephemeralPubkey.toBytes()
+    );
     
     // Derive what the stealth address should be
     const expectedKeypair = deriveStealthKeypair(metaAddress.spendingKey, sharedSecret);
@@ -146,8 +151,11 @@ export function deriveStealthPrivateKey(
   userPrivateKey: Uint8Array,
   metaAddress: StealthMetaAddress
 ): Uint8Array {
-  // Derive shared secret
-  const sharedSecret = deriveSharedSecret(ephemeralPubkey, metaAddress.viewingKey);
+  // Derive shared secret using proper ECDH
+  const sharedSecret = deriveSharedSecretECDH(
+    userPrivateKey,
+    ephemeralPubkey.toBytes()
+  );
   
   // Derive stealth private key
   const stealthKeypair = deriveStealthKeypair(metaAddress.spendingKey, sharedSecret);
@@ -156,22 +164,38 @@ export function deriveStealthPrivateKey(
 }
 
 /**
- * Derive shared secret using ECDH
+ * Derive shared secret using proper X25519 ECDH
  * This is the core cryptographic operation for stealth addresses
+ * 
+ * Uses battle-tested cryptography:
+ * - Ed25519 → X25519 conversion (birationally equivalent curves)
+ * - X25519 ECDH (used by Signal, WireGuard, TLS 1.3)
+ * - Keccak-256 for key derivation
  */
-function deriveSharedSecret(
-  ephemeralPubkey: PublicKey,
-  viewingKey: PublicKey
+function deriveSharedSecretECDH(
+  ephemeralPrivateKey: Uint8Array,  // Ed25519 private key (64 bytes)
+  recipientPublicKey: Uint8Array    // Ed25519 public key (32 bytes)
 ): Uint8Array {
-  // Simplified ECDH using keccak256
-  // In production: use proper elliptic curve operations
-  const combined = new Uint8Array(
-    ephemeralPubkey.toBytes().length + viewingKey.toBytes().length
-  );
-  combined.set(ephemeralPubkey.toBytes(), 0);
-  combined.set(viewingKey.toBytes(), ephemeralPubkey.toBytes().length);
-  
-  return keccak_256(combined);
+  try {
+    // Convert Ed25519 public key to X25519 (Montgomery curve)
+    // This is safe because Ed25519 and X25519 are birationally equivalent
+    const recipientX25519Pub = ed25519.utils.toMontgomery(recipientPublicKey);
+    
+    // Convert Ed25519 private key to X25519
+    // Extract the first 32 bytes (the actual private key, not the seed)
+    const ephemeralPriv = ephemeralPrivateKey.slice(0, 32);
+    const ephemeralX25519Priv = ed25519.utils.toMontgomerySecret(ephemeralPriv);
+    
+    // Perform X25519 ECDH to get shared secret
+    const sharedSecret = x25519.getSharedSecret(ephemeralX25519Priv, recipientX25519Pub);
+    
+    // Hash the shared secret for key derivation
+    // This ensures uniform distribution and proper key length
+    return keccak_256(sharedSecret);
+  } catch (error) {
+    console.error('[Stealth ECDH] Error deriving shared secret:', error);
+    throw new Error('Failed to derive shared secret');
+  }
 }
 
 /**
