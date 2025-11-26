@@ -36,10 +36,25 @@ const StealthPaymentForm = dynamic(
   }
 );
 
+const StealthPaymentScanner = dynamic(
+  () => import('@/components/StealthPaymentScanner').then(mod => ({ default: mod.StealthPaymentScanner })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔍</div>
+          <p className="text-gray-600">Loading scanner...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
 export default function PrivacyPage() {
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
-  const [activeTab, setActiveTab] = useState<'selector' | 'stealth' | 'send'>('selector');
+  const [activeTab, setActiveTab] = useState<'selector' | 'stealth' | 'send' | 'scan'>('selector');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -97,6 +112,18 @@ export default function PrivacyPage() {
             `}
           >
             💸 Send (Private)
+          </button>
+          <button
+            onClick={() => setActiveTab('scan')}
+            className={`
+              px-6 py-3 rounded-xl font-semibold transition-all
+              ${activeTab === 'scan'
+                ? 'bg-indigo-600 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+              }
+            `}
+          >
+            🔍 Scan (Detect)
           </button>
         </div>
 
@@ -190,6 +217,10 @@ export default function PrivacyPage() {
 
           {activeTab === 'send' && (
             <StealthPaymentForm />
+          )}
+
+          {activeTab === 'scan' && (
+            <StealthPaymentScanner />
           )}
         </div>
 
