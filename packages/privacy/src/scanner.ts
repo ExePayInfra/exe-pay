@@ -9,10 +9,10 @@
  * 5. Deriving private keys for claiming
  */
 
-import { Connection, PublicKey, ParsedTransactionWithMeta } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/web3.js';
+import type { ParsedTransactionWithMeta } from '@solana/web3.js';
 import { x25519, ed25519 } from '@noble/curves/ed25519';
 import { keccak_256 } from '@noble/hashes/sha3';
-import { getX25519PublicKey, getX25519SecretKey } from '@solana/web3.js';
 import type { StealthMetaAddress } from './stealth.js';
 
 export interface DetectedPayment {
@@ -86,9 +86,9 @@ export function isPaymentForUser(
   userSecretKey: Uint8Array
 ): boolean {
   try {
-    // Convert keys to X25519 format
-    const userX25519Secret = getX25519SecretKey(userSecretKey);
-    const ephemeralX25519 = getX25519PublicKey(ephemeralPubkey);
+    // Convert Ed25519 keys to X25519 format for ECDH
+    const userX25519Secret = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
+    const ephemeralX25519 = x25519.getPublicKey(ephemeralPubkey.toBytes());
     
     // Perform ECDH to derive shared secret
     const sharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
@@ -119,9 +119,9 @@ export function deriveClaimKey(
   userSecretKey: Uint8Array
 ): Uint8Array {
   try {
-    // Convert keys to X25519 format
-    const userX25519Secret = getX25519SecretKey(userSecretKey);
-    const ephemeralX25519 = getX25519PublicKey(ephemeralPubkey);
+    // Convert Ed25519 keys to X25519 format for ECDH
+    const userX25519Secret = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
+    const ephemeralX25519 = x25519.getPublicKey(ephemeralPubkey.toBytes());
     
     // Perform ECDH
     const sharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
