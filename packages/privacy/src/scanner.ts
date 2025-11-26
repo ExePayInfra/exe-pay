@@ -86,23 +86,37 @@ export function isPaymentForUser(
   userSecretKey: Uint8Array
 ): boolean {
   try {
+    console.log('[isPaymentForUser] Checking payment ownership...');
+    console.log('[isPaymentForUser] View tag from memo:', viewTag);
+    console.log('[isPaymentForUser] User secret key length:', userSecretKey.length);
+    
     // Convert Ed25519 keys to X25519 format for ECDH
     const userX25519Secret = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
     const ephemeralX25519 = x25519.getPublicKey(ephemeralPubkey.toBytes());
     
+    console.log('[isPaymentForUser] Performing ECDH...');
+    
     // Perform ECDH to derive shared secret
     const sharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
+    
+    console.log('[isPaymentForUser] Shared secret derived, length:', sharedSecret.length);
     
     // Calculate expected view tag
     const expectedViewTag = calculateViewTag(sharedSecret);
     
+    console.log('[isPaymentForUser] Expected view tag:', expectedViewTag);
+    console.log('[isPaymentForUser] Actual view tag:', viewTag);
+    console.log('[isPaymentForUser] Match?', viewTag === expectedViewTag);
+    
     // Quick filter: if view tags don't match, this payment is not for us
     if (viewTag !== expectedViewTag) {
+      console.log('[isPaymentForUser] View tags do not match - payment not for us');
       return false;
     }
     
     // View tag matches! This payment is likely for us
     // (1/256 chance of false positive, but we can verify further if needed)
+    console.log('[isPaymentForUser] ✓ View tags match - payment is for us!');
     return true;
   } catch (err) {
     console.error('[Scanner] Error checking payment ownership:', err);
@@ -220,6 +234,10 @@ export async function scanForPayments(
         
         const { ephemeralPubkey, viewTag } = ephemeralData;
         
+        console.log('[Scanner] Checking if payment is for us...');
+        console.log('[Scanner] Ephemeral pubkey:', ephemeralPubkey.toBase58());
+        console.log('[Scanner] View tag:', viewTag);
+        
         // Check if this payment is for us using view tag + ECDH
         const isForUs = isPaymentForUser(
           ephemeralPubkey,
@@ -228,7 +246,10 @@ export async function scanForPayments(
           userSecretKey
         );
         
+        console.log('[Scanner] Is payment for us?', isForUs);
+        
         if (!isForUs) {
+          console.log('[Scanner] Payment not for us, skipping...');
           continue;
         }
         
