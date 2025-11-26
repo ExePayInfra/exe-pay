@@ -138,22 +138,22 @@ Time:     30.662s
 
 ## 🎯 Next Steps (From Roadmap)
 
-### **Week 1: Core Features**
+### **Immediate: Core Features**
 1. Batch payments implementation (2-3 hours)
 2. Recurring payments implementation (2-3 hours)
 
-### **Week 2-5: Off-Chain Privacy**
-1. Stealth addresses UI integration (1-2 weeks)
-2. Relayer network infrastructure (2-3 weeks)
-3. Hybrid privacy mode (1 week)
+### **Next: Off-Chain Privacy**
+1. Stealth addresses UI integration (7-10 days)
+2. Relayer network infrastructure (14-20 days)
+3. Hybrid privacy mode (5-7 days)
 
-### **Week 3-4: Enhancements**
-1. Payment links CSV import (1 hour)
-2. Link analytics (1 hour)
+### **Later: Enhancements**
+1. Payment links CSV import (45-60 minutes)
+2. Link analytics (50-70 minutes)
 
-### **Week 5-6: Developer Experience**
-1. NPM publishing (2 hours)
-2. Code examples (3 hours)
+### **Future: Developer Experience**
+1. NPM publishing (90-120 minutes)
+2. Code examples (2.5-3.5 hours)
 
 ---
 

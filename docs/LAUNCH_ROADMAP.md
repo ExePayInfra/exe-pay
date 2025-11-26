@@ -1,6 +1,6 @@
 # ExePay Launch Roadmap
 
-**Target**: Production-ready launch in 3-4 weeks  
+**Target**: Production-ready launch in 25-30 days  
 **Focus**: Complete what we started + add critical missing pieces
 
 ---
@@ -32,9 +32,9 @@
 
 ---
 
-## 🎯 Launch Roadmap (3-4 Weeks)
+## 🎯 Launch Roadmap (25-30 Days)
 
-### Week 1: Make It Real (Production Privacy)
+### Phase 1: Make It Real (Production Privacy)
 
 **Goal**: Move privacy from "Demo Mode" to real cryptographic implementation
 
@@ -59,11 +59,11 @@
 - **Effort**: 1 session
 - **Priority**: 🔥 CRITICAL
 
-**Week 1 Outcome**: Privacy features are REAL, not simulated
+**Phase 1 Outcome**: Privacy features are REAL, not simulated
 
 ---
 
-### Week 2: Polish & Trust
+### Phase 2: Polish & Trust
 
 **Goal**: Make it trustworthy and professional
 
@@ -97,11 +97,11 @@
 - **Effort**: 1 session
 - **Priority**: ⚠️ MEDIUM
 
-**Week 2 Outcome**: Professional, trustworthy presentation
+**Phase 2 Outcome**: Professional, trustworthy presentation
 
 ---
 
-### Week 3: Developer Experience
+### Phase 3: Developer Experience
 
 **Goal**: Make it easy for developers to integrate
 
@@ -188,7 +188,7 @@
 ### Privacy Metrics Dashboard - WEEK 2 ✅
 - **What**: Show privacy scores for transactions
 - **Why**: Builds trust, quantifiable privacy
-- **When**: Week 2 (included above)
+- **When**: Phase 2 (included above)
 - **Grok Priority**: ⭐⭐⭐⭐
 - **Our Decision**: Include in launch
 
@@ -222,13 +222,13 @@
 
 ## 🎯 Success Metrics (Track After Launch)
 
-### Week 1-2 (Soft Launch)
+### Days 1-15 (Soft Launch)
 - 100+ NPM downloads
 - 50+ GitHub stars
 - 10+ Discord members
 - 5+ developers testing
 
-### Week 3-4 (Public Launch)
+### Days 16-30 (Public Launch)
 - 500+ NPM downloads
 - 200+ GitHub stars
 - 100+ Discord members
@@ -247,18 +247,18 @@
 ## 🚀 Launch Timeline
 
 ```
-Week 1: Production Privacy
-├─ Day 1-2: Real ZK proofs
-├─ Day 3-4: Integration & testing
-└─ Day 5: Remove demo labels
+Phase 1: Production Privacy (Days 1-10)
+├─ Days 1-3: Real ZK proofs
+├─ Days 4-7: Integration & testing
+└─ Days 8-10: Remove demo labels
 
-Week 2: Polish & Trust
-├─ Day 1-2: Enhanced docs
-├─ Day 3-4: Metrics dashboard
-└─ Day 5: Security docs
+Phase 2: Polish & Trust (Days 11-20)
+├─ Days 11-14: Enhanced docs
+├─ Days 15-17: Metrics dashboard
+└─ Days 18-20: Security docs
 
-Week 3: Developer Experience
-├─ Day 1: NPM publishing
+Phase 3: Developer Experience (Days 21-30)
+├─ Day 21: NPM publishing
 ├─ Day 2-3: Integration examples
 └─ Day 4-5: Developer tools
 

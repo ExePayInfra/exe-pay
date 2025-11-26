@@ -336,9 +336,9 @@ You'll know it's working when:
 ## 🎯 Next Steps After Production Privacy
 
 Once privacy is production-ready:
-1. ✅ **Week 2**: Add metrics dashboard
-2. ✅ **Week 3**: Publish to NPM
-3. ✅ **Week 4**: Launch marketing
+1. ✅ **Phase 2**: Add metrics dashboard
+2. ✅ **Phase 3**: Publish to NPM
+3. ✅ **Phase 4**: Launch marketing
 
 See `docs/LAUNCH_ROADMAP.md` for the full plan.
 

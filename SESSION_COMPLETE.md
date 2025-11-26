@@ -206,7 +206,7 @@
 
 ## 🎯 Next Steps (From Launch Roadmap)
 
-### **Week 1-2: Core Features**
+### **Immediate: Core Features**
 1. **Batch Payments** (2-3 hours)
    - Multi-recipient transaction logic
    - Fee calculation
@@ -219,7 +219,7 @@
    - Pause/resume/cancel
    - Execution history
 
-### **Week 2-3: Enhancements**
+### **Next: Enhancements**
 1. **Payment Links**
    - CSV bulk import
    - Analytics dashboard
