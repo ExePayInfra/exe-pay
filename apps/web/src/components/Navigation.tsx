@@ -25,6 +25,10 @@ export function Navigation() {
             <a href="/wallet" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               Wallet
             </a>
+            <a href="/privacy" className="text-gray-600 hover:text-gray-900 font-medium transition-colors flex items-center gap-1">
+              <span>🔒</span>
+              <span>Privacy</span>
+            </a>
             <a href="/batch" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               Batch
             </a>
@@ -85,6 +89,10 @@ export function Navigation() {
               </a>
               <a href="/wallet" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 Wallet
+              </a>
+              <a href="/privacy" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-2">
+                <span>🔒</span>
+                <span>Privacy</span>
               </a>
               <a href="/batch" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 Batch
