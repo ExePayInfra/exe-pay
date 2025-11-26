@@ -198,21 +198,33 @@ function deriveSharedSecretECDH(
   recipientPublicKey: Uint8Array    // Ed25519 public key (32 bytes)
 ): Uint8Array {
   try {
+    console.log('[deriveSharedSecretECDH] Input recipient public key (first 8 bytes):', Array.from(recipientPublicKey.slice(0, 8)));
+    
     // Convert Ed25519 public key to X25519 (Montgomery curve)
     // This is safe because Ed25519 and X25519 are birationally equivalent
     const recipientX25519Pub = ed25519.utils.toMontgomery(recipientPublicKey);
+    
+    console.log('[deriveSharedSecretECDH] Recipient X25519 public key (first 8 bytes):', Array.from(recipientX25519Pub.slice(0, 8)));
     
     // Convert Ed25519 private key to X25519
     // Extract the first 32 bytes (the actual private key, not the seed)
     const ephemeralPriv = ephemeralPrivateKey.slice(0, 32);
     const ephemeralX25519Priv = ed25519.utils.toMontgomerySecret(ephemeralPriv);
     
+    console.log('[deriveSharedSecretECDH] Ephemeral X25519 private key (first 8 bytes):', Array.from(ephemeralX25519Priv.slice(0, 8)));
+    
     // Perform X25519 ECDH to get shared secret
-    const sharedSecret = x25519.getSharedSecret(ephemeralX25519Priv, recipientX25519Pub);
+    const rawSharedSecret = x25519.getSharedSecret(ephemeralX25519Priv, recipientX25519Pub);
+    
+    console.log('[deriveSharedSecretECDH] Raw X25519 shared secret (first 8 bytes):', Array.from(rawSharedSecret.slice(0, 8)));
     
     // Hash the shared secret for key derivation
     // This ensures uniform distribution and proper key length
-    return keccak_256(sharedSecret);
+    const hashedSecret = keccak_256(rawSharedSecret);
+    
+    console.log('[deriveSharedSecretECDH] Hashed shared secret (first 8 bytes):', Array.from(hashedSecret.slice(0, 8)));
+    
+    return hashedSecret;
   } catch (error) {
     console.error('[Stealth ECDH] Error deriving shared secret:', error);
     throw new Error('Failed to derive shared secret');
