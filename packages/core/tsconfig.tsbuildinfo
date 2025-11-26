@@ -1,1 +1,1 @@
-{"root":["./src/client.ts","./src/confidential.ts","./src/history.ts","./src/index.ts","./src/merkle.ts","./src/recurring.ts","./src/transactions.ts","./src/types.ts","./src/__tests__/elgamal.test.ts","./src/crypto/elgamal.ts"],"version":"5.9.3"}
+{"root":["./src/batch.ts","./src/client.ts","./src/confidential.ts","./src/history.ts","./src/index.ts","./src/merkle.ts","./src/recurring.ts","./src/transactions.ts","./src/types.ts","./src/__tests__/elgamal.test.ts","./src/crypto/elgamal.ts"],"version":"5.9.3"}
