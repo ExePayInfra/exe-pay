@@ -194,21 +194,27 @@ export async function scanForPayments(
         
         // Check all instructions for memos
         for (const instruction of tx.transaction.message.instructions) {
-          if ('parsed' in instruction && instruction.parsed?.type === 'transfer') {
-            // Check if there's a memo in the transaction
-            const memoInstruction = tx.transaction.message.instructions.find(
-              (ix) => 'program' in ix && ix.program === 'spl-memo'
-            );
+          // Check if this is a memo instruction
+          if ('program' in instruction && instruction.program === 'spl-memo') {
+            console.log('[Scanner] Found memo instruction:', instruction);
             
-            if (memoInstruction && 'parsed' in memoInstruction) {
-              const memo = memoInstruction.parsed;
+            // Memo data is in the 'parsed' field as a string
+            if ('parsed' in instruction && typeof instruction.parsed === 'string') {
+              const memo = instruction.parsed;
+              console.log('[Scanner] Memo content:', memo);
               ephemeralData = parseEphemeralKey(memo);
+              
+              if (ephemeralData) {
+                console.log('[Scanner] ✓ Parsed ephemeral data:', ephemeralData);
+                break;
+              }
             }
           }
         }
         
         // If no ephemeral data found, skip
         if (!ephemeralData) {
+          console.log('[Scanner] No ephemeral data found in transaction:', sigInfo.signature);
           continue;
         }
         
