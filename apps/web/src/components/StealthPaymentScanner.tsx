@@ -14,6 +14,7 @@ import {
   canClaimPayment,
   getViewingKeyMessage,
   deriveViewingKey,
+  derivePublicKey,
   type StealthMetaAddress,
   type DetectedPayment as PrivacyDetectedPayment
 } from '@exe-pay/privacy';
@@ -33,27 +34,17 @@ export function StealthPaymentScanner() {
   const [viewingKey, setViewingKey] = useState<Uint8Array | null>(null);
   const [needsSignature, setNeedsSignature] = useState(false);
 
+  // Don't auto-generate meta address - it will be generated when user signs
   useEffect(() => {
     if (publicKey && wallet) {
-      try {
-        // Generate user's stealth meta-address
-        const meta = generateStealthMetaAddress({
-          publicKey,
-          secretKey: new Uint8Array(64) // Placeholder
-        } as any);
-        setMetaAddress(meta);
-
-        // Load saved payments from localStorage using scanner utility
-        const saved = getStoredPayments();
-        setPayments(saved);
-      } catch (err) {
-        console.error('Failed to generate meta-address:', err);
-      }
+      // Load saved payments from localStorage
+      const saved = getStoredPayments();
+      setPayments(saved);
     }
   }, [publicKey, wallet]);
 
   const handleRequestSignature = async () => {
-    if (!signMessage) {
+    if (!signMessage || !publicKey) {
       setError('Wallet does not support message signing');
       return;
     }
@@ -73,8 +64,23 @@ export function StealthPaymentScanner() {
       
       console.log('[Scanner UI] ✓ Viewing key derived');
       
+      // Generate meta address with derived key (SAME as generator!)
+      const derivedPublicKey = derivePublicKey(derivedKey);
+      const { Keypair: SolanaKeypair, PublicKey: SolanaPublicKey } = await import('@solana/web3.js');
+      
+      const fullKey = new Uint8Array(64);
+      fullKey.set(derivedKey, 0);
+      fullKey.set(derivedPublicKey, 32);
+      
+      const derivedKeypair = SolanaKeypair.fromSecretKey(fullKey);
+      const meta = generateStealthMetaAddress(derivedKeypair);
+      setMetaAddress(meta);
+      
+      console.log('[Scanner UI] ✓ Meta address generated with derived key');
+      console.log('[Scanner UI] Viewing key:', meta.viewingKey.toBase58());
+      
       // Automatically start scanning
-      await handleScan(derivedKey);
+      await handleScan(derivedKey, meta);
       
     } catch (err: any) {
       console.error('[Scanner UI] Signature request failed:', err);
@@ -82,15 +88,17 @@ export function StealthPaymentScanner() {
     }
   };
 
-  const handleScan = async (key?: Uint8Array) => {
-    if (!publicKey || !metaAddress || !wallet) {
+  const handleScan = async (key?: Uint8Array, meta?: StealthMetaAddress) => {
+    if (!publicKey || !wallet) {
       setError('Please connect your wallet');
       return;
     }
 
-    // Check if we have viewing key
+    // Check if we have viewing key and meta address
     const scanKey = key || viewingKey;
-    if (!scanKey) {
+    const scanMeta = meta || metaAddress;
+    
+    if (!scanKey || !scanMeta) {
       setNeedsSignature(true);
       setError('Please sign the message to enable scanning');
       return;
@@ -112,7 +120,7 @@ export function StealthPaymentScanner() {
       const detected = await scanForPayments(
         connection,
         publicKey,
-        metaAddress,
+        scanMeta,
         userSecretKey,
         { limit: 50 }
       );
