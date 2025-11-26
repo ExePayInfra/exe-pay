@@ -590,10 +590,10 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { gradient: 'from-purple-500 to-indigo-600', title: 'ZK-SNARKs', desc: 'Succinct proofs', delay: '0s' },
-              { gradient: 'from-cyan-500 to-blue-600', title: 'ElGamal', desc: 'Homomorphic encryption', delay: '0.1s' },
-              { gradient: 'from-pink-500 to-rose-600', title: 'Poseidon', desc: 'ZK-friendly hashing', delay: '0.2s' },
-              { gradient: 'from-indigo-500 to-purple-600', title: 'Groth16', desc: 'Proof system', delay: '0.3s' },
+              { gradient: 'from-purple-500 to-indigo-600', title: 'ZK-SNARKs', desc: 'Zero-knowledge proofs', delay: '0s' },
+              { gradient: 'from-cyan-500 to-blue-600', title: 'Keccak-256', desc: 'Cryptographic hashing', delay: '0.1s' },
+              { gradient: 'from-pink-500 to-rose-600', title: 'Pedersen', desc: 'Commitment scheme', delay: '0.2s' },
+              { gradient: 'from-indigo-500 to-purple-600', title: 'Nullifiers', desc: 'Double-spend prevention', delay: '0.3s' },
             ].map((tech) => (
               <div
                 key={tech.title}
