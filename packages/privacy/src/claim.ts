@@ -125,7 +125,9 @@ export async function claimPayment(
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
     transaction.recentBlockhash = blockhash;
     transaction.lastValidBlockHeight = lastValidBlockHeight;
-    transaction.feePayer = feePayer;
+    
+    // The stealth address pays for itself (no external fee payer needed)
+    transaction.feePayer = payment.address;
     
     // Sign with stealth keypair
     transaction.sign(stealthKeypair);
