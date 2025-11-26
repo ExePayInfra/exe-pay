@@ -21,6 +21,7 @@ export * from "./stealth.js";
 export * from "./relayer.js";
 export * from "./scanner.js";
 export * from "./claim.js";
+export * from "./keyDerivation.js";
 
 export interface ProveSpendResult {
   readonly proof: Uint8Array;

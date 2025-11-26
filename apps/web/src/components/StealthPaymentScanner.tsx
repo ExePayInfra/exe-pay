@@ -12,6 +12,8 @@ import {
   markPaymentClaimed,
   claimPayment,
   canClaimPayment,
+  getViewingKeyMessage,
+  deriveViewingKey,
   type StealthMetaAddress,
   type DetectedPayment as PrivacyDetectedPayment
 } from '@exe-pay/privacy';
@@ -20,7 +22,7 @@ import {
 type DetectedPayment = PrivacyDetectedPayment;
 
 export function StealthPaymentScanner() {
-  const { publicKey, wallet, signTransaction } = useWallet();
+  const { publicKey, wallet, signTransaction, signMessage } = useWallet();
   const { connection } = useConnection();
   
   const [scanning, setScanning] = useState(false);
@@ -28,6 +30,8 @@ export function StealthPaymentScanner() {
   const [metaAddress, setMetaAddress] = useState<StealthMetaAddress | null>(null);
   const [error, setError] = useState('');
   const [claimingId, setClaimingId] = useState<string | null>(null);
+  const [viewingKey, setViewingKey] = useState<Uint8Array | null>(null);
+  const [needsSignature, setNeedsSignature] = useState(false);
 
   useEffect(() => {
     if (publicKey && wallet) {
@@ -48,22 +52,61 @@ export function StealthPaymentScanner() {
     }
   }, [publicKey, wallet]);
 
-  const handleScan = async () => {
+  const handleRequestSignature = async () => {
+    if (!signMessage) {
+      setError('Wallet does not support message signing');
+      return;
+    }
+
+    try {
+      console.log('[Scanner UI] Requesting viewing key signature...');
+      
+      const message = getViewingKeyMessage();
+      const signature = await signMessage(message);
+      
+      console.log('[Scanner UI] ✓ Signature received');
+      
+      // Derive viewing key from signature
+      const derivedKey = deriveViewingKey(signature);
+      setViewingKey(derivedKey);
+      setNeedsSignature(false);
+      
+      console.log('[Scanner UI] ✓ Viewing key derived');
+      
+      // Automatically start scanning
+      await handleScan(derivedKey);
+      
+    } catch (err: any) {
+      console.error('[Scanner UI] Signature request failed:', err);
+      setError(err.message || 'Failed to sign message');
+    }
+  };
+
+  const handleScan = async (key?: Uint8Array) => {
     if (!publicKey || !metaAddress || !wallet) {
       setError('Please connect your wallet');
       return;
     }
 
+    // Check if we have viewing key
+    const scanKey = key || viewingKey;
+    if (!scanKey) {
+      setNeedsSignature(true);
+      setError('Please sign the message to enable scanning');
+      return;
+    }
+
     setScanning(true);
     setError('');
+    setNeedsSignature(false);
 
     try {
       console.log('[Scanner UI] Starting scan for stealth payments...');
 
-      // Note: In production, we need the user's actual secret key for ECDH
-      // For now, we'll use a placeholder and detect all incoming transfers
-      // TODO: Implement proper wallet signing for key derivation
-      const userSecretKey = new Uint8Array(64); // Placeholder
+      // Create 64-byte key (ed25519 format: 32 secret + 32 public)
+      const userSecretKey = new Uint8Array(64);
+      userSecretKey.set(scanKey, 0);
+      // Note: Public key part not needed for ECDH, only first 32 bytes used
 
       // Use the real scanner from privacy package
       const detected = await scanForPayments(
@@ -183,14 +226,38 @@ export function StealthPaymentScanner() {
           </div>
         )}
 
-        {/* Scan Button */}
-        <button
-          onClick={handleScan}
-          disabled={scanning}
-          className="w-full px-6 py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
-        >
-          {scanning ? '🔍 Scanning Blockchain...' : '🔍 Scan for Payments'}
-        </button>
+        {/* Signature Request or Scan Button */}
+        {needsSignature || !viewingKey ? (
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-2">🔐 Enable Privacy Scanning</h4>
+              <p className="text-sm text-blue-800 mb-3">
+                To detect payments sent to you, sign a message to derive your viewing key.
+              </p>
+              <ul className="text-xs text-blue-700 space-y-1 mb-4">
+                <li>✓ Free (no transaction)</li>
+                <li>✓ Doesn't access your funds</li>
+                <li>✓ Only used locally in your browser</li>
+                <li>✓ Required once per session</li>
+              </ul>
+            </div>
+            <button
+              onClick={handleRequestSignature}
+              disabled={scanning}
+              className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+            >
+              🔐 Sign Message to Enable Scanning
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleScan()}
+            disabled={scanning}
+            className="w-full px-6 py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+          >
+            {scanning ? '🔍 Scanning Blockchain...' : '🔍 Scan for Payments'}
+          </button>
+        )}
 
         {/* Error */}
         {error && (
