@@ -238,12 +238,10 @@ function deriveStealthKeypair(
   spendingKey: PublicKey,
   sharedSecret: Uint8Array
 ): Keypair {
-  // Derive stealth private key
-  const combined = new Uint8Array(spendingKey.toBytes().length + sharedSecret.length);
-  combined.set(spendingKey.toBytes(), 0);
-  combined.set(sharedSecret, spendingKey.toBytes().length);
-  
-  const stealthSeed = keccak_256(combined);
+  // Derive stealth private key ONLY from shared secret
+  // This allows the recipient to derive the same private key
+  // using just the ephemeral public key and their viewing key
+  const stealthSeed = keccak_256(sharedSecret);
   
   // Generate keypair from seed
   return Keypair.fromSeed(stealthSeed.slice(0, 32));

@@ -9,7 +9,7 @@
  * 5. Deriving private keys for claiming
  */
 
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey, Keypair } from '@solana/web3.js';
 import type { ParsedTransactionWithMeta } from '@solana/web3.js';
 import { x25519, ed25519 } from '@noble/curves/ed25519';
 import { keccak_256 } from '@noble/hashes/sha3';
@@ -157,19 +157,20 @@ export function deriveClaimKey(
     // Hash the shared secret (SAME as sender!)
     const sharedSecret = keccak_256(rawSharedSecret);
     
-    console.log('[deriveClaimKey] Shared secret derived');
+    console.log('[deriveClaimKey] Shared secret derived (first 8 bytes):', Array.from(sharedSecret.slice(0, 8)));
     
-    // Derive stealth private key using the spending key
-    // This matches the sender's deriveStealthKeypair logic
-    const combined = new Uint8Array(metaAddress.spendingKey.toBytes().length + sharedSecret.length);
-    combined.set(metaAddress.spendingKey.toBytes(), 0);
-    combined.set(sharedSecret, metaAddress.spendingKey.toBytes().length);
+    // Derive stealth private key ONLY from shared secret
+    // This matches the simplified sender logic
+    const stealthSeed = keccak_256(sharedSecret);
     
-    const stealthSeed = keccak_256(combined);
+    console.log('[deriveClaimKey] Stealth seed (first 8 bytes):', Array.from(stealthSeed.slice(0, 8)));
     
+    // Verify by deriving the public key
+    const testKeypair = Keypair.fromSeed(stealthSeed.slice(0, 32));
+    console.log('[deriveClaimKey] Derived public key:', testKeypair.publicKey.toBase58());
     console.log('[deriveClaimKey] ✓ Stealth private key derived');
     
-    return stealthSeed;
+    return stealthSeed.slice(0, 32);
   } catch (err) {
     console.error('[Scanner] Error deriving claim key:', err);
     throw err;

@@ -168,13 +168,49 @@ export function StealthPaymentScanner() {
       const updated = getStoredPayments();
       setPayments(updated);
 
-      // Show success message
-      alert(`✅ Payment claimed successfully!\n\n${result.amount / 1e9} SOL transferred to your wallet.\n\nTransaction: ${result.signature}\n\nView on explorer: https://explorer.solana.com/tx/${result.signature}?cluster=devnet`);
+      // Show success message in UI
+      setError('');
+      
+      // Create a success notification element
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl animate-slide-in-right max-w-md';
+      notification.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="text-2xl">✅</div>
+          <div class="flex-1">
+            <h3 class="font-bold text-lg mb-1">Payment Claimed!</h3>
+            <p class="text-sm opacity-90 mb-2">${(result.amount / 1e9).toFixed(6)} SOL transferred to your wallet</p>
+            <a href="https://explorer.solana.com/tx/${result.signature}?cluster=devnet" target="_blank" rel="noopener noreferrer" class="text-xs underline hover:no-underline">
+              View on Explorer →
+            </a>
+          </div>
+          <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-gray-200 text-xl leading-none">&times;</button>
+        </div>
+      `;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 10000); // Auto-remove after 10s
 
     } catch (err: any) {
       console.error('[Scanner UI] Claim failed:', err);
-      setError(err.message || 'Failed to claim payment');
-      alert(`❌ Failed to claim payment:\n\n${err.message}\n\nPlease try again or check the console for details.`);
+      const errorMessage = err.message || 'Failed to claim payment';
+      setError(errorMessage);
+      
+      // Create an error notification element
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl animate-slide-in-right max-w-md';
+      notification.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="text-2xl">❌</div>
+          <div class="flex-1">
+            <h3 class="font-bold text-lg mb-1">Claim Failed</h3>
+            <p class="text-sm opacity-90">${errorMessage}</p>
+            <p class="text-xs opacity-75 mt-2">Check console for details</p>
+          </div>
+          <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-gray-200 text-xl leading-none">&times;</button>
+        </div>
+      `;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 8000); // Auto-remove after 8s
     } finally {
       setClaimingId(null);
     }
