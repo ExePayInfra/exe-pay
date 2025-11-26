@@ -23,7 +23,7 @@ ExePay is a privacy-first payment infrastructure for Solana, featuring real zero
 
 ## 📅 Launch Timeline
 
-### **Phase 1: Core Features Completion** (Week 1-2)
+### **Phase 1: Core Features Completion**
 
 #### **Batch Payments** 🔥 CRITICAL
 **Timeline:** 2-3 hours  
@@ -70,10 +70,10 @@ ExePay is a privacy-first payment infrastructure for Solana, featuring real zero
 
 ---
 
-### **Phase 2: Off-Chain Privacy Architecture** (Week 2-5)
+### **Phase 2: Off-Chain Privacy Architecture**
 
 #### **Stealth Addresses** 🔥 HIGH PRIORITY
-**Timeline:** 1-2 weeks  
+**Timeline:** 7-10 days  
 **Priority:** High  
 **Status:** Foundation complete, integration needed
 
@@ -108,7 +108,7 @@ Stealth addresses provide receiver privacy by generating unique one-time address
 ---
 
 #### **Relayer Network** 🔥 HIGH PRIORITY
-**Timeline:** 2-3 weeks  
+**Timeline:** 14-20 days  
 **Priority:** High  
 **Status:** Protocol designed, infrastructure needed
 
@@ -144,7 +144,7 @@ Relayer network provides sender privacy by routing transactions through intermed
 ---
 
 #### **Hybrid Privacy Mode** 🔥 CRITICAL
-**Timeline:** 1 week (after stealth + relayer)  
+**Timeline:** 5-7 days (after stealth + relayer)  
 **Priority:** Critical  
 **Status:** Architecture designed
 
@@ -173,10 +173,10 @@ Combines stealth addresses and relayer network for maximum off-chain privacy. Pr
 
 ---
 
-### **Phase 3: Payment Links Enhancement** (Week 3-4)
+### **Phase 3: Payment Links Enhancement**
 
 #### **CSV Bulk Import** 🟡 HIGH
-**Timeline:** 1 hour  
+**Timeline:** 45-60 minutes  
 **Priority:** High
 
 **Tasks:**
@@ -196,7 +196,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 ---
 
 #### **Link Analytics** 🟡 HIGH
-**Timeline:** 1 hour  
+**Timeline:** 50-70 minutes  
 **Priority:** High
 
 **Tasks:**
@@ -215,10 +215,10 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-### **Phase 4: Developer Experience** (Week 4-5)
+### **Phase 4: Developer Experience**
 
 #### **NPM Package Publishing** 🟡 MEDIUM
-**Timeline:** 2 hours  
+**Timeline:** 90-120 minutes  
 **Priority:** Medium
 
 **Packages to Publish:**
@@ -240,7 +240,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 ---
 
 #### **Code Examples & Tutorials** 🟡 MEDIUM
-**Timeline:** 3 hours  
+**Timeline:** 2.5-3.5 hours  
 **Priority:** Medium
 
 **Content to Create:**
@@ -544,7 +544,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ## 🎯 Immediate Next Steps
 
-### **Week 1: Core Payment Features**
+### **Immediate: Core Payment Features**
 
 **Batch Payments** (2-3 hours)
 - Implement multi-recipient transaction builder
@@ -562,9 +562,9 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-### **Week 2-3: Off-Chain Privacy Integration**
+### **Next: Off-Chain Privacy Integration**
 
-**Stealth Addresses** (1-2 weeks)
+**Stealth Addresses** (7-10 days)
 - Implement blockchain scanning engine
 - Add view tag optimization
 - Create UI for stealth meta-address
@@ -573,7 +573,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 - Test on devnet
 - Deploy to mainnet
 
-**Relayer Network** (2-3 weeks)
+**Relayer Network** (14-20 days)
 - Build relayer node software
 - Deploy initial relayer infrastructure
 - Implement multi-relayer coordination
@@ -584,7 +584,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-### **Week 4-5: Advanced Features**
+### **Later: Advanced Features**
 
 **Hybrid Privacy Mode**
 - Combine stealth + relayer

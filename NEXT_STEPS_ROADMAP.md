@@ -27,7 +27,7 @@
 
 ## 🎯 **Development Roadmap** (Priority Order)
 
-### **Phase 1: Core Payment Features** (Week 1 - 4-6 hours)
+### **Phase 1: Core Payment Features** (4-6 hours)
 
 #### **1.1 Batch Payments Implementation** ⭐ HIGH PRIORITY
 **Timeline:** 2-3 hours  
@@ -75,10 +75,10 @@
 
 ---
 
-### **Phase 2: Off-Chain Privacy Solutions** (Week 2-5 - 3-5 weeks)
+### **Phase 2: Off-Chain Privacy Solutions**
 
 #### **2.1 Stealth Addresses** ⭐ HIGH PRIORITY
-**Timeline:** 1-2 weeks  
+**Timeline:** 7-10 days  
 **Status:** Core implementation complete
 
 **What It Provides:**
@@ -102,7 +102,7 @@
 ---
 
 #### **2.2 Relayer Network** ⭐ HIGH PRIORITY
-**Timeline:** 2-3 weeks  
+**Timeline:** 14-20 days  
 **Status:** Protocol designed, infrastructure needed
 
 **What It Provides:**
@@ -127,7 +127,7 @@
 ---
 
 #### **2.3 Hybrid Privacy Mode** ⭐ CRITICAL
-**Timeline:** 1 week (after stealth + relayer complete)  
+**Timeline:** 5-7 days (after stealth + relayer complete)  
 **Status:** Architecture designed
 
 **What It Provides:**
@@ -150,7 +150,7 @@
 
 ---
 
-### **Phase 3: Payment Links Enhancement** (Week 3-4 - 1-2 hours)
+### **Phase 3: Payment Links Enhancement**
 
 #### **2.1 CSV Import for Bulk Links** 🟡 MEDIUM PRIORITY
 **Timeline:** 30-45 minutes
@@ -186,7 +186,7 @@
 
 ---
 
-### **Phase 4: Developer Experience** (Week 5-6 - 3-4 hours)
+### **Phase 4: Developer Experience**
 
 #### **3.1 Code Examples & Documentation** 🟡 MEDIUM PRIORITY
 **Timeline:** 2 hours
@@ -261,7 +261,7 @@ const useDemonstrationMode = false;
 ### **Phase 5: Advanced Features** (Future)
 
 #### **5.1 Mobile App** 📱 LOW PRIORITY
-**Timeline:** 4-6 weeks
+**Timeline:** 30-40 days
 
 **Options:**
 - React Native app
@@ -271,7 +271,7 @@ const useDemonstrationMode = false;
 ---
 
 #### **5.2 Hardware Wallet Support** 🔐 LOW PRIORITY
-**Timeline:** 2-3 weeks
+**Timeline:** 14-20 days
 
 **Wallets to Support:**
 - Ledger
@@ -280,7 +280,7 @@ const useDemonstrationMode = false;
 ---
 
 #### **5.3 Multi-Chain Expansion** 🌐 LOW PRIORITY
-**Timeline:** 8-12 weeks
+**Timeline:** 60-90 days
 
 **Potential Chains:**
 - Ethereum
@@ -339,8 +339,8 @@ const useDemonstrationMode = false;
 | **Link Analytics** | 🟡 MEDIUM | 1h | MEDIUM | Not Started |
 | **Code Examples** | 🟡 MEDIUM | 2h | HIGH | Not Started |
 | **NPM Publishing** | 🟡 MEDIUM | 2h | HIGH | Not Started |
-| **Mobile App** | 🟢 LOW | 6w | MEDIUM | Not Started |
-| **Hardware Wallets** | 🟢 LOW | 3w | LOW | Not Started |
+| **Mobile App** | 🟢 LOW | 35d | MEDIUM | Not Started |
+| **Hardware Wallets** | 🟢 LOW | 17d | LOW | Not Started |
 
 ---
 
@@ -356,7 +356,7 @@ const useDemonstrationMode = false;
 - UI already built
 - Just need schedule logic
 
-### **3. CSV Import** (1 hour)
+### **3. CSV Import** (45-60 minutes)
 - Quick to implement
 - High utility
 - Easy win
