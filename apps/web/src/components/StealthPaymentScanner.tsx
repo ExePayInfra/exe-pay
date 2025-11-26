@@ -78,9 +78,10 @@ export function StealthPaymentScanner() {
       
       console.log('[Scanner UI] ✓ Meta address generated with derived key');
       console.log('[Scanner UI] Viewing key:', meta.viewingKey.toBase58());
+      console.log('[Scanner UI] Full secret key (first 16 bytes):', Array.from(fullKey.slice(0, 16)));
       
-      // Automatically start scanning
-      await handleScan(derivedKey, meta);
+      // Automatically start scanning with FULL keypair secret key
+      await handleScan(fullKey, meta);
       
     } catch (err: any) {
       console.error('[Scanner UI] Signature request failed:', err);
@@ -110,11 +111,11 @@ export function StealthPaymentScanner() {
 
     try {
       console.log('[Scanner UI] Starting scan for stealth payments...');
+      console.log('[Scanner UI] Scan key length:', scanKey.length);
+      console.log('[Scanner UI] Scan key (first 16 bytes):', Array.from(scanKey.slice(0, 16)));
 
-      // Create 64-byte key (ed25519 format: 32 secret + 32 public)
-      const userSecretKey = new Uint8Array(64);
-      userSecretKey.set(scanKey, 0);
-      // Note: Public key part not needed for ECDH, only first 32 bytes used
+      // scanKey should already be 64 bytes (full Ed25519 keypair)
+      const userSecretKey = scanKey;
 
       // Use the real scanner from privacy package
       const detected = await scanForPayments(
