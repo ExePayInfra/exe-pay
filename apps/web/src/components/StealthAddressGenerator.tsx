@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { generateStealthMetaAddress, encodeStealthMetaAddress } from '@exe-pay/privacy';
-import QRCode from 'qrcode';
+import dynamic from 'next/dynamic';
+
+// Lazy load QRCode to improve initial load time
+const QRCode = dynamic(() => import('qrcode'), { ssr: false });
 
 export function StealthAddressGenerator() {
   const { publicKey, wallet } = useWallet();
@@ -26,15 +29,17 @@ export function StealthAddressGenerator() {
         const encoded = encodeStealthMetaAddress(metaAddress);
         setStealthAddress(encoded);
 
-        // Generate QR code
-        QRCode.toDataURL(encoded, {
-          width: 256,
-          margin: 2,
-          color: {
-            dark: '#4F46E5',
-            light: '#FFFFFF'
-          }
-        }).then(setQrCodeUrl);
+        // Generate QR code asynchronously
+        import('qrcode').then((QRCodeModule) => {
+          QRCodeModule.default.toDataURL(encoded, {
+            width: 256,
+            margin: 2,
+            color: {
+              dark: '#4F46E5',
+              light: '#FFFFFF'
+            }
+          }).then(setQrCodeUrl);
+        });
       } catch (error) {
         console.error('Failed to generate stealth address:', error);
       }

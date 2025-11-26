@@ -1,9 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { PrivacyModeSelector, type PrivacyMode } from '@/components/PrivacyModeSelector';
-import { StealthAddressGenerator } from '@/components/StealthAddressGenerator';
 import { SecureWalletConnect } from '@/components/SecureWalletConnect';
+
+// Lazy load StealthAddressGenerator for better performance
+const StealthAddressGenerator = dynamic(
+  () => import('@/components/StealthAddressGenerator').then(mod => ({ default: mod.StealthAddressGenerator })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔒</div>
+          <p className="text-gray-600">Loading stealth address generator...</p>
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function PrivacyPage() {
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
