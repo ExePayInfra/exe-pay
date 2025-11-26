@@ -100,10 +100,15 @@ export function isPaymentForUser(
     console.log('[isPaymentForUser] User X25519 secret (first 8 bytes):', Array.from(userX25519Secret.slice(0, 8)));
     
     // Perform ECDH to derive shared secret
-    const sharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
+    const rawSharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
     
-    console.log('[isPaymentForUser] Shared secret derived, length:', sharedSecret.length);
-    console.log('[isPaymentForUser] Shared secret (first 8 bytes):', Array.from(sharedSecret.slice(0, 8)));
+    console.log('[isPaymentForUser] Raw shared secret derived, length:', rawSharedSecret.length);
+    console.log('[isPaymentForUser] Raw shared secret (first 8 bytes):', Array.from(rawSharedSecret.slice(0, 8)));
+    
+    // Hash the shared secret (MUST match sender's deriveSharedSecretECDH!)
+    const sharedSecret = keccak_256(rawSharedSecret);
+    
+    console.log('[isPaymentForUser] Hashed shared secret (first 8 bytes):', Array.from(sharedSecret.slice(0, 8)));
     
     // Calculate expected view tag
     const expectedViewTag = calculateViewTag(sharedSecret);
