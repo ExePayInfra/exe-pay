@@ -143,27 +143,33 @@ export function deriveClaimKey(
   userSecretKey: Uint8Array
 ): Uint8Array {
   try {
-    // Convert Ed25519 keys to X25519 format for ECDH
+    console.log('[deriveClaimKey] Deriving private key for claiming...');
+    
+    // Convert Ed25519 keys to X25519 format for ECDH (SAME as isPaymentForUser!)
     const userX25519Secret = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
-    const ephemeralX25519 = x25519.getPublicKey(ephemeralPubkey.toBytes());
+    const ephemeralX25519Pub = ed25519.utils.toMontgomery(ephemeralPubkey.toBytes());
     
-    // Perform ECDH
-    const sharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
+    console.log('[deriveClaimKey] Performing ECDH...');
     
-    // Derive private key: privateKey = userSecretKey + hash(sharedSecret)
-    const hash = keccak_256(sharedSecret);
+    // Perform ECDH to get raw shared secret
+    const rawSharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519Pub);
     
-    // Convert user secret key to scalar for Ed25519
-    const userScalar = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
-    const hashScalar = ed25519.utils.toMontgomerySecret(hash);
+    // Hash the shared secret (SAME as sender!)
+    const sharedSecret = keccak_256(rawSharedSecret);
     
-    // Add scalars (mod curve order)
-    const claimKeyScalar = new Uint8Array(32);
-    for (let i = 0; i < 32; i++) {
-      claimKeyScalar[i] = (userScalar[i] + hashScalar[i]) & 0xff;
-    }
+    console.log('[deriveClaimKey] Shared secret derived');
     
-    return claimKeyScalar;
+    // Derive stealth private key using the spending key
+    // This matches the sender's deriveStealthKeypair logic
+    const combined = new Uint8Array(metaAddress.spendingKey.toBytes().length + sharedSecret.length);
+    combined.set(metaAddress.spendingKey.toBytes(), 0);
+    combined.set(sharedSecret, metaAddress.spendingKey.toBytes().length);
+    
+    const stealthSeed = keccak_256(combined);
+    
+    console.log('[deriveClaimKey] ✓ Stealth private key derived');
+    
+    return stealthSeed;
   } catch (err) {
     console.error('[Scanner] Error deriving claim key:', err);
     throw err;

@@ -151,24 +151,30 @@ export function StealthPaymentScanner() {
 
     try {
       console.log('[Scanner UI] Claiming payment:', payment.signature);
+      console.log('[Scanner UI] Amount:', payment.amount / 1e9, 'SOL');
+      console.log('[Scanner UI] From address:', payment.address.toBase58());
 
-      // Note: Claiming requires deriving the private key for the stealth address
-      // This is complex and requires the spending key (separate from viewing key)
-      // For now, mark as claimed and show instructions
+      // Use the real claim function to transfer funds
+      const result = await claimPayment(connection, payment, publicKey);
       
+      console.log('[Scanner UI] ✓ Claim successful!');
+      console.log('[Scanner UI] Transaction:', result.signature);
+      console.log('[Scanner UI] Amount claimed:', result.amount / 1e9, 'SOL');
+      
+      // Mark as claimed in storage
       markPaymentClaimed(payment.signature);
       
       // Reload payments
       const updated = getStoredPayments();
       setPayments(updated);
 
-      // Show info message
-      alert(`Payment marked as claimed!\n\nNote: Full claiming functionality coming soon.\nFor now, funds remain at the stealth address:\n${payment.address.toBase58()}\n\nYou can import this address to claim manually.`);
+      // Show success message
+      alert(`✅ Payment claimed successfully!\n\n${result.amount / 1e9} SOL transferred to your wallet.\n\nTransaction: ${result.signature}\n\nView on explorer: https://explorer.solana.com/tx/${result.signature}?cluster=devnet`);
 
     } catch (err: any) {
       console.error('[Scanner UI] Claim failed:', err);
       setError(err.message || 'Failed to claim payment');
-      alert(`Failed to claim payment: ${err.message}`);
+      alert(`❌ Failed to claim payment:\n\n${err.message}\n\nPlease try again or check the console for details.`);
     } finally {
       setClaimingId(null);
     }
