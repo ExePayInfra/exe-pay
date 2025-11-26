@@ -20,7 +20,7 @@ let initializeLightProtocol: any;
 let createLightShieldedTransfer: any;
 let getShieldedBalance: any;
 
-type PrivacyLevel = 'public' | 'shielded' | 'private' | 'light';
+type PrivacyLevel = 'public' | 'light' | 'stealth';
 
 export default function WalletPage() {
   const { publicKey, signTransaction, connected, disconnect, select, wallets, wallet } = useWallet();
