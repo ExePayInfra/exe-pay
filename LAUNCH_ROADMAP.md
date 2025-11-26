@@ -70,7 +70,110 @@ ExePay is a privacy-first payment infrastructure for Solana, featuring real zero
 
 ---
 
-### **Phase 2: Payment Links Enhancement** (Week 2-3)
+### **Phase 2: Off-Chain Privacy Architecture** (Week 2-5)
+
+#### **Stealth Addresses** 🔥 HIGH PRIORITY
+**Timeline:** 1-2 weeks  
+**Priority:** High  
+**Status:** Foundation complete, integration needed
+
+**Overview:**
+Stealth addresses provide receiver privacy by generating unique one-time addresses for each payment. Recipients scan the blockchain to detect payments intended for them, ensuring no address reuse and preventing transaction linkage.
+
+**Implementation Tasks:**
+- [x] Core cryptographic primitives
+- [x] Meta-address generation
+- [x] One-time address derivation
+- [x] Shared secret computation
+- [ ] Blockchain scanning engine
+- [ ] View tag optimization
+- [ ] UI integration (wallet page)
+- [ ] Recipient onboarding flow
+- [ ] Notification system
+- [ ] Local testing on devnet
+- [ ] Mainnet deployment
+
+**Privacy Guarantees:**
+- Receiver address privacy (unique per payment)
+- Unlinkability between payments
+- No address reuse
+- Cryptographically secure
+
+**Success Metrics:**
+- Address generation: < 100ms
+- Payment detection: < 5 seconds
+- Detection accuracy: 100%
+- User-friendly experience
+
+---
+
+#### **Relayer Network** 🔥 HIGH PRIORITY
+**Timeline:** 2-3 weeks  
+**Priority:** High  
+**Status:** Protocol designed, infrastructure needed
+
+**Overview:**
+Relayer network provides sender privacy by routing transactions through intermediary nodes. Senders encrypt payment requests, relayers execute on-chain, breaking the link between sender and transaction.
+
+**Implementation Tasks:**
+- [x] Relayer protocol specification
+- [x] End-to-end encryption
+- [x] Request authentication
+- [x] Fee estimation
+- [ ] Relayer node software
+- [ ] Multi-relayer coordination
+- [ ] Reputation system
+- [ ] Fee management system
+- [ ] UI integration (wallet page)
+- [ ] Relayer infrastructure deployment
+- [ ] Local testing on devnet
+- [ ] Mainnet deployment
+
+**Privacy Guarantees:**
+- Sender identity hidden from blockchain
+- Sender identity hidden from recipient
+- Encrypted payment requests
+- Multi-relayer redundancy
+
+**Success Metrics:**
+- Relayer uptime: > 99.9%
+- Relay latency: < 2 seconds
+- Network redundancy: 3+ relayers
+- Transparent fee structure
+
+---
+
+#### **Hybrid Privacy Mode** 🔥 CRITICAL
+**Timeline:** 1 week (after stealth + relayer)  
+**Priority:** Critical  
+**Status:** Architecture designed
+
+**Overview:**
+Combines stealth addresses and relayer network for maximum off-chain privacy. Provides both sender and receiver anonymity while maintaining Solana's speed and low costs.
+
+**Implementation:**
+- Sender encrypts payment to relayer
+- Relayer generates stealth address for recipient
+- Relayer executes payment to stealth address
+- Recipient scans and claims payment
+- Complete sender/receiver unlinkability
+
+**Privacy Achieved:**
+- Sender address: Hidden (relayer)
+- Receiver address: Hidden (stealth)
+- Transaction link: Broken
+- Amount: Visible (Solana limitation)
+
+**Use Cases:**
+- Anonymous donations
+- Private business payments
+- Confidential payroll
+- Whistleblower payments
+- Privacy-conscious users
+
+---
+
+### **Phase 3: Payment Links Enhancement** (Week 3-4)
 
 #### **CSV Bulk Import** 🟡 HIGH
 **Timeline:** 1 hour  
@@ -112,7 +215,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-### **Phase 3: Developer Experience** (Week 3-4)
+### **Phase 4: Developer Experience** (Week 4-5)
 
 #### **NPM Package Publishing** 🟡 MEDIUM
 **Timeline:** 2 hours  
@@ -166,7 +269,7 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-### **Phase 4: Marketing & Growth** (Ongoing)
+### **Phase 5: Marketing & Growth** (Ongoing)
 
 #### **Community Building** 🟢 LOW
 **Timeline:** Ongoing  
@@ -270,12 +373,17 @@ XYZ789...,0.5,Subscription,never,unlimited
 ### **Q4 2024**
 - ✅ Real cryptography implementation
 - ✅ Production deployment
+- ✅ Stealth addresses (core)
+- ✅ Relayer network (core)
 - 🔄 Batch payments
 - 🔄 Recurring payments
+- 🔄 Off-chain privacy UI integration
 - 🔄 Payment links enhancement
 - 📋 NPM package publishing
 
 ### **Q1 2025**
+- 📋 Relayer node network expansion
+- 📋 Advanced stealth features
 - 📋 Mobile app (React Native)
 - 📋 Hardware wallet support
 - 📋 Advanced analytics
@@ -434,28 +542,61 @@ XYZ789...,0.5,Subscription,never,unlimited
 
 ---
 
-## 🎯 Immediate Next Steps (This Week)
+## 🎯 Immediate Next Steps
 
-### **Day 1-2: Batch Payments**
-1. Implement multi-recipient transaction builder
-2. Add fee calculation logic
-3. Create progress tracking UI
-4. Test with various scenarios
-5. Deploy to production
+### **Week 1: Core Payment Features**
 
-### **Day 3-4: Recurring Payments**
-1. Design schedule storage system
-2. Implement execution engine
-3. Add management UI
-4. Test schedule accuracy
-5. Deploy to production
+**Batch Payments** (2-3 hours)
+- Implement multi-recipient transaction builder
+- Add fee calculation logic
+- Create progress tracking UI
+- Test with various scenarios
+- Deploy to production
 
-### **Day 5: Testing & Polish**
-1. Comprehensive testing
-2. Fix any bugs
-3. Update documentation
-4. Prepare launch materials
-5. Final deployment
+**Recurring Payments** (2-3 hours)
+- Design schedule storage system
+- Implement execution engine
+- Add management UI
+- Test schedule accuracy
+- Deploy to production
+
+---
+
+### **Week 2-3: Off-Chain Privacy Integration**
+
+**Stealth Addresses** (1-2 weeks)
+- Implement blockchain scanning engine
+- Add view tag optimization
+- Create UI for stealth meta-address
+- Build recipient onboarding flow
+- Add payment notifications
+- Test on devnet
+- Deploy to mainnet
+
+**Relayer Network** (2-3 weeks)
+- Build relayer node software
+- Deploy initial relayer infrastructure
+- Implement multi-relayer coordination
+- Add reputation tracking
+- Create UI for relayer selection
+- Test on devnet
+- Deploy to mainnet
+
+---
+
+### **Week 4-5: Advanced Features**
+
+**Hybrid Privacy Mode**
+- Combine stealth + relayer
+- Maximum privacy UI
+- User education content
+- Testing and optimization
+- Production deployment
+
+**Payment Links Enhancement**
+- CSV bulk import
+- Link analytics dashboard
+- Advanced configuration options
 
 ---
 

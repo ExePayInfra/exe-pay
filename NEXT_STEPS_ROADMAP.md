@@ -25,9 +25,9 @@
 
 ---
 
-## 🎯 **Immediate Next Steps** (Priority Order)
+## 🎯 **Development Roadmap** (Priority Order)
 
-### **Phase 1: Core Payment Features** (4-6 hours)
+### **Phase 1: Core Payment Features** (Week 1 - 4-6 hours)
 
 #### **1.1 Batch Payments Implementation** ⭐ HIGH PRIORITY
 **Timeline:** 2-3 hours  
@@ -75,7 +75,82 @@
 
 ---
 
-### **Phase 2: Payment Links Enhancement** (1-2 hours)
+### **Phase 2: Off-Chain Privacy Solutions** (Week 2-5 - 3-5 weeks)
+
+#### **2.1 Stealth Addresses** ⭐ HIGH PRIORITY
+**Timeline:** 1-2 weeks  
+**Status:** Core implementation complete
+
+**What It Provides:**
+- Receiver address privacy
+- One-time addresses per payment
+- Cannot link payments to same recipient
+- Works on mainnet TODAY
+
+**Implementation Needed:**
+- Blockchain scanning engine
+- View tag optimization for efficient scanning
+- UI integration in wallet page
+- Recipient meta-address management
+- Payment detection notifications
+- Claiming interface
+
+**Code Location:**
+- Core: `packages/privacy/src/stealth.ts` ✅
+- UI: `apps/web/src/app/wallet/page.tsx` (to be integrated)
+
+---
+
+#### **2.2 Relayer Network** ⭐ HIGH PRIORITY
+**Timeline:** 2-3 weeks  
+**Status:** Protocol designed, infrastructure needed
+
+**What It Provides:**
+- Sender identity privacy
+- Cannot trace sender from transaction
+- Encrypted payment routing
+- Works on mainnet TODAY
+
+**Implementation Needed:**
+- Relayer node infrastructure
+- Multi-relayer coordination
+- Reputation and uptime tracking
+- Fee management system
+- UI integration in wallet page
+- Relayer endpoint deployment
+
+**Code Location:**
+- Core: `packages/privacy/src/relayer.ts` ✅
+- Infrastructure: To be deployed
+- UI: `apps/web/src/app/wallet/page.tsx` (to be integrated)
+
+---
+
+#### **2.3 Hybrid Privacy Mode** ⭐ CRITICAL
+**Timeline:** 1 week (after stealth + relayer complete)  
+**Status:** Architecture designed
+
+**What It Provides:**
+- Maximum off-chain privacy
+- Sender + receiver anonymity
+- Combines stealth addresses + relayer network
+- Best privacy available on Solana TODAY
+
+**Implementation:**
+- Automatic mode selection
+- Seamless user experience
+- Educational tooltips
+- Clear privacy guarantees
+
+**Privacy Achieved:**
+- ✅ Sender hidden (via relayer)
+- ✅ Receiver hidden (via stealth)
+- ✅ Link broken (cannot connect sender to receiver)
+- ⚠️ Amount visible (Solana blockchain limitation)
+
+---
+
+### **Phase 3: Payment Links Enhancement** (Week 3-4 - 1-2 hours)
 
 #### **2.1 CSV Import for Bulk Links** 🟡 MEDIUM PRIORITY
 **Timeline:** 30-45 minutes
@@ -111,7 +186,7 @@
 
 ---
 
-### **Phase 3: Developer Experience** (3-4 hours)
+### **Phase 4: Developer Experience** (Week 5-6 - 3-4 hours)
 
 #### **3.1 Code Examples & Documentation** 🟡 MEDIUM PRIORITY
 **Timeline:** 2 hours
@@ -143,7 +218,7 @@
 
 ---
 
-### **Phase 4: Light Protocol Production** (8-12 hours)
+### **Phase 5: Future Privacy Protocols** (When Available)
 
 #### **4.1 Check Light Protocol Mainnet Status** ⏳ WAITING
 **Timeline:** Ongoing monitoring
