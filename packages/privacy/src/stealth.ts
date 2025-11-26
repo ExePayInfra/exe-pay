@@ -65,14 +65,23 @@ export function generateStealthMetaAddress(
 export function generateStealthAddress(
   metaAddress: StealthMetaAddress
 ): StealthAddress {
+  console.log('[Stealth Address] Generating one-time address...');
+  console.log('[Stealth Address] Recipient viewing key:', metaAddress.viewingKey.toBase58());
+  console.log('[Stealth Address] Recipient spending key:', metaAddress.spendingKey.toBase58());
+  
   // Generate ephemeral keypair
   const ephemeralKeypair = Keypair.generate();
+  
+  console.log('[Stealth Address] Ephemeral keypair generated');
   
   // Derive shared secret using proper ECDH
   const sharedSecret = deriveSharedSecretECDH(
     ephemeralKeypair.secretKey,
     metaAddress.viewingKey.toBytes()
   );
+  
+  console.log('[Stealth Address] Shared secret derived, length:', sharedSecret.length);
+  console.log('[Stealth Address] Shared secret (first 8 bytes):', Array.from(sharedSecret.slice(0, 8)));
   
   // Generate stealth address from shared secret
   const stealthKeypair = deriveStealthKeypair(
