@@ -54,265 +54,189 @@ const StealthPaymentScanner = dynamic(
 export default function PrivacyPage() {
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
-  const [activeTab, setActiveTab] = useState<'selector' | 'stealth' | 'send' | 'scan'>('selector');
+  const [activeTab, setActiveTab] = useState<'stealth' | 'send' | 'scan'>('stealth');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12 animate-fade-in">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Privacy Features
-            <span className="text-gradient-brand"> Test Page</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-3 bg-white rounded-full px-6 py-3 shadow-lg mb-6">
+            <span className="text-2xl">🔐</span>
+            <span className="text-sm font-semibold text-indigo-600">STEALTH ADDRESSES</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-bold text-gray-900 mb-4">
+            Private Payments
+            <span className="block sm:inline text-indigo-600"> on Solana</span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Test the new privacy features: Privacy Mode Selector and Stealth Addresses
+          <p className="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
+            Send and receive SOL with maximum privacy using Monero-style stealth addresses
           </p>
         </div>
 
         {/* Wallet Connection */}
-        <div className="mb-8">
+        <div className="mb-8 max-w-4xl mx-auto">
           <SecureWalletConnect showHeader={false} />
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 justify-center flex-wrap">
-          <button
-            onClick={() => setActiveTab('selector')}
-            className={`
-              px-6 py-3 rounded-xl font-semibold transition-all
-              ${activeTab === 'selector'
-                ? 'bg-indigo-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
-              }
-            `}
-          >
-            🎯 Privacy Modes
-          </button>
+        <div className="flex gap-2 sm:gap-4 mb-8 justify-center flex-wrap max-w-4xl mx-auto">
           <button
             onClick={() => setActiveTab('stealth')}
             className={`
-              px-6 py-3 rounded-xl font-semibold transition-all
+              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
               ${activeTab === 'stealth'
-                ? 'bg-indigo-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
               }
             `}
           >
-            🔒 Receive (Stealth)
+            <span className="text-xl">📥</span>
+            <span className="hidden sm:inline">Receive</span>
           </button>
           <button
             onClick={() => setActiveTab('send')}
             className={`
-              px-6 py-3 rounded-xl font-semibold transition-all
+              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
               ${activeTab === 'send'
-                ? 'bg-indigo-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
               }
             `}
           >
-            💸 Send (Private)
+            <span className="text-xl">💸</span>
+            <span className="hidden sm:inline">Send</span>
           </button>
           <button
             onClick={() => setActiveTab('scan')}
             className={`
-              px-6 py-3 rounded-xl font-semibold transition-all
+              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
               ${activeTab === 'scan'
-                ? 'bg-indigo-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
               }
             `}
           >
-            🔍 Scan (Detect)
+            <span className="text-xl">🔍</span>
+            <span className="hidden sm:inline">Scan & Claim</span>
           </button>
         </div>
 
         {/* Content */}
         <div className="max-w-4xl mx-auto">
-          {activeTab === 'selector' && (
-            <div className="space-y-8">
-              {/* Test Amount Input */}
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  Test Amount (for Auto Mode)
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Amount (SOL)
-                    </label>
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
-                      step="0.1"
-                      min="0"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                      placeholder="Enter amount"
-                    />
-                  </div>
-
-                  {/* Quick Amount Buttons */}
-                  <div className="flex gap-2 flex-wrap">
-                    <button
-                      onClick={() => setAmount(0.05)}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium"
-                    >
-                      0.05 SOL (Small)
-                    </button>
-                    <button
-                      onClick={() => setAmount(1)}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium"
-                    >
-                      1 SOL (Medium)
-                    </button>
-                    <button
-                      onClick={() => setAmount(15)}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium"
-                    >
-                      15 SOL (Large)
-                    </button>
-                  </div>
-                </div>
+          <div className="transition-all duration-300">
+            {activeTab === 'stealth' && (
+              <div className="animate-fade-in">
+                <StealthAddressGenerator />
               </div>
+            )}
 
-              {/* Privacy Mode Selector */}
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
-                <PrivacyModeSelector
-                  value={privacyMode}
-                  onChange={setPrivacyMode}
-                  amount={amount}
-                  showExplanation={true}
-                />
+            {activeTab === 'send' && (
+              <div className="animate-fade-in">
+                <StealthPaymentForm />
               </div>
+            )}
 
-              {/* Current Selection Summary */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  Current Selection
-                </h3>
-                <div className="space-y-2 text-gray-700">
-                  <p>
-                    <strong>Mode:</strong> {privacyMode}
-                  </p>
-                  <p>
-                    <strong>Amount:</strong> {amount} SOL
-                  </p>
-                  {privacyMode === 'auto' && (
-                    <p className="text-sm text-green-700 bg-green-100 rounded-lg p-3 mt-2">
-                      ✨ Auto mode will use:{' '}
-                      <strong>
-                        {amount < 0.1 ? 'Public' : amount < 10 ? 'Stealth' : 'Maximum Privacy'}
-                      </strong>
-                    </p>
-                  )}
-                </div>
+            {activeTab === 'scan' && (
+              <div className="animate-fade-in">
+                <StealthPaymentScanner />
               </div>
-            </div>
-          )}
-
-          {activeTab === 'stealth' && (
-            <StealthAddressGenerator />
-          )}
-
-          {activeTab === 'send' && (
-            <StealthPaymentForm />
-          )}
-
-          {activeTab === 'scan' && (
-            <StealthPaymentScanner />
-          )}
+            )}
+          </div>
         </div>
 
-        {/* Feature Comparison */}
-        <div className="mt-16 max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-            Privacy Features Comparison
+        {/* How It Works */}
+        <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-8">
+            How Stealth Addresses Work
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Privacy Mode Selector */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Privacy Mode Selector
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
+            {/* Step 1 */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-indigo-200 hover:border-indigo-400 transition-all">
+              <div className="text-4xl mb-3">📥</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                1. Receive
               </h3>
-              <p className="text-gray-600 mb-4">
-                Choose your privacy level for each transaction. Inspired by Zcash's optional privacy.
+              <p className="text-sm text-gray-600">
+                Generate your stealth meta-address and share it with senders. It stays the same for all payments.
               </p>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>5 privacy modes to choose from</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>Auto mode for convenience</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>Clear explanations for each mode</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>User-friendly interface</span>
-                </li>
-              </ul>
             </div>
 
-            {/* Stealth Address */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-              <div className="text-4xl mb-4">🔒</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Stealth Addresses
+            {/* Step 2 */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-purple-200 hover:border-purple-400 transition-all">
+              <div className="text-4xl mb-3">💸</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                2. Send
               </h3>
-              <p className="text-gray-600 mb-4">
-                Generate one-time addresses for each payment. Inspired by Monero's battle-tested privacy.
+              <p className="text-sm text-gray-600">
+                Paste recipient's meta-address. We generate a unique one-time address for this payment only.
               </p>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>Unique address per payment</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>QR code for easy sharing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>Detailed explanations</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500">✓</span>
-                  <span>Production-ready cryptography</span>
-                </li>
-              </ul>
+            </div>
+
+            {/* Step 3 */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-pink-200 hover:border-pink-400 transition-all">
+              <div className="text-4xl mb-3">🔍</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                3. Scan & Claim
+              </h3>
+              <p className="text-sm text-gray-600">
+                Scan the blockchain to detect your payments, then claim them to your wallet with one click.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Technical Details */}
-        <div className="mt-12 max-w-4xl mx-auto bg-gray-900 rounded-2xl p-8 text-white">
-          <h3 className="text-2xl font-bold mb-4">🔐 Technical Details</h3>
-          <div className="grid md:grid-cols-2 gap-6 text-sm">
+        <div className="mt-12 max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-indigo-900 rounded-2xl p-6 sm:p-8 text-white shadow-2xl">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-3xl">🔐</span>
+            <h3 className="text-xl sm:text-2xl font-bold">Battle-Tested Cryptography</h3>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6 text-sm">
             <div>
-              <h4 className="font-semibold mb-2 text-indigo-300">Cryptography</h4>
-              <ul className="space-y-1 text-gray-300">
-                <li>• X25519 ECDH (Signal, WireGuard)</li>
-                <li>• ChaCha20-Poly1305 (RFC 8439)</li>
-                <li>• Keccak-256 hashing</li>
-                <li>• Pedersen commitments</li>
+              <h4 className="font-semibold mb-3 text-indigo-300 flex items-center gap-2">
+                <span>🔬</span> Cryptographic Primitives
+              </h4>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>X25519 ECDH</strong> - Used by Signal, WireGuard, TLS 1.3</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>Keccak-256</strong> - Ethereum's hash function</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>Ed25519</strong> - Solana's native signature scheme</span>
+                </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-indigo-300">Security</h4>
-              <ul className="space-y-1 text-gray-300">
-                <li>• Constant-time operations</li>
-                <li>• Side-channel resistant</li>
-                <li>• Audited libraries (@noble)</li>
-                <li>• Battle-tested (Monero since 2014)</li>
+              <h4 className="font-semibold mb-3 text-indigo-300 flex items-center gap-2">
+                <span>🛡️</span> Security Guarantees
+              </h4>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>Unlinkability</strong> - Payments can't be linked together</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>Forward Secrecy</strong> - Past payments stay private</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span><strong>No Secret Exposure</strong> - Uses message signing only</span>
+                </li>
               </ul>
             </div>
+          </div>
+          <div className="mt-6 pt-6 border-t border-indigo-700">
+            <p className="text-xs text-indigo-200 text-center">
+              Inspired by Monero (stealth addresses since 2014) • Implemented with @noble/curves & @noble/ciphers
+            </p>
           </div>
         </div>
       </div>
