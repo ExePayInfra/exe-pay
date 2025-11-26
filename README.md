@@ -15,7 +15,9 @@ A production-ready SDK enabling private, efficient, and scalable payment applica
 ## ✨ Features
 
 ### **Core Functionality:**
-- 🔐 **3-Level Privacy** - Public, Shielded (amount hidden), Private (fully anonymous)
+
+- 🔐 **Multi-Level Privacy** - Public, Light Protocol (ZK compression), Stealth Addresses (Monero-style)
+- 🎭 **Stealth Addresses** - Unique one-time addresses for maximum privacy (LIVE!)
 - 💸 **Multi-Token Support** - SOL, USDC, USDT, BONK, JUP
 - 📦 **Batch Transfers** - Send to multiple recipients in one transaction
 - 🔄 **Recurring Payments** - Subscriptions with pause/resume/cancel
@@ -24,13 +26,16 @@ A production-ready SDK enabling private, efficient, and scalable payment applica
 - 📱 **QR Codes** - Generate and scan for easy payments
 
 ### **Developer Experience:**
-- ⚡ **Light Protocol Integration** - Production-ready ZK compression
+
+- ⚡ **Light Protocol Integration** - ZK compression for on-chain privacy
+- 🔒 **Stealth Address SDK** - Complete implementation with scanning and claiming
 - 🎣 **React Hooks** - One-line integration (`usePrivatePayment()`)
 - 📦 **TypeScript SDK** - Full type safety
 - 🏗️ **Monorepo Architecture** - Turborepo + pnpm workspaces
 - 📚 **Comprehensive Docs** - API reference, guides, examples
 
 ### **User Experience:**
+
 - 🎨 **Professional UI** - Modern, clean design with smooth animations
 - 📖 **Educational Content** - Clear explanations of privacy features
 - 🛡️ **Trust Indicators** - Built on audited protocols
@@ -71,20 +76,20 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 
 ### Core Packages
 
-| Package | Description |
-|---------|-------------|
-| `@exe-pay/core` | TypeScript SDK with batch transfers, recurring payments, and Light Protocol integration |
-| `@exe-pay/privacy` | Zero-knowledge proof generation using Light Protocol |
-| `@exe-pay/utils` | Shared helpers for Solana and async operations |
-| `@exe-pay/react-hooks` | React hooks for payments, batch transfers, and subscriptions |
+| Package                | Description                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------------- |
+| `@exe-pay/core`        | TypeScript SDK with batch transfers, recurring payments, and Light Protocol integration |
+| `@exe-pay/privacy`     | Zero-knowledge proof generation using Light Protocol                                    |
+| `@exe-pay/utils`       | Shared helpers for Solana and async operations                                          |
+| `@exe-pay/react-hooks` | React hooks for payments, batch transfers, and subscriptions                            |
 
 ### Applications
 
-| App | Description | Status |
-|-----|-------------|--------|
-| `@exe-pay/web` | Next.js web interface | ✅ [Live](https://exe-payments-dgfolqpcm-exechainlink-5881s-projects.vercel.app) |
-| `@exe-pay/api` | REST API server (Hono) | ✅ Ready |
-| `@exe-pay/demo` | CLI demo application | ✅ Ready |
+| App             | Description            | Status                                                                           |
+| --------------- | ---------------------- | -------------------------------------------------------------------------------- |
+| `@exe-pay/web`  | Next.js web interface  | ✅ [Live](https://exe-payments-dgfolqpcm-exechainlink-5881s-projects.vercel.app) |
+| `@exe-pay/api`  | REST API server (Hono) | ✅ Ready                                                                         |
+| `@exe-pay/demo` | CLI demo application   | ✅ Ready                                                                         |
 
 ---
 
@@ -93,6 +98,7 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 **📖 [Official Documentation](https://docs.exepay.app)** - Complete guides, API reference, and examples
 
 ### Quick Links:
+
 - **[Installation Guide](https://docs.exepay.app/guide/installation)** - Get started in 5 minutes
 - **[Quick Start](https://docs.exepay.app/guide/quick-start)** - Send your first payment
 - **[Privacy Modes](https://docs.exepay.app/guide/privacy-modes)** - Public, Shielded, Private explained
@@ -100,6 +106,7 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 - **[API Reference](https://docs.exepay.app/api)** - Full SDK documentation
 
 ### Local Documentation:
+
 - **[Features Guide](./docs/FEATURES.md)** - Complete feature overview
 - **[Deployment Guide](./docs/guides/DEPLOY_TO_VERCEL.md)** - Deploy to Vercel
 - **[Mainnet Guide](./docs/guides/MAINNET_DEPLOY.md)** - Production deployment
@@ -111,16 +118,16 @@ This monorepo is powered by pnpm workspaces and Turborepo for fast builds, isola
 ### Simple Payment
 
 ```typescript
-import { ExePayClient } from '@exe-pay/core';
+import { ExePayClient } from "@exe-pay/core";
 
 const client = new ExePayClient({
-  clusterUrl: 'https://api.mainnet-beta.solana.com'
+  clusterUrl: "https://api.mainnet-beta.solana.com",
 });
 
 const intent = client.createIntent({
   amount: 1000000,
   merchant: merchantPublicKey,
-  memo: 'Private payment'
+  memo: "Private payment",
 });
 
 const payment = await client.build(intent, { feePayer: payerPublicKey });
@@ -134,8 +141,8 @@ const batchIntent = client.createBatchIntent({
   recipients: [
     { address: recipient1, amount: 1000000 },
     { address: recipient2, amount: 2000000 },
-    { address: recipient3, amount: 1500000 }
-  ]
+    { address: recipient3, amount: 1500000 },
+  ],
 });
 
 const payment = await client.buildBatch(batchIntent);
@@ -145,13 +152,13 @@ await client.settleBatch(payment, signer);
 ### Recurring Payment
 
 ```typescript
-import { createRecurringSchedule, initializeRecurringState } from '@exe-pay/core';
+import { createRecurringSchedule, initializeRecurringState } from "@exe-pay/core";
 
 const schedule = createRecurringSchedule({
   merchant: merchantPublicKey,
   amount: 5000000,
-  interval: 'monthly',
-  maxPayments: 12
+  interval: "monthly",
+  maxPayments: 12,
 });
 
 const state = initializeRecurringState(schedule);
@@ -164,6 +171,7 @@ See [FEATURES.md](./docs/FEATURES.md) for more examples!
 ## 🔒 Security & Privacy
 
 ### Production-Ready Privacy
+
 - ✅ **Light Protocol Integration** - Audited ZK compression infrastructure
 - ✅ **Zero-Knowledge Proofs** - Mathematically proven transaction privacy
 - ✅ **Compressed Accounts** - 90% cost reduction with maintained privacy
@@ -171,6 +179,7 @@ See [FEATURES.md](./docs/FEATURES.md) for more examples!
 - ✅ **Multi-Wallet Support** - Phantom, Solflare, Coinbase, Trust Wallet
 
 ### Best Practices
+
 > **Production Ready**: This SDK integrates Light Protocol's audited privacy infrastructure for mainnet deployment. All cryptographic operations are battle-tested and production-grade.
 
 > **Testing**: Always verify your integration on devnet before deploying to mainnet. See our [Mainnet Deployment Guide](./docs/guides/MAINNET_DEPLOY.md) for best practices.
@@ -258,6 +267,7 @@ See [LICENSE](./LICENSE) for details.
 View our [complete roadmap](./ROADMAP.md) for upcoming features and development phases.
 
 ### Current Focus (Q4 2024)
+
 - ✅ Production mainnet deployment
 - ✅ Multi-wallet support (Phantom, Solflare, Coinbase, Trust)
 - ✅ Professional UI/UX with animations
@@ -265,6 +275,7 @@ View our [complete roadmap](./ROADMAP.md) for upcoming features and development 
 - 🔄 Batch & recurring payment optimizations
 
 ### Upcoming
+
 - 📱 Mobile app (iOS & Android)
 - 🔐 Hardware wallet support
 - 🌐 Multi-chain expansion
@@ -273,4 +284,3 @@ View our [complete roadmap](./ROADMAP.md) for upcoming features and development 
 ---
 
 **Built for the Solana ecosystem** • [exepay.app](https://exepay.app)
-
