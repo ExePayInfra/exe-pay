@@ -59,13 +59,20 @@ export function StealthAddressGenerator() {
       
       const derivedKeypair = Keypair.fromSecretKey(fullKey);
       
-      // Generate stealth meta-address using derived keypair
-      const metaAddress = generateStealthMetaAddress(derivedKeypair);
+      // Generate stealth meta-address with SEPARATE keys:
+      // - Viewing key: derived from signature (for privacy scanning)
+      // - Spending key: user's actual wallet public key (for spending funds)
+      const metaAddress = {
+        viewingKey: derivedKeypair.publicKey,  // Derived key for scanning
+        spendingKey: publicKey,                 // Wallet key for spending
+      };
       
       const encoded = encodeStealthMetaAddress(metaAddress);
       setStealthAddress(encoded);
 
       console.log('[Stealth Generator] ✓ Stealth meta-address generated');
+      console.log('[Stealth Generator] Viewing key (derived):', derivedKeypair.publicKey.toBase58());
+      console.log('[Stealth Generator] Spending key (wallet):', publicKey.toBase58());
 
       // Generate QR code asynchronously
       import('qrcode').then((QRCodeModule) => {

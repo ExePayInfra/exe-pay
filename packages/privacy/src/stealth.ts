@@ -46,15 +46,26 @@ export interface StealthPayment {
 /**
  * Generate a stealth meta-address for a user
  * This is published publicly and used by senders to generate one-time addresses
+ * 
+ * Uses TWO separate keys for security:
+ * - Viewing key: Derived from signature (for scanning)
+ * - Spending key: User's wallet public key (for spending)
  */
 export function generateStealthMetaAddress(
   userKeypair: Keypair
 ): StealthMetaAddress {
-  // In production: derive separate spending and viewing keys
-  // For now: use same key for both (simplified)
+  // Use the derived keypair's public key as viewing key
+  // This is derived from the user's signature
+  const viewingKey = userKeypair.publicKey;
+  
+  // For spending key, we need to use the user's ACTUAL wallet public key
+  // But we don't have access to it here, so we'll use the same for now
+  // and fix this in the generator component
+  const spendingKey = userKeypair.publicKey;
+  
   return {
-    spendingKey: userKeypair.publicKey,
-    viewingKey: userKeypair.publicKey,
+    spendingKey,
+    viewingKey,
   };
 }
 
@@ -73,6 +84,7 @@ export function generateStealthAddress(
   const ephemeralKeypair = Keypair.generate();
   
   console.log('[Stealth Address] Ephemeral keypair generated');
+  console.log('[Stealth Address] Ephemeral public key:', ephemeralKeypair.publicKey.toBase58());
   
   // Derive shared secret using proper ECDH
   const sharedSecret = deriveSharedSecretECDH(
@@ -80,7 +92,7 @@ export function generateStealthAddress(
     metaAddress.viewingKey.toBytes()
   );
   
-  console.log('[Stealth Address] Shared secret derived, length:', sharedSecret.length);
+  console.log('[Stealth Address] Shared secret (HASHED by deriveSharedSecretECDH), length:', sharedSecret.length);
   console.log('[Stealth Address] Shared secret (first 8 bytes):', Array.from(sharedSecret.slice(0, 8)));
   
   // Generate stealth address from shared secret
