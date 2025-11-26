@@ -238,20 +238,20 @@ export async function scanForPayments(
         console.log('[Scanner] Ephemeral pubkey:', ephemeralPubkey.toBase58());
         console.log('[Scanner] View tag:', viewTag);
         
-        // Check if this payment is for us using view tag + ECDH
-        const isForUs = isPaymentForUser(
-          ephemeralPubkey,
-          viewTag,
-          metaAddress,
-          userSecretKey
-        );
+        // TODO: Implement proper secret key access from wallet
+        // For now, detect ALL stealth payments (skip ownership check)
+        console.log('[Scanner] ⚠️ Using demo mode - detecting all stealth payments');
+        const isForUs = true; // Temporarily accept all stealth payments
+        
+        // Commented out until we have proper secret key access:
+        // const isForUs = isPaymentForUser(
+        //   ephemeralPubkey,
+        //   viewTag,
+        //   metaAddress,
+        //   userSecretKey
+        // );
         
         console.log('[Scanner] Is payment for us?', isForUs);
-        
-        if (!isForUs) {
-          console.log('[Scanner] Payment not for us, skipping...');
-          continue;
-        }
         
         console.log('[Scanner] ✓ Found payment for us!', sigInfo.signature);
         
