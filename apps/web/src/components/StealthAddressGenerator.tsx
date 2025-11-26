@@ -2,49 +2,95 @@
 
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { generateStealthMetaAddress, encodeStealthMetaAddress } from '@exe-pay/privacy';
+import { Keypair, PublicKey as SolanaPublicKey } from '@solana/web3.js';
+import { 
+  generateStealthMetaAddress, 
+  encodeStealthMetaAddress,
+  getViewingKeyMessage,
+  deriveViewingKey,
+  derivePublicKey
+} from '@exe-pay/privacy';
 import dynamic from 'next/dynamic';
 
 // Lazy load QRCode to improve initial load time
 const QRCode = dynamic(() => import('qrcode'), { ssr: false });
 
 export function StealthAddressGenerator() {
-  const { publicKey, wallet } = useWallet();
+  const { publicKey, wallet, signMessage } = useWallet();
   const [stealthAddress, setStealthAddress] = useState<string>('');
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [needsSignature, setNeedsSignature] = useState(false);
+  const [generating, setGenerating] = useState(false);
+
+  const handleGenerate = async () => {
+    if (!publicKey || !wallet || !signMessage) {
+      console.error('Wallet not connected or does not support signing');
+      return;
+    }
+
+    setGenerating(true);
+    setNeedsSignature(false);
+
+    try {
+      console.log('[Stealth Generator] Requesting signature for viewing key...');
+      
+      // Request signature to derive viewing key
+      const message = getViewingKeyMessage();
+      const signature = await signMessage(message);
+      
+      console.log('[Stealth Generator] ✓ Signature received');
+      
+      // Derive viewing key from signature
+      const viewingKey = deriveViewingKey(signature);
+      
+      // Derive public key from the viewing key
+      const derivedPublicKey = derivePublicKey(viewingKey);
+      const derivedSolanaPublicKey = new SolanaPublicKey(derivedPublicKey);
+      
+      console.log('[Stealth Generator] ✓ Viewing key derived');
+      console.log('[Stealth Generator] Derived public key:', derivedSolanaPublicKey.toBase58());
+      
+      // Create keypair with derived keys
+      const fullKey = new Uint8Array(64);
+      fullKey.set(viewingKey, 0);
+      fullKey.set(derivedPublicKey, 32);
+      
+      const derivedKeypair = Keypair.fromSecretKey(fullKey);
+      
+      // Generate stealth meta-address using derived keypair
+      const metaAddress = generateStealthMetaAddress(derivedKeypair);
+      
+      const encoded = encodeStealthMetaAddress(metaAddress);
+      setStealthAddress(encoded);
+
+      console.log('[Stealth Generator] ✓ Stealth meta-address generated');
+
+      // Generate QR code asynchronously
+      import('qrcode').then((QRCodeModule) => {
+        QRCodeModule.default.toDataURL(encoded, {
+          width: 256,
+          margin: 2,
+          color: {
+            dark: '#4F46E5',
+            light: '#FFFFFF'
+          }
+        }).then(setQrCodeUrl);
+      });
+    } catch (error) {
+      console.error('[Stealth Generator] Failed to generate stealth address:', error);
+      setNeedsSignature(true);
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   useEffect(() => {
-    if (publicKey && wallet) {
-      try {
-        // Generate stealth meta-address from user's keypair
-        // Note: In a real implementation, we'd need the full keypair
-        // For now, we'll create a demo address
-        const metaAddress = generateStealthMetaAddress({
-          publicKey,
-          secretKey: new Uint8Array(64) // Placeholder
-        } as any);
-        
-        const encoded = encodeStealthMetaAddress(metaAddress);
-        setStealthAddress(encoded);
-
-        // Generate QR code asynchronously
-        import('qrcode').then((QRCodeModule) => {
-          QRCodeModule.default.toDataURL(encoded, {
-            width: 256,
-            margin: 2,
-            color: {
-              dark: '#4F46E5',
-              light: '#FFFFFF'
-            }
-          }).then(setQrCodeUrl);
-        });
-      } catch (error) {
-        console.error('Failed to generate stealth address:', error);
-      }
+    if (publicKey && wallet && signMessage && !stealthAddress) {
+      setNeedsSignature(true);
     }
-  }, [publicKey, wallet]);
+  }, [publicKey, wallet, signMessage, stealthAddress]);
 
   const handleCopy = async () => {
     if (stealthAddress) {
@@ -85,6 +131,30 @@ export function StealthAddressGenerator() {
             </p>
           </div>
         </div>
+
+        {/* Generate Button */}
+        {needsSignature && !stealthAddress && (
+          <div className="space-y-4 mb-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-2">🔐 Generate Your Stealth Address</h4>
+              <p className="text-sm text-blue-800 mb-3">
+                Sign a message to generate your stealth meta-address. This uses derived keys for maximum privacy.
+              </p>
+              <ul className="text-xs text-blue-700 space-y-1">
+                <li>✓ Free (no transaction)</li>
+                <li>✓ Uses same keys as scanner</li>
+                <li>✓ Can be shared publicly</li>
+              </ul>
+            </div>
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="w-full px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+            >
+              {generating ? '🔄 Generating...' : '🔐 Sign to Generate Address'}
+            </button>
+          </div>
+        )}
 
         {/* QR Code */}
         {qrCodeUrl && (
