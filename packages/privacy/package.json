@@ -53,6 +53,7 @@
   "dependencies": {
     "@lightprotocol/compressed-token": "^0.22.0",
     "@lightprotocol/stateless.js": "^0.22.0",
+    "@noble/curves": "^1.9.7",
     "@noble/hashes": "^1.5.0",
     "@solana/web3.js": "^1.95.3"
   },
