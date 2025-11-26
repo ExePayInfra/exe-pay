@@ -92,15 +92,16 @@ export function isPaymentForUser(
     console.log('[isPaymentForUser] User secret key (first 16 bytes):', Array.from(userSecretKey.slice(0, 16)));
     console.log('[isPaymentForUser] Meta address viewing key:', metaAddress.viewingKey.toBase58());
     
-    // Convert Ed25519 keys to X25519 format for ECDH
+    // Convert Ed25519 keys to X25519 format for ECDH (SAME as sender!)
     const userX25519Secret = ed25519.utils.toMontgomerySecret(userSecretKey.slice(0, 32));
-    const ephemeralX25519 = x25519.getPublicKey(ephemeralPubkey.toBytes());
+    const ephemeralX25519Pub = ed25519.utils.toMontgomery(ephemeralPubkey.toBytes());
     
     console.log('[isPaymentForUser] Performing ECDH...');
     console.log('[isPaymentForUser] User X25519 secret (first 8 bytes):', Array.from(userX25519Secret.slice(0, 8)));
+    console.log('[isPaymentForUser] Ephemeral X25519 public (first 8 bytes):', Array.from(ephemeralX25519Pub.slice(0, 8)));
     
-    // Perform ECDH to derive shared secret (same as sender's deriveSharedSecretECDH)
-    const rawSharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519);
+    // Perform ECDH to derive shared secret (SAME as sender's deriveSharedSecretECDH!)
+    const rawSharedSecret = x25519.getSharedSecret(userX25519Secret, ephemeralX25519Pub);
     
     console.log('[isPaymentForUser] Raw X25519 secret, length:', rawSharedSecret.length);
     console.log('[isPaymentForUser] Raw X25519 secret (first 8 bytes):', Array.from(rawSharedSecret.slice(0, 8)));
