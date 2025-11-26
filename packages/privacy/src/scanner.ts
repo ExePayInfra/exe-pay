@@ -70,10 +70,10 @@ function parseEphemeralKey(memo: string): { ephemeralPubkey: PublicKey; viewTag:
 /**
  * Calculate view tag from shared secret
  * View tags provide 99% filtering efficiency (256 possible values)
+ * Uses first byte of shared secret (same as generateStealthAddress)
  */
 function calculateViewTag(sharedSecret: Uint8Array): number {
-  const hash = keccak_256(sharedSecret);
-  return hash[0]; // First byte gives us 0-255 range
+  return sharedSecret[0]; // First byte gives us 0-255 range
 }
 
 /**
