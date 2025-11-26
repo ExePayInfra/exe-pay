@@ -338,7 +338,16 @@ export default function WalletPage() {
         return; // Exit early - Light Protocol handled
       }
 
-      // Standard or ZK-proof mode (not true privacy)
+      // Handle Stealth Addresses (off-chain privacy)
+      if (privacyLevel === 'stealth') {
+        console.log('🔒 Stealth mode selected - redirecting to privacy page');
+        
+        // Redirect to privacy page for stealth payments
+        window.location.href = `/privacy?recipient=${encodeURIComponent(recipient)}&amount=${encodeURIComponent(amount)}`;
+        return;
+      }
+
+      // Standard public mode
       let transaction: Transaction;
 
       // Build transaction based on token type
@@ -516,7 +525,8 @@ export default function WalletPage() {
               {/* Light Protocol Components */}
               <div className="space-y-4 animate-slide-up">
                 <CompressedAccountManager />
-                <ShieldedPoolManager />
+                {/* ShieldedPoolManager - Coming with Light Protocol mainnet */}
+                {/* <ShieldedPoolManager /> */}
               </div>
 
               {/* Wallet Info Card */}
@@ -687,7 +697,7 @@ export default function WalletPage() {
                   <div>
                     <label className="block text-sm font-semibold text-gray-900 mb-2 sm:mb-3">Privacy Level</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                      {(['public', 'shielded', 'private', 'light'] as PrivacyLevel[]).map((level) => (
+                      {(['public', 'stealth', 'light'] as PrivacyLevel[]).map((level) => (
                         <button
                           key={level}
                           onClick={() => setPrivacyLevel(level)}
@@ -696,35 +706,35 @@ export default function WalletPage() {
                             privacyLevel === level
                               ? level === 'light'
                                 ? 'border-purple-500 bg-purple-50 shadow-md'
-                                : 'border-indigo-500 bg-indigo-50 shadow-md'
+                                : level === 'stealth'
+                                ? 'border-indigo-500 bg-indigo-50 shadow-md'
+                                : 'border-gray-300 bg-gray-50 shadow-md'
                               : 'border-gray-200 hover:border-indigo-300 bg-white'
                           } disabled:opacity-50 text-left`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <div className="text-base sm:text-lg font-semibold text-gray-900 capitalize">
-                              {level === 'light' ? 'Light Protocol' : level}
+                            <div className="text-base sm:text-lg font-semibold text-gray-900">
+                              {level === 'light' ? 'Light Protocol' : level === 'stealth' ? 'Stealth Addresses' : 'Public'}
                             </div>
                             <div className="text-base">
                               {level === 'public' && '⚡'}
-                              {level === 'shielded' && '🛡️'}
-                              {level === 'private' && '🔒'}
+                              {level === 'stealth' && '🔒'}
                               {level === 'light' && '🌟'}
                             </div>
                           </div>
                           <div className="text-xs text-gray-600">
-                            {level === 'public' && 'Fast & visible'}
-                            {level === 'shielded' && 'Hidden amount (ZK proofs)'}
-                            {level === 'private' && 'Fully anonymous (ZK proofs)'}
-                            {level === 'light' && 'TRUE privacy - invisible on Solscan'}
+                            {level === 'public' && 'Standard Solana transfer'}
+                            {level === 'stealth' && 'One-time addresses • Off-chain privacy'}
+                            {level === 'light' && 'ZK compression • On-chain privacy'}
                           </div>
-                          {level === 'light' && (
-                            <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
-                              🔬 BETA
+                          {level === 'stealth' && (
+                            <span className="inline-block mt-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs font-semibold rounded">
+                              ✓ WORKING NOW
                             </span>
                           )}
-                          {(level === 'shielded' || level === 'private') && (
-                            <span className="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
-                              ZK READY
+                          {level === 'light' && (
+                            <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
+                              MAINNET Q1 2025
                             </span>
                           )}
                         </button>
