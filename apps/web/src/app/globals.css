@@ -154,6 +154,32 @@ body::before {
     border-radius: 0.5rem !important;
   }
 
+  /* Wallet modal improvements */
+  .wallet-adapter-modal-overlay {
+    backdrop-filter: blur(4px) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .wallet-adapter-modal-container {
+    max-width: 400px !important;
+    border-radius: 1rem !important;
+  }
+
+  .wallet-adapter-modal-button-close {
+    border-radius: 0.5rem !important;
+    transition: all 0.2s !important;
+  }
+
+  .wallet-adapter-modal-button-close:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: rgb(239, 68, 68) !important;
+  }
+
+  .wallet-adapter-button-trigger:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+
   /* Secondary outline buttons */
   .btn-outline {
     background: white;

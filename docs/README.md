@@ -6,18 +6,24 @@ Welcome to the ExePay documentation! This directory contains all the guides, ref
 
 ### **Getting Started**
 - [Getting Started](./GETTING_STARTED.md) - Installation and setup guide
+- [Quick Start](./QUICK_START.md) - 5-minute quick start guide
 - [Features Overview](./FEATURES.md) - Complete feature list with examples
 
+### **SDK & Integration**
+- [SDK Integration Guide](./SDK_INTEGRATION_GUIDE.md) - **NEW!** Complete SDK integration guide
+- [API Reference](./API_REFERENCE.md) - Full API documentation with examples
+- [Privacy Guide](./PRIVACY_GUIDE.md) - **NEW!** Privacy levels explained
+- [Payment Links Guide](./PAYMENT_LINKS_GUIDE.md) - **NEW!** Create shareable payment links
+
 ### **Development**
-- [API Reference](./development/API.md) - Full API documentation
 - [Development Summary](./development/SUMMARY.md) - Technical architecture overview
+- [User Guide](./USER_GUIDE.md) - End-user documentation
 
 ### **Deployment Guides**
 - [Deploy to Vercel](./guides/DEPLOY_TO_VERCEL.md) - Deploy the web app
 - [Mainnet Deployment](./guides/MAINNET_DEPLOY.md) - Production deployment guide
 - [Quick Start (Mainnet)](./guides/QUICK_START_MAINNET.md) - Fast mainnet setup
 - [Domain Setup](./guides/DOMAIN_SETUP.md) - Custom domain configuration
-- [Payment Links](./guides/PAYMENT_LINKS_GUIDE.md) - Payment link integration
 
 ### **Archive**
 Historical documentation and session notes are stored in `./archive/` for reference.
@@ -32,38 +38,59 @@ Historical documentation and session notes are stored in `./archive/` for refere
 
 ### Simple Payment
 ```typescript
-import { ExePayClient } from '@exe-pay/core';
+import { createPayment } from '@exe-pay/core';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 
-const client = new ExePayClient({
-  clusterUrl: 'https://api.mainnet-beta.solana.com'
+const { publicKey, signTransaction } = useWallet();
+const { connection } = useConnection();
+
+const result = await createPayment({
+  connection,
+  sender: publicKey,
+  recipient: new PublicKey('RECIPIENT_ADDRESS'),
+  amount: 0.1, // 0.1 SOL
+  signTransaction,
 });
 
-const intent = client.createIntent({
-  amount: 1000000,
-  merchant: merchantPublicKey,
-  memo: 'Private payment'
+console.log('Payment sent!', result.signature);
+```
+
+### Private Payment
+```typescript
+import { createPrivateTransfer } from '@exe-pay/privacy';
+
+const result = await createPrivateTransfer({
+  connection,
+  sender: publicKey,
+  recipient: recipientPublicKey,
+  amount: 1.0, // Amount and recipient hidden on-chain
+  signTransaction,
 });
 
-const payment = await client.build(intent, { feePayer: payerPublicKey });
-const result = await client.settle(payment, signer);
+console.log('Private payment sent!', result.signature);
 ```
 
 ### React Integration
 ```typescript
-import { usePrivatePayment } from '@exe-pay/react-hooks';
+import { useExePay } from '@exe-pay/react-hooks';
 
 function PaymentButton() {
-  const { sendPayment, loading } = usePrivatePayment();
+  const { sendPayment, connected } = useExePay();
 
   const handlePay = async () => {
-    await sendPayment({
+    const result = await sendPayment({
       recipient: 'RECIPIENT_ADDRESS',
-      amount: 1000000,
-      privacyLevel: 'private'
+      amount: 0.5,
+      privacyLevel: 'private',
     });
+    alert(`Payment sent! ${result.signature}`);
   };
 
-  return <button onClick={handlePay} disabled={loading}>Pay</button>;
+  return (
+    <button onClick={handlePay} disabled={!connected}>
+      Send Payment
+    </button>
+  );
 }
 ```
 

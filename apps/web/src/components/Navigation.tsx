@@ -31,6 +31,9 @@ export function Navigation() {
             <a href="/recurring" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               Recurring
             </a>
+            <a href="/links" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+              Links
+            </a>
             <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               History
             </a>
@@ -88,6 +91,9 @@ export function Navigation() {
               </a>
               <a href="/recurring" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 Recurring
+              </a>
+              <a href="/links" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
+                Links
               </a>
               <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 History

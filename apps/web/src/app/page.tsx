@@ -1,6 +1,7 @@
 'use client';
 
 import { Navigation, Footer } from '@/components/Navigation';
+import { Stats } from '@/components/Stats';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
@@ -667,6 +668,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <Stats />
 
       <Footer />
     </main>

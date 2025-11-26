@@ -2,22 +2,14 @@
 
 import { useMemo, useEffect, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
 import { ConnectionProvider, WalletProvider as SolanaWalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
 import type { Adapter } from '@solana/wallet-adapter-base';
 
-// Dynamically import WalletModalProvider to avoid SSR issues
-const WalletModalProvider = dynamic(
-  async () => {
-    const { WalletModalProvider } = await import('@solana/wallet-adapter-react-ui');
-    // Import styles
-    await import('@solana/wallet-adapter-react-ui/styles.css');
-    return WalletModalProvider;
-  },
-  { ssr: false }
-);
+// Import wallet adapter styles
+import '@solana/wallet-adapter-react-ui/styles.css';
 
 /**
  * ClientWalletProvider - Client-side only wallet provider
@@ -106,6 +98,9 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       const walletList: Adapter[] = [];
       
       // Try each wallet adapter individually
+      // Create a Set to track unique wallet names and avoid duplicates
+      const walletNames = new Set<string>();
+      
       const adapters = [
         { name: 'Phantom', Adapter: walletModule.PhantomWalletAdapter },
         { name: 'Solflare', Adapter: walletModule.SolflareWalletAdapter },
@@ -122,8 +117,15 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       for (const { name, Adapter: WalletAdapter } of adapters) {
         try {
           if (WalletAdapter && typeof WalletAdapter === 'function') {
-            walletList.push(new WalletAdapter());
-            console.log(`[ExePay] ✅ ${name} adapter loaded`);
+            const adapter = new WalletAdapter();
+            // Check if this wallet name is already added (avoid duplicates)
+            if (!walletNames.has(adapter.name)) {
+              walletList.push(adapter);
+              walletNames.add(adapter.name);
+              console.log(`[ExePay] ✅ ${name} adapter loaded (${adapter.name})`);
+            } else {
+              console.log(`[ExePay] ⚠️ ${name} skipped (duplicate: ${adapter.name})`);
+            }
           } else {
             console.log(`[ExePay] ⚠️ ${name} adapter not available`);
           }
@@ -203,7 +205,10 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
         localStorageKey={null} // Don't use localStorage at all - forces fresh connection
         onError={handleError}
       >
-        <WalletModalProvider>
+        <WalletModalProvider 
+          featuredWallets={5}
+          className="wallet-modal"
+        >
           {children}
         </WalletModalProvider>
       </SolanaWalletProvider>
