@@ -100,6 +100,22 @@ export function StealthPaymentForm() {
         })
       );
 
+      // Add memo with ephemeral key for recipient to detect payment
+      // Format: "ExePay:Stealth:<ephemeral_pubkey>:<view_tag>"
+      const stealthMemo = `ExePay:Stealth:${generatedAddress.ephemeralPubkey.toBase58()}:${generatedAddress.viewTag}`;
+      
+      // Import memo program dynamically
+      const { TransactionInstruction } = await import('@solana/web3.js');
+      const MEMO_PROGRAM_ID = new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr');
+      
+      transaction.add(
+        new TransactionInstruction({
+          keys: [],
+          programId: MEMO_PROGRAM_ID,
+          data: Buffer.from(stealthMemo, 'utf-8'),
+        })
+      );
+
       // Add memo with ephemeral public key (for recipient to scan)
       // In production, this would be stored in a custom program or memo
       const memoData = JSON.stringify({

@@ -19,6 +19,8 @@ export * from "./lightprotocol.js";
 // Export off-chain privacy solutions
 export * from "./stealth.js";
 export * from "./relayer.js";
+export * from "./scanner.js";
+export * from "./claim.js";
 
 export interface ProveSpendResult {
   readonly proof: Uint8Array;

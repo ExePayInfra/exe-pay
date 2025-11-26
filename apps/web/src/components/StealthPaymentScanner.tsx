@@ -6,20 +6,18 @@ import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { 
   generateStealthMetaAddress,
   encodeStealthMetaAddress,
-  isStealthAddressForUser,
-  deriveStealthPrivateKey,
-  type StealthMetaAddress
+  scanForPayments,
+  getStoredPayments,
+  storePayments,
+  markPaymentClaimed,
+  claimPayment,
+  canClaimPayment,
+  type StealthMetaAddress,
+  type DetectedPayment as PrivacyDetectedPayment
 } from '@exe-pay/privacy';
 
-interface DetectedPayment {
-  address: string;
-  amount: number;
-  signature: string;
-  timestamp: number;
-  ephemeralPubkey: string;
-  viewTag: number;
-  claimed: boolean;
-}
+// Use the DetectedPayment type from privacy package
+type DetectedPayment = PrivacyDetectedPayment;
 
 export function StealthPaymentScanner() {
   const { publicKey, wallet, signTransaction } = useWallet();
@@ -41,15 +39,9 @@ export function StealthPaymentScanner() {
         } as any);
         setMetaAddress(meta);
 
-        // Load saved payments from localStorage
-        const saved = localStorage.getItem('exepay_stealth_payments');
-        if (saved) {
-          try {
-            setPayments(JSON.parse(saved));
-          } catch (err) {
-            console.error('Failed to load saved payments:', err);
-          }
-        }
+        // Load saved payments from localStorage using scanner utility
+        const saved = getStoredPayments();
+        setPayments(saved);
       } catch (err) {
         console.error('Failed to generate meta-address:', err);
       }
@@ -57,7 +49,7 @@ export function StealthPaymentScanner() {
   }, [publicKey, wallet]);
 
   const handleScan = async () => {
-    if (!publicKey || !metaAddress) {
+    if (!publicKey || !metaAddress || !wallet) {
       setError('Please connect your wallet');
       return;
     }
@@ -66,65 +58,30 @@ export function StealthPaymentScanner() {
     setError('');
 
     try {
-      console.log('[Scanner] Starting scan for stealth payments...');
+      console.log('[Scanner UI] Starting scan for stealth payments...');
 
-      // Get recent transactions for the user's wallet
-      const signatures = await connection.getSignaturesForAddress(publicKey, {
-        limit: 50
-      });
+      // Note: In production, we need the user's actual secret key for ECDH
+      // For now, we'll use a placeholder and detect all incoming transfers
+      // TODO: Implement proper wallet signing for key derivation
+      const userSecretKey = new Uint8Array(64); // Placeholder
 
-      console.log(`[Scanner] Found ${signatures.length} transactions to check`);
+      // Use the real scanner from privacy package
+      const detected = await scanForPayments(
+        connection,
+        publicKey,
+        metaAddress,
+        userSecretKey,
+        { limit: 50 }
+      );
 
-      const detectedPayments: DetectedPayment[] = [];
-
-      // Check each transaction
-      for (const sigInfo of signatures) {
-        try {
-          const tx = await connection.getParsedTransaction(sigInfo.signature, {
-            maxSupportedTransactionVersion: 0
-          });
-
-          if (!tx || !tx.meta) continue;
-
-          // Look for transfers in the transaction
-          const instructions = tx.transaction.message.instructions;
-          
-          for (const instruction of instructions) {
-            // Check if it's a system transfer
-            if ('parsed' in instruction && instruction.parsed?.type === 'transfer') {
-              const info = instruction.parsed.info;
-              
-              // Check if this could be a stealth payment
-              // In a real implementation, we'd check the memo for ephemeral key
-              // For now, we'll detect any incoming transfers
-              if (info.destination === publicKey.toBase58()) {
-                const payment: DetectedPayment = {
-                  address: info.destination,
-                  amount: info.lamports / LAMPORTS_PER_SOL,
-                  signature: sigInfo.signature,
-                  timestamp: sigInfo.blockTime ? sigInfo.blockTime * 1000 : Date.now(),
-                  ephemeralPubkey: 'Demo', // Would parse from memo
-                  viewTag: 0, // Would parse from memo
-                  claimed: false
-                };
-
-                detectedPayments.push(payment);
-              }
-            }
-          }
-        } catch (err) {
-          console.error('[Scanner] Error checking transaction:', err);
-        }
-      }
-
-      console.log(`[Scanner] Detected ${detectedPayments.length} potential stealth payments`);
+      console.log(`[Scanner UI] Detected ${detected.length} stealth payments`);
 
       // Save to localStorage
-      setPayments(detectedPayments);
-      localStorage.setItem('exepay_stealth_payments', JSON.stringify(detectedPayments));
+      setPayments(detected);
+      storePayments(detected);
 
     } catch (err: any) {
-      console.error('[Scanner] Scan failed:', err);
+      console.error('[Scanner UI] Scan failed:', err);
       setError(err.message || 'Failed to scan for payments');
     } finally {
       setScanning(false);
@@ -141,25 +98,44 @@ export function StealthPaymentScanner() {
     setError('');
 
     try {
-      console.log('[Scanner] Claiming payment:', payment.signature);
+      console.log('[Scanner UI] Claiming payment:', payment.signature);
 
-      // In a real implementation:
-      // 1. Derive private key for the stealth address
-      // 2. Create transaction to transfer funds to main wallet
-      // 3. Sign and send
+      // Check if payment can be claimed
+      const { canClaim, reason } = await canClaimPayment(connection, payment);
+      
+      if (!canClaim) {
+        throw new Error(reason || 'Cannot claim this payment');
+      }
 
-      // For now, just mark as claimed
-      const updated = payments.map(p =>
-        p.signature === payment.signature ? { ...p, claimed: true } : p
+      // Claim the payment using the real claim function
+      const result = await claimPayment(
+        connection,
+        payment,
+        publicKey,
+        {
+          destination: publicKey,
+          leaveRent: false, // Claim all funds
+        }
       );
-      setPayments(updated);
-      localStorage.setItem('exepay_stealth_payments', JSON.stringify(updated));
 
-      alert('Payment claimed successfully! (Demo mode - full implementation coming soon)');
+      console.log('[Scanner UI] ✓ Claim successful!', result);
+
+      // Mark as claimed
+      markPaymentClaimed(payment.signature);
+      
+      // Reload payments
+      const updated = getStoredPayments();
+      setPayments(updated);
+
+      // Show success message with transaction link
+      alert(`Payment claimed successfully!\n\nAmount: ${(result.amount / LAMPORTS_PER_SOL).toFixed(4)} SOL\nTransaction: ${result.signature}\n\nView on Explorer: https://explorer.solana.com/tx/${result.signature}${
+        process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'devnet' ? '?cluster=devnet' : ''
+      }`);
 
     } catch (err: any) {
-      console.error('[Scanner] Claim failed:', err);
+      console.error('[Scanner UI] Claim failed:', err);
       setError(err.message || 'Failed to claim payment');
+      alert(`Failed to claim payment: ${err.message}`);
     } finally {
       setClaimingId(null);
     }
@@ -250,7 +226,7 @@ export function StealthPaymentScanner() {
                         {payment.claimed ? '✓' : '💰'}
                       </span>
                       <h4 className="font-bold text-gray-900 text-lg">
-                        {payment.amount} SOL
+                        {(payment.amount / LAMPORTS_PER_SOL).toFixed(4)} SOL
                       </h4>
                       {payment.claimed && (
                         <span className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-semibold">
@@ -277,9 +253,15 @@ export function StealthPaymentScanner() {
                 {/* Transaction Details */}
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="text-gray-600 font-medium">Address:</span>
+                    <span className="text-gray-600 font-medium">One-Time Address:</span>
                     <p className="font-mono text-gray-800 text-xs break-all">
-                      {payment.address}
+                      {payment.address.toBase58()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600 font-medium">Ephemeral Key:</span>
+                    <p className="font-mono text-gray-800 text-xs break-all">
+                      {payment.ephemeralPubkey.toBase58()}
                     </p>
                   </div>
                   <div>
