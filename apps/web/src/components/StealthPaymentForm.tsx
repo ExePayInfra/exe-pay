@@ -23,11 +23,13 @@ export function StealthPaymentForm() {
   const [error, setError] = useState('');
   const [generatedAddress, setGeneratedAddress] = useState<StealthAddress | null>(null);
   const [txSignature, setTxSignature] = useState('');
+  const [copiedAddress, setCopiedAddress] = useState(false);
 
   const handleGenerateAddress = () => {
     try {
       setError('');
       setGeneratedAddress(null);
+      setCopiedAddress(false);
 
       // Validate stealth meta-address
       if (!stealthMetaAddress.trim()) {
@@ -50,6 +52,14 @@ export function StealthPaymentForm() {
     } catch (err: any) {
       console.error('[Stealth Payment] Error:', err);
       setError(err.message || 'Failed to generate stealth address');
+    }
+  };
+
+  const handleCopyAddress = async () => {
+    if (generatedAddress) {
+      await navigator.clipboard.writeText(generatedAddress.address.toBase58());
+      setCopiedAddress(true);
+      setTimeout(() => setCopiedAddress(false), 2000);
     }
   };
 
@@ -190,25 +200,48 @@ export function StealthPaymentForm() {
           {/* Generated One-Time Address */}
           {generatedAddress && (
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
-              <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+              <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
                 <span className="text-xl">✓</span>
                 One-Time Address Generated
               </h4>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-3 text-sm">
                 <div>
-                  <span className="text-green-700 font-medium">Address:</span>
-                  <p className="font-mono text-green-900 break-all">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-green-700 font-medium">One-Time Address:</span>
+                    <button
+                      type="button"
+                      onClick={handleCopyAddress}
+                      className={`
+                        px-3 py-1 rounded-lg text-xs font-semibold transition-all
+                        ${copiedAddress 
+                          ? 'bg-green-600 text-white' 
+                          : 'bg-green-200 text-green-800 hover:bg-green-300'
+                        }
+                      `}
+                    >
+                      {copiedAddress ? '✓ Copied!' : 'Copy Address'}
+                    </button>
+                  </div>
+                  <p className="font-mono text-green-900 break-all bg-white rounded-lg p-3 border border-green-200">
                     {generatedAddress.address.toBase58()}
                   </p>
                 </div>
-                <div>
-                  <span className="text-green-700 font-medium">View Tag:</span>
-                  <span className="font-mono text-green-900 ml-2">
-                    {generatedAddress.viewTag}
-                  </span>
+                <div className="flex items-center gap-4">
+                  <div>
+                    <span className="text-green-700 font-medium">View Tag:</span>
+                    <span className="font-mono text-green-900 ml-2 bg-white px-2 py-1 rounded">
+                      {generatedAddress.viewTag}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-green-700 font-medium">Ephemeral Key:</span>
+                    <p className="font-mono text-xs text-green-800 truncate">
+                      {generatedAddress.ephemeralPubkey.toBase58().slice(0, 20)}...
+                    </p>
+                  </div>
                 </div>
-                <p className="text-green-700 text-xs mt-2">
-                  ✓ This unique address will be used for this payment only
+                <p className="text-green-700 text-xs mt-2 bg-green-100 rounded-lg p-2">
+                  ✓ This unique address will be used for this payment only. Each payment generates a different address.
                 </p>
               </div>
             </div>
