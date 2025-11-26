@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { PrivacyModeSelector, type PrivacyMode } from '@/components/PrivacyModeSelector';
 import { SecureWalletConnect } from '@/components/SecureWalletConnect';
 
-// Lazy load StealthAddressGenerator for better performance
+// Lazy load components for better performance
 const StealthAddressGenerator = dynamic(
   () => import('@/components/StealthAddressGenerator').then(mod => ({ default: mod.StealthAddressGenerator })),
   { 
@@ -14,7 +14,22 @@ const StealthAddressGenerator = dynamic(
       <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
         <div className="text-center">
           <div className="text-4xl mb-4">🔒</div>
-          <p className="text-gray-600">Loading stealth address generator...</p>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
+const StealthPaymentForm = dynamic(
+  () => import('@/components/StealthPaymentForm').then(mod => ({ default: mod.StealthPaymentForm })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">💸</div>
+          <p className="text-gray-600">Loading payment form...</p>
         </div>
       </div>
     )
@@ -24,7 +39,7 @@ const StealthAddressGenerator = dynamic(
 export default function PrivacyPage() {
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
-  const [activeTab, setActiveTab] = useState<'selector' | 'stealth'>('selector');
+  const [activeTab, setActiveTab] = useState<'selector' | 'stealth' | 'send'>('selector');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -46,7 +61,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 justify-center">
+        <div className="flex gap-4 mb-8 justify-center flex-wrap">
           <button
             onClick={() => setActiveTab('selector')}
             className={`
@@ -57,7 +72,7 @@ export default function PrivacyPage() {
               }
             `}
           >
-            🎯 Privacy Mode Selector
+            🎯 Privacy Modes
           </button>
           <button
             onClick={() => setActiveTab('stealth')}
@@ -69,7 +84,19 @@ export default function PrivacyPage() {
               }
             `}
           >
-            🔒 Stealth Address
+            🔒 Receive (Stealth)
+          </button>
+          <button
+            onClick={() => setActiveTab('send')}
+            className={`
+              px-6 py-3 rounded-xl font-semibold transition-all
+              ${activeTab === 'send'
+                ? 'bg-indigo-600 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+              }
+            `}
+          >
+            💸 Send (Private)
           </button>
         </div>
 
@@ -159,6 +186,10 @@ export default function PrivacyPage() {
 
           {activeTab === 'stealth' && (
             <StealthAddressGenerator />
+          )}
+
+          {activeTab === 'send' && (
+            <StealthPaymentForm />
           )}
         </div>
 
