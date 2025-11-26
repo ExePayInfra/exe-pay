@@ -9,6 +9,7 @@ import { getTokens, getTokenBySymbol, parseTokenAmount, type Token } from '@/lib
 import { Navigation, Footer } from '@/components/Navigation';
 import { CompressedAccountManager } from '@/components/CompressedAccountManager';
 import { ShieldedPoolManager } from '@/components/ShieldedPoolManager';
+import { StealthAddressCard } from '@/components/StealthAddressCard';
 import Image from 'next/image';
 
 // Dynamic import to avoid SSR issues
@@ -859,8 +860,13 @@ export default function WalletPage() {
 
             {/* Sidebar - Info & Features (Hidden on mobile, shown on desktop) */}
             <div className="hidden lg:block space-y-6">
+              {/* Stealth Address Card */}
+              <div style={{animationDelay: '0.2s'}}>
+                <StealthAddressCard />
+              </div>
+
               {/* Privacy Features */}
-              <div className="glass-card p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50" style={{animationDelay: '0.2s'}}>
+              <div className="glass-card p-6 rounded-2xl animate-slide-up shadow-lg border border-white/50" style={{animationDelay: '0.3s'}}>
                 <h3 className="text-lg font-bold text-gray-900 mb-4">🔒 Privacy Features</h3>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
