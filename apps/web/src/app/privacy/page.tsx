@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { PrivacyModeSelector, type PrivacyMode } from '@/components/PrivacyModeSelector';
 import { SecureWalletConnect } from '@/components/SecureWalletConnect';
 import { BackButton } from '@/components/BackButton';
+import { ShieldedPoolManager } from '@/components/ShieldedPoolManager';
 
 // Lazy load components for better performance
 const StealthAddressGenerator = dynamic(
@@ -53,9 +55,19 @@ const StealthPaymentScanner = dynamic(
 );
 
 export default function PrivacyPage() {
+  const searchParams = useSearchParams();
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
-  const [activeTab, setActiveTab] = useState<'stealth' | 'send' | 'scan'>('stealth');
+  const [mainTab, setMainTab] = useState<'stealth' | 'light'>('stealth');
+  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan'>('receive');
+
+  // Check URL parameter to set initial tab
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'light') {
+      setMainTab('light');
+    }
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -69,14 +81,14 @@ export default function PrivacyPage() {
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-3 bg-white rounded-full px-6 py-3 shadow-lg mb-6">
             <span className="text-2xl">🔐</span>
-            <span className="text-sm font-semibold text-indigo-600">STEALTH ADDRESSES</span>
+            <span className="text-sm font-semibold text-indigo-600">PRIVACY FEATURES</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold text-gray-900 mb-4">
             Private Payments
             <span className="block sm:inline text-indigo-600"> on Solana</span>
           </h1>
           <p className="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Send and receive SOL with maximum privacy using Monero-style stealth addresses
+            Choose your privacy method: Stealth Addresses or Light Protocol ZK Compression
           </p>
         </div>
 
@@ -85,67 +97,115 @@ export default function PrivacyPage() {
           <SecureWalletConnect showHeader={false} />
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 sm:gap-4 mb-8 justify-center flex-wrap max-w-4xl mx-auto">
+        {/* Main Tabs: Stealth vs Light Protocol */}
+        <div className="flex gap-3 sm:gap-4 mb-6 justify-center max-w-4xl mx-auto">
           <button
-            onClick={() => setActiveTab('stealth')}
+            onClick={() => setMainTab('stealth')}
             className={`
-              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-              ${activeTab === 'stealth'
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+              flex-1 max-w-xs flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105
+              ${mainTab === 'stealth'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-xl'
+                : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border-2 border-gray-200'
               }
             `}
           >
-            <span className="text-xl">📥</span>
-            <span className="hidden sm:inline">Receive</span>
+            <span className="text-2xl">🔒</span>
+            <div className="text-left">
+              <div>Stealth System</div>
+              <div className="text-xs font-normal opacity-90">Off-chain Privacy</div>
+            </div>
           </button>
           <button
-            onClick={() => setActiveTab('send')}
+            onClick={() => setMainTab('light')}
             className={`
-              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-              ${activeTab === 'send'
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+              flex-1 max-w-xs flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105
+              ${mainTab === 'light'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl'
+                : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border-2 border-gray-200'
               }
             `}
           >
-            <span className="text-xl">💸</span>
-            <span className="hidden sm:inline">Send</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('scan')}
-            className={`
-              flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-              ${activeTab === 'scan'
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-              }
-            `}
-          >
-            <span className="text-xl">🔍</span>
-            <span className="hidden sm:inline">Scan & Claim</span>
+            <span className="text-2xl">🌟</span>
+            <div className="text-left">
+              <div>Light Protocol</div>
+              <div className="text-xs font-normal opacity-90">ZK Compression</div>
+            </div>
           </button>
         </div>
+
+        {/* Sub-tabs for Stealth */}
+        {mainTab === 'stealth' && (
+          <div className="flex gap-2 sm:gap-4 mb-8 justify-center flex-wrap max-w-4xl mx-auto">
+            <button
+              onClick={() => setStealthTab('receive')}
+              className={`
+                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
+                ${stealthTab === 'receive'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                }
+              `}
+            >
+              <span className="text-xl">📥</span>
+              <span className="hidden sm:inline">Receive</span>
+            </button>
+            <button
+              onClick={() => setStealthTab('send')}
+              className={`
+                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
+                ${stealthTab === 'send'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                }
+              `}
+            >
+              <span className="text-xl">💸</span>
+              <span className="hidden sm:inline">Send</span>
+            </button>
+            <button
+              onClick={() => setStealthTab('scan')}
+              className={`
+                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
+                ${stealthTab === 'scan'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                }
+              `}
+            >
+              <span className="text-xl">🔍</span>
+              <span className="hidden sm:inline">Scan & Claim</span>
+            </button>
+          </div>
+        )}
 
         {/* Content */}
         <div className="max-w-4xl mx-auto">
           <div className="transition-all duration-300">
-            {activeTab === 'stealth' && (
-              <div className="animate-fade-in">
-                <StealthAddressGenerator />
-              </div>
+            {mainTab === 'stealth' && (
+              <>
+                {stealthTab === 'receive' && (
+                  <div className="animate-fade-in">
+                    <StealthAddressGenerator />
+                  </div>
+                )}
+
+                {stealthTab === 'send' && (
+                  <div className="animate-fade-in">
+                    <StealthPaymentForm />
+                  </div>
+                )}
+
+                {stealthTab === 'scan' && (
+                  <div className="animate-fade-in">
+                    <StealthPaymentScanner />
+                  </div>
+                )}
+              </>
             )}
 
-            {activeTab === 'send' && (
+            {mainTab === 'light' && (
               <div className="animate-fade-in">
-                <StealthPaymentForm />
-              </div>
-            )}
-
-            {activeTab === 'scan' && (
-              <div className="animate-fade-in">
-                <StealthPaymentScanner />
+                <ShieldedPoolManager />
               </div>
             )}
           </div>

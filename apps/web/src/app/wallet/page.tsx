@@ -756,7 +756,7 @@ export default function WalletPage() {
                                   BETA - DEVNET
                                 </span>
                                 <a 
-                                  href="/privacy" 
+                                  href="/privacy?tab=light" 
                                   onClick={(e) => e.stopPropagation()}
                                   className="text-xs text-purple-600 hover:text-purple-800 font-medium hover:underline"
                                 >
