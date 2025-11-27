@@ -1,6 +1,5 @@
 'use client';
 
-// Force rebuild - Nov 27, 2025
 import { useEffect, useState } from 'react';
 
 interface StatItem {
