@@ -258,28 +258,44 @@ See [LICENSE](./LICENSE) for details.
 
 - **Documentation**: [docs.exepay.app](https://docs.exepay.app)
 - **GitHub Issues**: [Report a bug](https://github.com/ExePayInfra/exe-pay/issues)
-- **Email**: exechainlink@outlook.com
+- **Twitter/X**: [@exeinfra](https://x.com/exeinfra)
+- **Email**: contact@exepay.app
 
 ---
 
 ## 🎯 Roadmap
 
-View our [complete roadmap](./ROADMAP.md) for upcoming features and development phases.
+View our [complete 2026 roadmap](./ROADMAP_2026.md) for upcoming features and strategic development plan.
 
-### Current Focus (Q4 2024)
+### Current (Q4 2025)
 
-- ✅ Production mainnet deployment
-- ✅ Multi-wallet support (Phantom, Solflare, Coinbase, Trust)
-- ✅ Professional UI/UX with animations
-- 🔄 Real ZK proof integration (in progress)
-- 🔄 Batch & recurring payment optimizations
+- ✅ **Stealth Addresses** - Live on mainnet
+- ✅ **Batch Payments** - Fully functional
+- ✅ **Recurring Payments** - Production ready
+- ✅ **Payment Links** - With QR codes
+- ✅ **Multi-wallet support** - 6 wallets integrated
+- ✅ **Professional UI/UX** - Modern, responsive design
 
-### Upcoming
+### Q1 2026
 
-- 📱 Mobile app (iOS & Android)
-- 🔐 Hardware wallet support
-- 🌐 Multi-chain expansion
-- 📊 Analytics dashboard
+- 🚀 Light Protocol mainnet integration
+- 📱 Mobile PWA optimization
+- 📊 Advanced analytics dashboard
+
+### Beyond
+
+- 📱 Native mobile apps (iOS/Android)
+- 🔐 Hardware wallet support (Ledger, Trezor)
+- 🌐 Multi-chain expansion (Ethereum, Polygon)
+- 🏢 Enterprise features
+
+**See [ROADMAP_2026.md](./ROADMAP_2026.md) for complete plan.**
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
