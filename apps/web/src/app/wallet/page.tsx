@@ -730,12 +730,12 @@ export default function WalletPage() {
                           </div>
                           {level === 'stealth' && (
                             <span className="inline-block mt-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                              ✓ WORKING NOW
+                              ✓ LIVE
                             </span>
                           )}
                           {level === 'light' && (
                             <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
-                              MAINNET Q1 2025
+                              BETA - DEVNET
                             </span>
                           )}
                         </button>
