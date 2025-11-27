@@ -10,6 +10,7 @@ import { Navigation, Footer } from '@/components/Navigation';
 import { CompressedAccountManager } from '@/components/CompressedAccountManager';
 import { ShieldedPoolManager } from '@/components/ShieldedPoolManager';
 import { StealthAddressCard } from '@/components/StealthAddressCard';
+import { InfoIcon } from '@/components/Tooltip';
 import Image from 'next/image';
 
 // Dynamic import to avoid SSR issues
@@ -696,7 +697,10 @@ export default function WalletPage() {
 
                   {/* Privacy Level */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">Privacy Level</label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900">Privacy Level</label>
+                      <InfoIcon tooltip="Choose your privacy level: Public for speed, Stealth for unlinkable addresses, or Light Protocol for on-chain privacy" />
+                    </div>
                     <p className="text-xs text-gray-600 mb-3">
                       Choose how much privacy you need. Click "Learn More" for detailed features.
                     </p>
@@ -706,7 +710,7 @@ export default function WalletPage() {
                           key={level}
                           onClick={() => setPrivacyLevel(level)}
                           disabled={sending}
-                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all active:scale-95 ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 active:scale-95 hover:-translate-y-1 hover:shadow-lg ${
                             privacyLevel === level
                               ? level === 'light'
                                 ? 'border-purple-500 bg-purple-50 shadow-md'
@@ -714,7 +718,7 @@ export default function WalletPage() {
                                 ? 'border-indigo-500 bg-indigo-50 shadow-md'
                                 : 'border-gray-300 bg-gray-50 shadow-md'
                               : 'border-gray-200 hover:border-indigo-300 bg-white'
-                          } disabled:opacity-50 text-left`}
+                          } disabled:opacity-50 disabled:hover:translate-y-0 text-left`}
                         >
                           <div className="flex items-center justify-between mb-1">
                             <div className="text-base sm:text-lg font-semibold text-gray-900">
@@ -806,7 +810,10 @@ export default function WalletPage() {
 
                   {/* Memo (Optional) */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">Memo (Optional)</label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <label className="block text-sm font-semibold text-gray-900">Memo (Optional)</label>
+                      <InfoIcon tooltip="Add a note to your transaction. Visible on blockchain explorer." />
+                    </div>
                     <input
                       type="text"
                       value={memo}
@@ -822,7 +829,7 @@ export default function WalletPage() {
                   <button
                     onClick={sendPayment}
                     disabled={sending || !recipient || !amount}
-                    className="w-full py-4 sm:py-4 px-6 rounded-xl font-semibold text-base sm:text-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-95 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 sm:py-4 px-6 rounded-xl font-semibold text-base sm:text-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-95 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                   >
                     {sending ? (
                       <span className="flex items-center justify-center gap-2">
