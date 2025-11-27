@@ -1,0 +1,6 @@
+Version: 0.1.1
+Build Date: November 27, 2025
+Commit: Latest with correct stats and links
+Stats: 1247 / 125.5K / 389
+Light Protocol Link: /privacy?tab=light
+
