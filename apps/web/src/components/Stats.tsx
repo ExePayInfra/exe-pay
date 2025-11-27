@@ -20,7 +20,7 @@ export function Stats() {
   ]);
 
   useEffect(() => {
-    // Animate numbers on mount
+    // Animate numbers on mount - Updated Nov 27, 2025
     const targets = [
       { label: 'Total Transactions', value: 1247, suffix: '+', decimals: 0 },
       { label: 'Transaction Volume', value: 125.5, prefix: '$', suffix: 'K+', decimals: 1 },
@@ -28,7 +28,7 @@ export function Stats() {
       { label: 'Privacy Score', value: 100, suffix: '%', decimals: 0 },
     ];
 
-    const duration = 2000; // 2 seconds
+    const duration = 2000; // Animation duration in milliseconds
     const steps = 60;
     const stepDuration = duration / steps;
 

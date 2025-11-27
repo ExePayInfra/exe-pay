@@ -5,7 +5,7 @@ import { Stats } from '@/components/Stats';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-// Force rebuild: Nov 17, 2025 - Professional partner logos with fallback system
+// Production deployment: Nov 27, 2025 - Stats updated to realistic values
 
 // Partner logo configuration
 const partners = [
