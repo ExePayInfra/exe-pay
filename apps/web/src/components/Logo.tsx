@@ -39,8 +39,8 @@ export function LogoText({ className = '' }: { className?: string }) {
           style={{ filter: 'brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(2381%) hue-rotate(217deg) brightness(96%) contrast(101%)' }}
         />
       </div>
-      {/* Pay text - smaller and closer */}
-      <span className="text-[2rem] font-bold text-[#4F46E5] -ml-8 tracking-tight leading-[2rem] transition-all duration-500 group-hover:scale-110" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* Pay text - same size as logo, black, closer */}
+      <span className="text-[1.75rem] font-bold text-black -ml-6 tracking-tight leading-[1.75rem] transition-all duration-500 group-hover:scale-110" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         Pay
       </span>
     </div>
