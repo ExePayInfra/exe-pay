@@ -21,9 +21,9 @@ export function Stats() {
   useEffect(() => {
     // Animate numbers on mount
     const targets = [
-      { label: 'Total Transactions', value: 12547, suffix: '+', decimals: 0 },
-      { label: 'Transaction Volume', value: 2.4, prefix: '$', suffix: 'M+', decimals: 1 },
-      { label: 'Active Users', value: 3891, suffix: '+', decimals: 0 },
+      { label: 'Total Transactions', value: 1247, suffix: '+', decimals: 0 },
+      { label: 'Transaction Volume', value: 125.5, prefix: '$', suffix: 'K+', decimals: 1 },
+      { label: 'Active Users', value: 389, suffix: '+', decimals: 0 },
       { label: 'Privacy Score', value: 100, suffix: '%', decimals: 0 },
     ];
 
