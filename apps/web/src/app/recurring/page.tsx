@@ -2,6 +2,7 @@
 
 import { RecurringPaymentForm } from '@/components/RecurringPaymentForm';
 import { Navigation, Footer } from '@/components/Navigation';
+import { PageHeader } from '@/components/BackButton';
 
 export default function RecurringPage() {
   return (
@@ -10,6 +11,12 @@ export default function RecurringPage() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <PageHeader 
+          title="Recurring Payments" 
+          description="Set up automated subscriptions and recurring payments. Perfect for salaries and memberships!"
+          breadcrumbs={['Home', 'Wallet', 'Recurring Payments']}
+        />
+        
         <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Recurring Payments on{' '}

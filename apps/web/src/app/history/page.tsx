@@ -6,6 +6,7 @@ import { fetchTransactionHistory, exportTransactionsToCSV, downloadCSV } from "@
 import type { TransactionRecord } from "@exe-pay/core";
 import { TransactionList } from "@/components/TransactionList";
 import { Navigation, Footer } from '@/components/Navigation';
+import { BackButton } from '@/components/BackButton';
 
 export default function HistoryPage() {
   const [address, setAddress] = useState("");
@@ -80,6 +81,11 @@ export default function HistoryPage() {
       <Navigation />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back Button */}
+        <div className="mb-6">
+          <BackButton />
+        </div>
+        
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">

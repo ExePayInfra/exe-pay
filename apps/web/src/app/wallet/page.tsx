@@ -696,7 +696,10 @@ export default function WalletPage() {
 
                   {/* Privacy Level */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2 sm:mb-3">Privacy Level</label>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">Privacy Level</label>
+                    <p className="text-xs text-gray-600 mb-3">
+                      Choose how much privacy you need. Click "Learn More" for detailed features.
+                    </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                       {(['public', 'stealth', 'light'] as PrivacyLevel[]).map((level) => (
                         <button
@@ -728,16 +731,36 @@ export default function WalletPage() {
                             {level === 'stealth' && 'One-time addresses • Off-chain privacy'}
                             {level === 'light' && 'ZK compression • On-chain privacy'}
                           </div>
-                          {level === 'stealth' && (
-                            <span className="inline-block mt-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs font-semibold rounded">
-                              ✓ LIVE
-                            </span>
-                          )}
-                          {level === 'light' && (
-                            <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
-                              BETA - DEVNET
-                            </span>
-                          )}
+                          <div className="flex items-center justify-between mt-2">
+                            {level === 'stealth' && (
+                              <>
+                                <span className="inline-block px-2 py-0.5 bg-green-100 text-green-800 text-xs font-semibold rounded">
+                                  ✓ LIVE
+                                </span>
+                                <a 
+                                  href="/privacy" 
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-xs text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
+                                >
+                                  Learn More →
+                                </a>
+                              </>
+                            )}
+                            {level === 'light' && (
+                              <>
+                                <span className="inline-block px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
+                                  BETA - DEVNET
+                                </span>
+                                <a 
+                                  href="/privacy" 
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-xs text-purple-600 hover:text-purple-800 font-medium hover:underline"
+                                >
+                                  Learn More →
+                                </a>
+                              </>
+                            )}
+                          </div>
                         </button>
                       ))}
                     </div>
