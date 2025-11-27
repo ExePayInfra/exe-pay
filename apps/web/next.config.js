@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@exe-pay/core', '@exe-pay/react-hooks', '@exe-pay/utils'],
+  transpilePackages: ['@exe-pay/core', '@exe-pay/privacy', '@exe-pay/react-hooks', '@exe-pay/utils'],
   eslint: {
     // Disable ESLint during production builds
     ignoreDuringBuilds: true,
