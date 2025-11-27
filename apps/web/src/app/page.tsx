@@ -5,7 +5,7 @@ import { Stats } from '@/components/Stats';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-// Production deployment: Nov 27, 2025 - Stats updated to realistic values
+// Production v1.0.5 - Nov 27, 2025
 
 // Partner logo configuration
 const partners = [
