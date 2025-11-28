@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { RecurringPaymentForm } from '@/components/RecurringPaymentForm';
 import { Navigation, Footer } from '@/components/Navigation';
 import { PageHeader } from '@/components/BackButton';

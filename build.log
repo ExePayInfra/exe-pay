@@ -1,0 +1,463 @@
+
+> exe-pay@0.1.0 build /Users/kingchief/Documents/EXE
+> turbo run build "--filter=@exe-pay/web"
+
+turbo 2.6.1
+
+• Packages in scope: @exe-pay/web
+• Running build in 1 packages
+• Remote caching disabled
+@exe-pay/utils:build: cache hit, replaying logs e8ad7eed7c69c323
+@exe-pay/utils:build: 
+@exe-pay/utils:build: 
+@exe-pay/utils:build: > @exe-pay/utils@1.0.0 build /Users/kingchief/Documents/EXE/packages/utils
+@exe-pay/utils:build: > tsc
+@exe-pay/utils:build: 
+@exe-pay/privacy:build: cache hit, replaying logs 8085562d6305ec65
+@exe-pay/privacy:build: 
+@exe-pay/privacy:build: 
+@exe-pay/privacy:build: > @exe-pay/privacy@1.0.0 build /Users/kingchief/Documents/EXE/packages/privacy
+@exe-pay/privacy:build: > tsc
+@exe-pay/privacy:build: 
+@exe-pay/core:build: cache hit, replaying logs b3f9999ec81b1584
+@exe-pay/core:build: 
+@exe-pay/core:build: 
+@exe-pay/core:build: > @exe-pay/core@1.0.0 build /Users/kingchief/Documents/EXE/packages/core
+@exe-pay/core:build: > tsc
+@exe-pay/core:build: 
+@exe-pay/react-hooks:build: cache hit, replaying logs 050c54600bf54149
+@exe-pay/react-hooks:build: 
+@exe-pay/react-hooks:build: 
+@exe-pay/react-hooks:build: > @exe-pay/react-hooks@1.0.0 build /Users/kingchief/Documents/EXE/packages/react-hooks
+@exe-pay/react-hooks:build: > tsc
+@exe-pay/react-hooks:build: 
+@exe-pay/web:build: cache miss, executing 44d4dc3ef2d8d3e0
+@exe-pay/web:build: 
+@exe-pay/web:build: > @exe-pay/web@1.0.5 build /Users/kingchief/Documents/EXE/apps/web
+@exe-pay/web:build: > next build
+@exe-pay/web:build: 
+@exe-pay/web:build:   ▲ Next.js 14.2.13
+@exe-pay/web:build:   - Environments: .env.local
+@exe-pay/web:build: 
+@exe-pay/web:build:    Creating an optimized production build ...
+@exe-pay/web:build:  ⚠ Compiled with warnings
+@exe-pay/web:build: 
+@exe-pay/web:build: ../../node_modules/.pnpm/web-worker@1.2.0/node_modules/web-worker/cjs/node.js
+@exe-pay/web:build: Critical dependency: the request of a dependency is an expression
+@exe-pay/web:build: 
+@exe-pay/web:build: Import trace for requested module:
+@exe-pay/web:build: ../../node_modules/.pnpm/web-worker@1.2.0/node_modules/web-worker/cjs/node.js
+@exe-pay/web:build: ../../node_modules/.pnpm/ffjavascript@0.3.1/node_modules/ffjavascript/src/threadman.js
+@exe-pay/web:build: ../../node_modules/.pnpm/ffjavascript@0.3.1/node_modules/ffjavascript/src/engine.js
+@exe-pay/web:build: ../../node_modules/.pnpm/ffjavascript@0.3.1/node_modules/ffjavascript/src/bn128.js
+@exe-pay/web:build: ../../node_modules/.pnpm/ffjavascript@0.3.1/node_modules/ffjavascript/main.js
+@exe-pay/web:build: ../../node_modules/.pnpm/snarkjs@0.7.5/node_modules/snarkjs/src/curves.js
+@exe-pay/web:build: ../../node_modules/.pnpm/snarkjs@0.7.5/node_modules/snarkjs/main.js
+@exe-pay/web:build: ../../packages/privacy/dist/proofs/groth16.js
+@exe-pay/web:build: ../../packages/privacy/dist/index.js
+@exe-pay/web:build: ../../packages/core/dist/client.js
+@exe-pay/web:build: ../../packages/core/dist/index.js
+@exe-pay/web:build: ./src/components/TransactionList.tsx
+@exe-pay/web:build: ./src/app/history/page.tsx
+@exe-pay/web:build: 
+@exe-pay/web:build:    Skipping validation of types
+@exe-pay/web:build:    Skipping linting
+@exe-pay/web:build:    Collecting page data ...
+@exe-pay/web:build:    Generating static pages (0/13) ...
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /pay. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /pay. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /pay. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /pay. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/pay/page.js:1:9453)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:6833)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at c (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:1913)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /recurring. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /recurring. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /recurring. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /recurring. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:6833)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at c (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:1913)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/recurring/page.js:1:2724)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /privacy. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /privacy. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /privacy. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /privacy. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/privacy/page.js:19:5931)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:  ⨯ useSearchParams() should be wrapped in a suspense boundary at page "/privacy". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:7:173994)
+@exe-pay/web:build:     at p (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:7:184976)
+@exe-pay/web:build:     at b (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/privacy/page.js:1:16826)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47717)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build: 
+@exe-pay/web:build: Error occurred prerendering page "/privacy". Read more: https://nextjs.org/docs/messages/prerender-error
+@exe-pay/web:build: 
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /create-link. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /create-link. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /create-link. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /create-link. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/create-link/page.js:1:9798)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /links. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /links. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /links. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /links. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:4:5931)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at u (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:1:3135)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47717)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at i (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:1:15099)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /scan. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /scan. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /scan. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /scan. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/scan/page.js:1:88676)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:    Generating static pages (3/13) 
+@exe-pay/web:build: Error: You have tried to read "wallets" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27142)
+@exe-pay/web:build:     at i (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:1:15143)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at i (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:1:15152)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /_not-found. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /_not-found. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/links/page.js:4:5931)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:    Generating static pages (6/13) 
+@exe-pay/web:build:    Generating static pages (9/13) 
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /batch. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /batch. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /batch. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /batch. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/create-link/page.js:1:9798)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at c (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:1913)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at m (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/batch/page.js:1:2732)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /history. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /history. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /history. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /history. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/pay/page.js:1:9453)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at c (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:1913)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /wallet. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /wallet. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+@exe-pay/web:build:  ⚠ Unsupported metadata viewport is configured in metadata export in /wallet. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build:  ⚠ Unsupported metadata themeColor is configured in metadata export in /wallet. Please move it to viewport export instead.
+@exe-pay/web:build: Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at n (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/privacy/page.js:19:5931)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:59102)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at j (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/wallet/page.js:1:11007)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47717)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build: Error: You have tried to read "wallets" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27142)
+@exe-pay/web:build:     at j (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/wallet/page.js:1:11069)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47717)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:  ✓ Generating static pages (13/13)
+@exe-pay/web:build: Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27210)
+@exe-pay/web:build:     at j (/Users/kingchief/Documents/EXE/apps/web/.next/server/app/wallet/page.js:1:11078)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nI (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47010)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47717)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61546)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build: Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+@exe-pay/web:build:     at o (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:26897)
+@exe-pay/web:build:     at Object.get (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/114.js:382:27283)
+@exe-pay/web:build:     at c (/Users/kingchief/Documents/EXE/apps/web/.next/server/chunks/994.js:1:1913)
+@exe-pay/web:build:     at nj (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46251)
+@exe-pay/web:build:     at nM (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47571)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64546)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build:     at nD (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66680)
+@exe-pay/web:build:     at nN (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64853)
+@exe-pay/web:build:     at nB (/Users/kingchief/Documents/EXE/node_modules/.pnpm/next@14.2.13_@babel+core@7.28.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67538)
+@exe-pay/web:build: 
+@exe-pay/web:build: > Export encountered errors on following paths:
+@exe-pay/web:build: 	/privacy/page: /privacy
+@exe-pay/web:build:  ELIFECYCLE  Command failed with exit code 1.
+@exe-pay/web:build: ERROR: command finished with error: command (/Users/kingchief/Documents/EXE/apps/web) /Users/kingchief/Library/pnpm/.tools/pnpm/9.12.0/bin/pnpm run build exited (1)
+@exe-pay/web#build: command (/Users/kingchief/Documents/EXE/apps/web) /Users/kingchief/Library/pnpm/.tools/pnpm/9.12.0/bin/pnpm run build exited (1)
+
+ Tasks:    4 successful, 5 total
+Cached:    4 cached, 5 total
+  Time:    46.616s 
+Failed:    @exe-pay/web#build
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.

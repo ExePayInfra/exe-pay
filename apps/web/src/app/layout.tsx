@@ -6,6 +6,10 @@ import { WalletConnectionGuard } from "@/components/WalletConnectionGuard";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// Force all pages to use dynamic rendering - required for wallet adapter
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 export const metadata: Metadata = {
   title: "ExePay - Privacy-Preserving Payments on Solana",
   description: "Send and receive private payments on Solana with zero-knowledge proofs. Stealth addresses, ZK compression, and batch payments.",

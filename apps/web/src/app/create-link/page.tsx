@@ -1,5 +1,7 @@
 import { PaymentLinkGenerator } from "@/components/PaymentLinkGenerator";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Create Payment Link | ExePay",
   description: "Generate a shareable payment link for private Solana payments"

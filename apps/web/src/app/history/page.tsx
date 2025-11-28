@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import { useState } from "react";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { fetchTransactionHistory, exportTransactionsToCSV, downloadCSV } from "@exe-pay/core";

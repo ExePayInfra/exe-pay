@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { BatchPaymentForm } from '@/components/BatchPaymentForm';
 import { Navigation, Footer } from '@/components/Navigation';
 import { PageHeader } from '@/components/BackButton';
