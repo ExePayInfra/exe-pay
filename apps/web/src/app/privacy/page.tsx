@@ -4,14 +4,14 @@ export const dynamic = 'force-dynamic';
 
 import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import { PrivacyModeSelector, type PrivacyMode } from '@/components/PrivacyModeSelector';
 import { SecureWalletConnect } from '@/components/SecureWalletConnect';
 import { BackButton } from '@/components/BackButton';
 import { ShieldedPoolManager } from '@/components/ShieldedPoolManager';
 
 // Lazy load components for better performance
-const StealthAddressGenerator = dynamic(
+const StealthAddressGenerator = dynamicImport(
   () => import('@/components/StealthAddressGenerator').then(mod => ({ default: mod.StealthAddressGenerator })),
   { 
     ssr: false,
@@ -26,7 +26,7 @@ const StealthAddressGenerator = dynamic(
   }
 );
 
-const StealthPaymentForm = dynamic(
+const StealthPaymentForm = dynamicImport(
   () => import('@/components/StealthPaymentForm').then(mod => ({ default: mod.StealthPaymentForm })),
   { 
     ssr: false,
@@ -41,7 +41,7 @@ const StealthPaymentForm = dynamic(
   }
 );
 
-const StealthPaymentScanner = dynamic(
+const StealthPaymentScanner = dynamicImport(
   () => import('@/components/StealthPaymentScanner').then(mod => ({ default: mod.StealthPaymentScanner })),
   { 
     ssr: false,
