@@ -1,7 +1,7 @@
 # ExePay Privacy Guide
 
-**Version:** 0.3.0  
-**Last Updated:** November 25, 2025
+**Version:** 0.4.0  
+**Last Updated:** November 28, 2025
 
 ---
 
@@ -10,8 +10,9 @@
 ### The Challenge
 
 Traditional blockchain transactions are **completely transparent**:
+
 - Anyone can see who sent funds
-- Anyone can see who received funds  
+- Anyone can see who received funds
 - Anyone can see how much was sent
 - Transaction history is permanently visible
 
@@ -21,16 +22,17 @@ Traditional blockchain transactions are **completely transparent**:
 
 ## 🎯 Privacy Levels Comparison
 
-| Feature | Public | Shielded | Private | Light Protocol |
-|---------|--------|----------|---------|----------------|
-| **Sender Hidden** | ❌ | ❌ | ❌ | ✅ |
-| **Recipient Hidden** | ❌ | ❌ | ✅ | ✅ |
-| **Amount Hidden** | ❌ | ✅ | ✅ | ✅ |
-| **Solscan Visibility** | Full | Partial | Partial | None |
-| **Speed** | ⚡ Instant | ⚡ Fast | ⚡ Fast | ⏱️ 2-3 sec |
-| **Cost** | ~$0.0001 | ~$0.0005 | ~$0.0008 | ~$0.002 |
-| **Setup Required** | None | None | None | Yes (deposit) |
-| **Status** | ✅ Live | ✅ Live | ✅ Live | 🔬 Beta |
+| Feature                | Public     | Stealth Addresses | Light Protocol   |
+| ---------------------- | ---------- | ----------------- | ---------------- |
+| **Sender Hidden**      | ❌         | ❌                | ✅               |
+| **Recipient Hidden**   | ❌         | ✅                | ✅               |
+| **Amount Hidden**      | ❌         | ❌                | ✅               |
+| **Unlinkable**         | ❌         | ✅                | ✅               |
+| **Solscan Visibility** | Full       | Partial           | Minimal          |
+| **Speed**              | ⚡ Instant | ⚡ Instant        | ⏱️ 2-3 sec       |
+| **Cost**               | ~$0.0001   | ~$0.0002          | ~$0.002          |
+| **Setup Required**     | None       | Generate address  | Deposit to pool  |
+| **Status**             | ✅ Mainnet | ✅ Mainnet        | 🔬 Beta (Devnet) |
 
 ---
 
@@ -60,7 +62,7 @@ Amount: 1.5 SOL
 ### Code Example
 
 ```typescript
-import { createPayment } from '@exe-pay/core';
+import { createPayment } from "@exe-pay/core";
 
 const result = await createPayment({
   connection,
@@ -68,13 +70,145 @@ const result = await createPayment({
   recipient: recipientPublicKey,
   amount: 1.5,
   signTransaction,
-  privacyLevel: 'public',
+  privacyLevel: "public",
 });
 ```
 
 ---
 
-## 2️⃣ Shielded Payments (Hidden Amount)
+## 2️⃣ Stealth Addresses (Mainnet Ready)
+
+### What It Does
+
+**Stealth addresses** provide recipient privacy by generating unique one-time addresses for each payment. Inspired by Monero's privacy model, this ensures that payments cannot be linked to your main wallet address.
+
+### How It Works
+
+1. **Generate Stealth Meta-Address** (one-time setup)
+   - Your wallet signs a message to derive viewing and spending keys
+   - A stealth meta-address is created (format: `stealth:PEEDy...`)
+   - Share this address publicly - it's safe!
+
+2. **Sender Generates One-Time Address**
+   - Sender uses your stealth meta-address
+   - Generates a unique Solana address for this payment
+   - Creates an ephemeral key pair for encryption
+   - Sends payment to the one-time address
+
+3. **Recipient Scans for Payments**
+   - Your wallet scans the blockchain
+   - Uses view tags for efficient detection
+   - Identifies payments sent to you
+   - Derives the private key to claim funds
+
+4. **Claim Funds**
+   - Transfer funds from one-time address to your main wallet
+   - Payment is now in your control
+   - No on-chain link between payments
+
+### Cryptographic Primitives
+
+- **X25519 ECDH**: Elliptic Curve Diffie-Hellman for shared secret derivation
+- **Keccak-256**: Cryptographic hashing for key derivation
+- **View Tags**: 1-byte optimization for fast scanning
+- **Message Signing**: Secure key derivation without exposing wallet secret
+
+### When to Use
+
+- 💰 **Receiving Donations** - Hide your main wallet address
+- 🎁 **Accepting Payments** - Prevent address tracking
+- 🔐 **Maximum Privacy** - Break on-chain transaction graph
+- 🏢 **Business Payments** - Separate business from personal
+- 💸 **Recurring Income** - Each payment to a new address
+
+### Example on Solscan
+
+**What Others See:**
+
+```
+To: 8xKLm3P9vN2Qr5TcWdHjFgYzXnMpLkJhGfDsA1BvCeRt (one-time address)
+Amount: 0.5 SOL
+```
+
+**What They DON'T See:**
+
+- Your main wallet address
+- Connection to other payments
+- Total balance or transaction history
+
+### Privacy Benefits
+
+- ✅ **Unlinkable Payments** - Each payment uses a unique address
+- ✅ **No Address Reuse** - Prevents tracking and clustering
+- ✅ **Recipient Privacy** - Your main address stays hidden
+- ✅ **Mainnet Ready** - Production-grade implementation
+- ✅ **No Setup Cost** - Free to generate stealth address
+
+### Code Example
+
+```typescript
+import {
+  generateStealthMetaAddress,
+  generateStealthAddress,
+  scanForStealthPayments,
+  claimPayment,
+} from "@exe-pay/privacy";
+
+// Recipient: Generate stealth meta-address (one-time)
+const stealthMeta = await generateStealthMetaAddress(wallet);
+console.log("Share this:", stealthMeta.toString());
+// Output: stealth:PEEDycQmBuF1WTwENQGEaKmvbAdpnLT9iTQFS3TxhvY:...
+
+// Sender: Generate one-time address
+const { stealthAddress, ephemeralPublicKey } =
+  await generateStealthAddress(recipientStealthMeta);
+
+// Send payment to stealthAddress
+await sendTransaction(stealthAddress, 0.5 * LAMPORTS_PER_SOL);
+
+// Recipient: Scan for payments
+const payments = await scanForStealthPayments(connection, wallet, stealthMeta);
+
+// Claim detected payment
+if (payments.length > 0) {
+  await claimPayment(connection, payments[0], wallet);
+}
+```
+
+### Technical Details
+
+**View Tag Optimization:**
+
+- First byte of shared secret used as view tag
+- Reduces full ECDH calculations by 99%+
+- Enables fast scanning of large transaction sets
+
+**Key Derivation:**
+
+- Viewing key: Derived from wallet signature
+- Spending key: Your main wallet public key
+- Shared secret: X25519 ECDH(ephemeral, viewing)
+- One-time key: Keccak-256(shared secret)
+
+**Security Properties:**
+
+- Forward secrecy: Compromised viewing key doesn't reveal past payments
+- No key reuse: Each payment uses fresh cryptographic material
+- Message signing: No exposure of wallet secret key
+
+---
+
+## 3️⃣ Light Protocol (Beta on Devnet)
+
+### What It Does
+
+Uses **zero-knowledge compression** to hide sender, recipient, and amount while reducing transaction costs by 90%.
+
+---
+
+## 2️⃣ Shielded Payments (Hidden Amount) [DEPRECATED]
+
+**Note:** This section describes a previous implementation. Current privacy options are **Stealth Addresses** (mainnet) and **Light Protocol** (beta).
 
 ### What It Does
 
@@ -108,7 +242,7 @@ Proof: 0x4a7b3c... (ZK proof verifies amount is valid)
 ### Code Example
 
 ```typescript
-import { createShieldedTransfer } from '@exe-pay/privacy';
+import { createShieldedTransfer } from "@exe-pay/privacy";
 
 const result = await createShieldedTransfer({
   connection,
@@ -164,7 +298,7 @@ Proof: 0x6c8d1f... (ZK proof + encryption)
 ### Code Example
 
 ```typescript
-import { createPrivateTransfer } from '@exe-pay/privacy';
+import { createPrivateTransfer } from "@exe-pay/privacy";
 
 const result = await createPrivateTransfer({
   connection,
@@ -190,16 +324,12 @@ const result = await createPrivateTransfer({
 Recipients can scan for private payments:
 
 ```typescript
-import { scanPrivatePayments } from '@exe-pay/privacy';
+import { scanPrivatePayments } from "@exe-pay/privacy";
 
-const payments = await scanPrivatePayments(
-  connection,
-  myPrivateKey,
-  myPublicKey
-);
+const payments = await scanPrivatePayments(connection, myPrivateKey, myPublicKey);
 
 console.log(`Found ${payments.length} private payments`);
-payments.forEach(p => {
+payments.forEach((p) => {
   console.log(`Received: ${p.amount} SOL from unknown sender`);
 });
 ```
@@ -245,23 +375,23 @@ No sender, no recipient, no amount. Just "Light Protocol interaction".
 ### Setup: Deposit to Shielded Pool
 
 ```typescript
-import { depositToShieldedPool } from '@exe-pay/privacy';
+import { depositToShieldedPool } from "@exe-pay/privacy";
 
 // 1. Deposit funds to shielded pool
 const depositSig = await depositToShieldedPool(
   connection,
   publicKey,
   10.0, // Deposit 10 SOL
-  signTransaction
+  signTransaction,
 );
 
-console.log('Deposited to shielded pool:', depositSig);
+console.log("Deposited to shielded pool:", depositSig);
 ```
 
 ### Send Private Payment
 
 ```typescript
-import { createLightShieldedTransfer } from '@exe-pay/privacy';
+import { createLightShieldedTransfer } from "@exe-pay/privacy";
 
 // 2. Send completely private payment
 const result = await createLightShieldedTransfer({
@@ -272,28 +402,28 @@ const result = await createLightShieldedTransfer({
   signTransaction,
 });
 
-console.log('Private payment sent!', result.signature);
+console.log("Private payment sent!", result.signature);
 // On Solscan: Completely invisible!
 ```
 
 ### Withdraw from Shielded Pool
 
 ```typescript
-import { withdrawFromShieldedPool } from '@exe-pay/privacy';
+import { withdrawFromShieldedPool } from "@exe-pay/privacy";
 
 // 3. Withdraw to regular account
 const withdrawSig = await withdrawFromShieldedPool(
   connection,
   publicKey,
   5.0, // Withdraw 5 SOL
-  signTransaction
+  signTransaction,
 );
 ```
 
 ### Check Shielded Balance
 
 ```typescript
-import { getShieldedBalance } from '@exe-pay/privacy';
+import { getShieldedBalance } from "@exe-pay/privacy";
 
 const shieldedBalance = await getShieldedBalance(connection, publicKey);
 console.log(`Shielded balance: ${shieldedBalance} SOL`);
@@ -314,25 +444,25 @@ console.log(`Shielded balance: ${shieldedBalance} SOL`);
 
 ### Transaction Visibility
 
-| Information | Public | Shielded | Private | Light Protocol |
-|-------------|--------|----------|---------|----------------|
-| Sender Address | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden |
-| Recipient Address | ✅ Visible | ✅ Visible | ❌ Hidden | ❌ Hidden |
-| Amount | ✅ Visible | ❌ Hidden | ❌ Hidden | ❌ Hidden |
-| Transaction Exists | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes* |
-| Sender Balance | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden |
-| Recipient Balance | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden |
+| Information        | Public     | Shielded   | Private    | Light Protocol |
+| ------------------ | ---------- | ---------- | ---------- | -------------- |
+| Sender Address     | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden      |
+| Recipient Address  | ✅ Visible | ✅ Visible | ❌ Hidden  | ❌ Hidden      |
+| Amount             | ✅ Visible | ❌ Hidden  | ❌ Hidden  | ❌ Hidden      |
+| Transaction Exists | ✅ Yes     | ✅ Yes     | ✅ Yes     | ✅ Yes\*       |
+| Sender Balance     | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden      |
+| Recipient Balance  | ✅ Visible | ✅ Visible | ✅ Visible | ❌ Hidden      |
 
-*Light Protocol transactions are visible but show no information
+\*Light Protocol transactions are visible but show no information
 
 ### Performance Comparison
 
-| Metric | Public | Shielded | Private | Light Protocol |
-|--------|--------|----------|---------|----------------|
-| Proof Generation | None | ~50ms | ~100ms | ~2-3s |
-| Transaction Size | ~200 bytes | ~400 bytes | ~600 bytes | ~1.5KB |
-| Transaction Fee | ~$0.0001 | ~$0.0005 | ~$0.0008 | ~$0.002 |
-| Confirmation Time | ~0.5s | ~0.6s | ~0.8s | ~1.5s |
+| Metric            | Public     | Shielded   | Private    | Light Protocol |
+| ----------------- | ---------- | ---------- | ---------- | -------------- |
+| Proof Generation  | None       | ~50ms      | ~100ms     | ~2-3s          |
+| Transaction Size  | ~200 bytes | ~400 bytes | ~600 bytes | ~1.5KB         |
+| Transaction Fee   | ~$0.0001   | ~$0.0005   | ~$0.0008   | ~$0.002        |
+| Confirmation Time | ~0.5s      | ~0.6s      | ~0.8s      | ~1.5s          |
 
 ---
 
@@ -341,12 +471,14 @@ console.log(`Shielded balance: ${shieldedBalance} SOL`);
 ### Shielded & Private Modes
 
 **Strengths:**
+
 - ✅ ZK proofs are cryptographically secure
 - ✅ ElGamal encryption is quantum-resistant
 - ✅ No trusted setup required
 - ✅ Open-source and auditable
 
 **Limitations:**
+
 - ⚠️ Sender address always visible (for Shielded/Private)
 - ⚠️ Transaction metadata visible (timestamp, fee)
 - ⚠️ Network analysis could correlate transactions
@@ -354,12 +486,14 @@ console.log(`Shielded balance: ${shieldedBalance} SOL`);
 ### Light Protocol Mode
 
 **Strengths:**
+
 - ✅ Complete on-chain privacy
 - ✅ No sender/recipient linkage
 - ✅ Amount completely hidden
 - ✅ Resistant to network analysis
 
 **Limitations:**
+
 - ⚠️ Requires deposit/withdraw (entry/exit points visible)
 - ⚠️ Longer proof generation time
 - ⚠️ Higher transaction fees
@@ -405,24 +539,28 @@ A ZK proof allows you to **prove something is true without revealing why it's tr
 ### Choosing a Privacy Level
 
 **Use Public when:**
+
 - Transparency is required
 - Business accounting needed
 - Tax reporting required
 - Public fundraising
 
 **Use Shielded when:**
+
 - Amount is sensitive
 - Addresses can be public
 - Moderate privacy needed
 - Lower fees important
 
 **Use Private when:**
+
 - High privacy required
 - Recipient anonymity important
 - Willing to pay higher fees
 - No regulatory constraints
 
 **Use Light Protocol when:**
+
 - Maximum privacy essential
 - No information should leak
 - Time/cost not critical
@@ -453,16 +591,19 @@ A ZK proof allows you to **prove something is true without revealing why it's tr
 ### Roadmap
 
 **Q1 2026:**
+
 - ✅ Shielded transfers (DONE)
 - ✅ Private transfers (DONE)
 - ✅ Light Protocol Beta (DONE)
 
 **Q2 2026:**
+
 - 🔜 Stealth addresses
 - 🔜 Transaction mixing
 - 🔜 Cross-chain privacy
 
 **Q3 2026:**
+
 - 🔜 Light Protocol production
 - 🔜 Multi-token privacy
 - 🔜 Mobile privacy features
@@ -527,4 +668,3 @@ A ZK proof allows you to **prove something is true without revealing why it's tr
 ---
 
 **Privacy is a right, not a luxury.** 🔐
-

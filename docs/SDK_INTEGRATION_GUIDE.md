@@ -1,7 +1,7 @@
 # ExePay SDK Integration Guide
 
-**Version:** 0.3.0  
-**Last Updated:** November 25, 2025  
+**Version:** 0.4.0  
+**Last Updated:** November 28, 2025  
 **Difficulty:** Beginner to Advanced
 
 ---
@@ -125,6 +125,7 @@ npm install @exe-pay/core
 ```
 
 The core package includes:
+
 - Standard SOL payments
 - SPL token payments
 - Transaction history
@@ -137,6 +138,7 @@ npm install @exe-pay/privacy
 ```
 
 The privacy package includes:
+
 - Shielded transfers (hidden amounts)
 - Private transfers (encrypted recipients)
 - Light Protocol integration (TRUE privacy)
@@ -149,6 +151,7 @@ npm install @exe-pay/react-hooks
 ```
 
 React hooks for easier integration:
+
 - `useExePay()` - Main payment hook
 - `useBalance()` - Balance tracking
 - `useTransactionHistory()` - Transaction history
@@ -160,6 +163,7 @@ npm install @solana/wallet-adapter-react @solana/wallet-adapter-react-ui @solana
 ```
 
 Wallet integration packages:
+
 - Phantom, Solflare, Coinbase, Trust, Backpack, etc.
 - Standard wallet UI components
 - Connection management
@@ -171,31 +175,31 @@ Wallet integration packages:
 ### Simple SOL Transfer
 
 ```typescript
-import { createPayment } from '@exe-pay/core';
-import { Connection, PublicKey } from '@solana/web3.js';
+import { createPayment } from "@exe-pay/core";
+import { Connection, PublicKey } from "@solana/web3.js";
 
-const connection = new Connection('https://api.mainnet-beta.solana.com');
+const connection = new Connection("https://api.mainnet-beta.solana.com");
 
 async function sendSOL() {
   const result = await createPayment({
     connection,
     sender: senderPublicKey,
-    recipient: new PublicKey('7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU'),
+    recipient: new PublicKey("7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"),
     amount: 1.0, // 1 SOL
     signTransaction,
   });
 
-  console.log('Transaction signature:', result.signature);
-  console.log('Confirmed:', result.confirmed);
-  console.log('View on Solscan:', `https://solscan.io/tx/${result.signature}`);
+  console.log("Transaction signature:", result.signature);
+  console.log("Confirmed:", result.confirmed);
+  console.log("View on Solscan:", `https://solscan.io/tx/${result.signature}`);
 }
 ```
 
 ### SPL Token Transfer (USDC, USDT, etc.)
 
 ```typescript
-import { createTokenPayment } from '@exe-pay/core';
-import { USDC_MINT, USDT_MINT } from '@exe-pay/utils';
+import { createTokenPayment } from "@exe-pay/core";
+import { USDC_MINT, USDT_MINT } from "@exe-pay/utils";
 
 async function sendUSDC() {
   const result = await createTokenPayment({
@@ -207,14 +211,14 @@ async function sendUSDC() {
     signTransaction,
   });
 
-  console.log('USDC sent!', result.signature);
+  console.log("USDC sent!", result.signature);
 }
 ```
 
 ### Check Balance
 
 ```typescript
-import { getBalance } from '@exe-pay/core';
+import { getBalance } from "@exe-pay/core";
 
 // Get SOL balance
 const solBalance = await getBalance(connection, publicKey);
@@ -234,6 +238,7 @@ ExePay supports 4 privacy levels:
 ### 1. Public (Default)
 
 **What's Visible:**
+
 - ✅ Sender address
 - ✅ Recipient address
 - ✅ Amount
@@ -247,7 +252,7 @@ const result = await createPayment({
   recipient: recipientPublicKey,
   amount: 1.0,
   signTransaction,
-  privacyLevel: 'public', // Default
+  privacyLevel: "public", // Default
 });
 ```
 
@@ -256,6 +261,7 @@ const result = await createPayment({
 ### 2. Shielded
 
 **What's Visible:**
+
 - ✅ Sender address
 - ✅ Recipient address
 - ❌ Amount (hidden with ZK proof)
@@ -263,7 +269,7 @@ const result = await createPayment({
 **Use Case:** Hide transaction amount, keep addresses visible
 
 ```typescript
-import { createShieldedTransfer } from '@exe-pay/privacy';
+import { createShieldedTransfer } from "@exe-pay/privacy";
 
 const result = await createShieldedTransfer({
   connection,
@@ -281,6 +287,7 @@ const result = await createShieldedTransfer({
 ### 3. Private
 
 **What's Visible:**
+
 - ✅ Sender address
 - ❌ Recipient (encrypted)
 - ❌ Amount (hidden with ZK proof)
@@ -288,7 +295,7 @@ const result = await createShieldedTransfer({
 **Use Case:** Maximum privacy while keeping sender visible
 
 ```typescript
-import { createPrivateTransfer } from '@exe-pay/privacy';
+import { createPrivateTransfer } from "@exe-pay/privacy";
 
 const result = await createPrivateTransfer({
   connection,
@@ -306,6 +313,7 @@ const result = await createPrivateTransfer({
 ### 4. Light Protocol (Beta - TRUE Privacy)
 
 **What's Visible:**
+
 - ❌ Sender (hidden)
 - ❌ Recipient (hidden)
 - ❌ Amount (hidden)
@@ -314,7 +322,7 @@ const result = await createPrivateTransfer({
 **Use Case:** Complete on-chain privacy
 
 ```typescript
-import { createLightShieldedTransfer } from '@exe-pay/privacy';
+import { createLightShieldedTransfer } from "@exe-pay/privacy";
 
 const result = await createLightShieldedTransfer({
   connection,
@@ -330,14 +338,14 @@ const result = await createLightShieldedTransfer({
 **Note:** Light Protocol is currently in Beta. First deposit to shielded pool:
 
 ```typescript
-import { depositToShieldedPool } from '@exe-pay/privacy';
+import { depositToShieldedPool } from "@exe-pay/privacy";
 
 // Deposit to shielded pool
 const depositSig = await depositToShieldedPool(
   connection,
   publicKey,
   5.0, // Deposit 5 SOL
-  signTransaction
+  signTransaction,
 );
 
 // Now you can make private transfers
@@ -391,7 +399,7 @@ export function PaymentForm() {
   return (
     <div>
       <WalletMultiButton />
-      
+
       {publicKey && (
         <form onSubmit={handleSubmit}>
           <input
@@ -401,7 +409,7 @@ export function PaymentForm() {
             onChange={(e) => setRecipient(e.target.value)}
             required
           />
-          
+
           <input
             type="number"
             placeholder="Amount (SOL)"
@@ -411,7 +419,7 @@ export function PaymentForm() {
             min="0"
             required
           />
-          
+
           <button type="submit" disabled={loading}>
             {loading ? 'Sending...' : 'Send Payment'}
           </button>
@@ -505,23 +513,17 @@ export function TransactionList() {
 ### Supported Tokens
 
 ```typescript
-import {
-  SOL_MINT,
-  USDC_MINT,
-  USDT_MINT,
-  RAY_MINT,
-  SRM_MINT,
-} from '@exe-pay/utils';
+import { SOL_MINT, USDC_MINT, USDT_MINT, RAY_MINT, SRM_MINT } from "@exe-pay/utils";
 ```
 
 ### Send Any SPL Token
 
 ```typescript
-import { createTokenPayment } from '@exe-pay/core';
-import { PublicKey } from '@solana/web3.js';
+import { createTokenPayment } from "@exe-pay/core";
+import { PublicKey } from "@solana/web3.js";
 
 async function sendCustomToken() {
-  const TOKEN_MINT = new PublicKey('YOUR_TOKEN_MINT_ADDRESS');
+  const TOKEN_MINT = new PublicKey("YOUR_TOKEN_MINT_ADDRESS");
 
   const result = await createTokenPayment({
     connection,
@@ -533,7 +535,7 @@ async function sendCustomToken() {
     signTransaction,
   });
 
-  console.log('Token sent!', result.signature);
+  console.log("Token sent!", result.signature);
 }
 ```
 
@@ -589,34 +591,34 @@ Send payments to multiple recipients in a single transaction.
 ### Basic Batch Payment
 
 ```typescript
-import { createBatchPayment } from '@exe-pay/core';
+import { createBatchPayment } from "@exe-pay/core";
 
 async function sendBatch() {
   const recipients = [
-    { address: 'ADDRESS_1', amount: 0.5 },
-    { address: 'ADDRESS_2', amount: 1.0 },
-    { address: 'ADDRESS_3', amount: 0.25 },
+    { address: "ADDRESS_1", amount: 0.5 },
+    { address: "ADDRESS_2", amount: 1.0 },
+    { address: "ADDRESS_3", amount: 0.25 },
   ];
 
   const result = await createBatchPayment({
     connection,
     sender: publicKey,
-    recipients: recipients.map(r => ({
+    recipients: recipients.map((r) => ({
       recipient: new PublicKey(r.address),
       amount: r.amount,
     })),
     signTransaction,
   });
 
-  console.log('Batch payment sent!', result.signature);
-  console.log('Total sent:', result.totalAmount);
+  console.log("Batch payment sent!", result.signature);
+  console.log("Total sent:", result.totalAmount);
 }
 ```
 
 ### Batch Payment with CSV Import
 
 ```typescript
-import { parseCSV } from '@exe-pay/utils';
+import { parseCSV } from "@exe-pay/utils";
 
 async function sendFromCSV(csvFile: File) {
   const csvText = await csvFile.text();
@@ -625,7 +627,7 @@ async function sendFromCSV(csvFile: File) {
   const result = await createBatchPayment({
     connection,
     sender: publicKey,
-    recipients: recipients.map(r => ({
+    recipients: recipients.map((r) => ({
       recipient: new PublicKey(r.address),
       amount: parseFloat(r.amount),
     })),
@@ -643,7 +645,7 @@ async function sendFromCSV(csvFile: File) {
 ### Setup: Deposit to Shielded Pool
 
 ```typescript
-import { depositToShieldedPool, getShieldedBalance } from '@exe-pay/privacy';
+import { depositToShieldedPool, getShieldedBalance } from "@exe-pay/privacy";
 
 async function setupPrivacy() {
   // 1. Deposit to shielded pool
@@ -651,21 +653,21 @@ async function setupPrivacy() {
     connection,
     publicKey,
     5.0, // Deposit 5 SOL
-    signTransaction
+    signTransaction,
   );
 
-  console.log('Deposited to shielded pool:', depositSig);
+  console.log("Deposited to shielded pool:", depositSig);
 
   // 2. Check shielded balance
   const shieldedBalance = await getShieldedBalance(connection, publicKey);
-  console.log('Shielded balance:', shieldedBalance, 'SOL');
+  console.log("Shielded balance:", shieldedBalance, "SOL");
 }
 ```
 
 ### Send Private Payment
 
 ```typescript
-import { createLightShieldedTransfer } from '@exe-pay/privacy';
+import { createLightShieldedTransfer } from "@exe-pay/privacy";
 
 async function sendPrivatePayment() {
   const result = await createLightShieldedTransfer({
@@ -676,8 +678,8 @@ async function sendPrivatePayment() {
     signTransaction,
   });
 
-  console.log('Private payment sent!', result.signature);
-  console.log('View on Solscan:', `https://solscan.io/tx/${result.signature}`);
+  console.log("Private payment sent!", result.signature);
+  console.log("View on Solscan:", `https://solscan.io/tx/${result.signature}`);
   // On Solscan: No sender, recipient, or amount visible!
 }
 ```
@@ -685,17 +687,17 @@ async function sendPrivatePayment() {
 ### Withdraw from Shielded Pool
 
 ```typescript
-import { withdrawFromShieldedPool } from '@exe-pay/privacy';
+import { withdrawFromShieldedPool } from "@exe-pay/privacy";
 
 async function withdraw() {
   const withdrawSig = await withdrawFromShieldedPool(
     connection,
     publicKey,
     2.0, // Withdraw 2 SOL
-    signTransaction
+    signTransaction,
   );
 
-  console.log('Withdrawn from shielded pool:', withdrawSig);
+  console.log("Withdrawn from shielded pool:", withdrawSig);
 }
 ```
 
@@ -706,7 +708,7 @@ async function withdraw() {
 ### Common Errors
 
 ```typescript
-import { createPayment, ExePayError } from '@exe-pay/core';
+import { createPayment, ExePayError } from "@exe-pay/core";
 
 async function sendWithErrorHandling() {
   try {
@@ -718,33 +720,33 @@ async function sendWithErrorHandling() {
       signTransaction,
     });
 
-    console.log('Success!', result.signature);
+    console.log("Success!", result.signature);
   } catch (error) {
     if (error instanceof ExePayError) {
       switch (error.code) {
-        case 'INSUFFICIENT_BALANCE':
-          console.error('Not enough funds in wallet');
+        case "INSUFFICIENT_BALANCE":
+          console.error("Not enough funds in wallet");
           break;
-        case 'INVALID_ADDRESS':
-          console.error('Invalid recipient address');
+        case "INVALID_ADDRESS":
+          console.error("Invalid recipient address");
           break;
-        case 'USER_REJECTED':
-          console.error('User cancelled transaction');
+        case "USER_REJECTED":
+          console.error("User cancelled transaction");
           break;
-        case 'NETWORK_ERROR':
-          console.error('RPC connection failed');
+        case "NETWORK_ERROR":
+          console.error("RPC connection failed");
           break;
-        case 'TRANSACTION_FAILED':
-          console.error('Transaction execution failed');
+        case "TRANSACTION_FAILED":
+          console.error("Transaction execution failed");
           break;
-        case 'WALLET_NOT_CONNECTED':
-          console.error('Please connect your wallet');
+        case "WALLET_NOT_CONNECTED":
+          console.error("Please connect your wallet");
           break;
         default:
-          console.error('Unknown error:', error.message);
+          console.error("Unknown error:", error.message);
       }
     } else {
-      console.error('Unexpected error:', error);
+      console.error("Unexpected error:", error);
     }
   }
 }
@@ -803,22 +805,22 @@ export class PaymentErrorBoundary extends Component<Props, State> {
 ### Custom RPC Endpoint
 
 ```typescript
-import { Connection } from '@solana/web3.js';
+import { Connection } from "@solana/web3.js";
 
 // Use custom Helius RPC
 const connection = new Connection(
-  'https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY',
+  "https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY",
   {
-    commitment: 'confirmed',
+    commitment: "confirmed",
     confirmTransactionInitialTimeout: 60000,
-  }
+  },
 );
 ```
 
 ### Transaction Priority Fees
 
 ```typescript
-import { createPayment } from '@exe-pay/core';
+import { createPayment } from "@exe-pay/core";
 
 const result = await createPayment({
   connection,
@@ -833,18 +835,20 @@ const result = await createPayment({
 ### Transaction Confirmation
 
 ```typescript
-import { confirmTransaction } from '@exe-pay/core';
+import { confirmTransaction } from "@exe-pay/core";
 
-const result = await createPayment({ /* ... */ });
+const result = await createPayment({
+  /* ... */
+});
 
 // Wait for confirmation
 const confirmed = await confirmTransaction(
   connection,
   result.signature,
-  'confirmed' // or 'finalized'
+  "confirmed", // or 'finalized'
 );
 
-console.log('Transaction confirmed:', confirmed);
+console.log("Transaction confirmed:", confirmed);
 ```
 
 ### QR Code Generation
@@ -862,7 +866,7 @@ async function generateQR() {
   };
 
   const qrDataURL = await QRCode.toDataURL(JSON.stringify(paymentData));
-  
+
   return <img src={qrDataURL} alt="Payment QR Code" />;
 }
 ```
@@ -883,27 +887,27 @@ import type {
   TokenPaymentOptions,
   TransactionHistory,
   ExePayError,
-} from '@exe-pay/core';
+} from "@exe-pay/core";
 
 import type {
   ElGamalKeypair,
   ElGamalCiphertext,
   RangeProofInputs,
   BalanceProofInputs,
-} from '@exe-pay/privacy';
+} from "@exe-pay/privacy";
 ```
 
 ### Type-Safe Payment Function
 
 ```typescript
-import { PublicKey, Connection } from '@solana/web3.js';
-import { createPayment, PaymentOptions, PaymentResult } from '@exe-pay/core';
+import { PublicKey, Connection } from "@solana/web3.js";
+import { createPayment, PaymentOptions, PaymentResult } from "@exe-pay/core";
 
 async function typeSafePayment(
   connection: Connection,
   sender: PublicKey,
   recipient: PublicKey,
-  amount: number
+  amount: number,
 ): Promise<PaymentResult> {
   const options: PaymentOptions = {
     connection,
@@ -911,7 +915,7 @@ async function typeSafePayment(
     recipient,
     amount,
     signTransaction,
-    privacyLevel: 'public',
+    privacyLevel: "public",
   };
 
   return await createPayment(options);
@@ -954,4 +958,3 @@ Check out our examples repository for more code samples:
 ---
 
 **Happy building with ExePay!** 🚀
-

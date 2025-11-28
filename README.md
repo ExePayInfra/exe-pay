@@ -16,31 +16,32 @@ A production-ready SDK enabling private, efficient, and scalable payment applica
 
 ### **Core Functionality:**
 
-- 🔐 **Multi-Level Privacy** - Public, Light Protocol (ZK compression), Stealth Addresses (Monero-style)
-- 🎭 **Stealth Addresses** - Unique one-time addresses for maximum privacy (LIVE!)
-- 💸 **Multi-Token Support** - SOL, USDC, USDT, BONK, JUP
-- 📦 **Batch Transfers** - Send to multiple recipients in one transaction
-- 🔄 **Recurring Payments** - Subscriptions with pause/resume/cancel
-- 📜 **Transaction History** - View and track all payments
-- 🔗 **Payment Links** - Shareable URLs for payment requests
-- 📱 **QR Codes** - Generate and scan for easy payments
+- 🔐 **Multi-Level Privacy** - Public, Light Protocol (ZK compression), Stealth Addresses (Monero-inspired)
+- 🎭 **Stealth Addresses** - One-time payment addresses with X25519 ECDH encryption (MAINNET READY)
+- 💸 **Multi-Token Support** - SOL, USDC, USDT, BONK, JUP, RAY, ORCA
+- 📦 **Batch Transfers** - Send to multiple recipients efficiently
+- 🔄 **Recurring Payments** - Automated subscriptions with full control
+- 📜 **Transaction History** - Complete payment tracking and analytics
+- 🔗 **Payment Links** - Shareable payment URLs with QR codes
+- 📱 **QR Code Scanner** - Instant payment processing
 
 ### **Developer Experience:**
 
-- ⚡ **Light Protocol Integration** - ZK compression for on-chain privacy
-- 🔒 **Stealth Address SDK** - Complete implementation with scanning and claiming
-- 🎣 **React Hooks** - One-line integration (`usePrivatePayment()`)
-- 📦 **TypeScript SDK** - Full type safety
-- 🏗️ **Monorepo Architecture** - Turborepo + pnpm workspaces
-- 📚 **Comprehensive Docs** - API reference, guides, examples
+- ⚡ **Light Protocol Integration** - Production-ready ZK compression (Beta on devnet)
+- 🔒 **Stealth Address SDK** - Complete privacy implementation with payment scanning and claiming
+- 🎣 **React Hooks** - Simple integration with `useExePay()`, `useBatchPayment()`, `useRecurringPayment()`
+- 📦 **TypeScript SDK** - Full type safety with comprehensive interfaces
+- 🏗️ **Monorepo Architecture** - Turborepo + pnpm for optimal developer experience
+- 📚 **Comprehensive Docs** - API reference, integration guides, and real-world examples
 
 ### **User Experience:**
 
-- 🎨 **Professional UI** - Modern, clean design with smooth animations
-- 📖 **Educational Content** - Clear explanations of privacy features
-- 🛡️ **Trust Indicators** - Built on audited protocols
-- 📱 **Mobile Optimized** - Responsive on all devices
-- ⚡ **Fast & Smooth** - Optimized performance and UX
+- 🎨 **Professional UI** - Modern, responsive design with smooth page transitions
+- 📖 **Educational Content** - Clear explanations of privacy modes and features
+- 🛡️ **Trust Indicators** - Built on Light Protocol's audited infrastructure
+- 📱 **Mobile Optimized** - Fully responsive across all devices
+- ⚡ **Fast & Smooth** - Dynamic rendering for optimal performance
+- 🔔 **Smart Notifications** - Non-intrusive transaction status updates
 
 ---
 
@@ -172,11 +173,12 @@ See [FEATURES.md](./docs/FEATURES.md) for more examples!
 
 ### Production-Ready Privacy
 
-- ✅ **Light Protocol Integration** - Audited ZK compression infrastructure
-- ✅ **Zero-Knowledge Proofs** - Mathematically proven transaction privacy
-- ✅ **Compressed Accounts** - 90% cost reduction with maintained privacy
-- ✅ **Nullifier Protection** - Cryptographic double-spend prevention
-- ✅ **Multi-Wallet Support** - Phantom, Solflare, Coinbase, Trust Wallet
+- ✅ **Stealth Addresses** - Monero-inspired one-time addresses (LIVE on mainnet)
+- ✅ **Light Protocol Integration** - Audited ZK compression infrastructure (Beta on devnet)
+- ✅ **Zero-Knowledge Proofs** - Cryptographically proven transaction privacy
+- ✅ **X25519 ECDH** - Elliptic curve Diffie-Hellman for secure key exchange
+- ✅ **Keccak-256 Hashing** - Industry-standard cryptographic hashing
+- ✅ **Multi-Wallet Support** - Phantom, Solflare, Coinbase, Trust, Torus, Ledger
 
 ### Best Practices
 
@@ -269,27 +271,29 @@ View our [complete 2026 roadmap](./ROADMAP_2026.md) for upcoming features and st
 
 ### Current (Q4 2025)
 
-- ✅ **Stealth Addresses** - Live on mainnet
-- ✅ **Batch Payments** - Fully functional
-- ✅ **Recurring Payments** - Production ready
-- ✅ **Payment Links** - With QR codes
-- ✅ **Multi-wallet support** - 6 wallets integrated
-- ✅ **Professional UI/UX** - Modern, responsive design
+- ✅ **Stealth Addresses** - Mainnet ready with full claiming functionality
+- ✅ **Batch Payments** - Optimized for SOL and SPL tokens
+- ✅ **Recurring Payments** - Production ready with flexible schedules
+- ✅ **Payment Links** - Shareable URLs with QR code generation
+- ✅ **Multi-wallet support** - 6 major wallets integrated
+- ✅ **Professional UI/UX** - Modern, responsive, mobile-optimized design
+- ✅ **Dynamic Rendering** - Optimized for wallet-dependent pages
 
-### Q1 2026
+### Q1 2026 (Next 90 Days)
 
-- 🚀 Light Protocol mainnet integration
-- 📱 Mobile PWA optimization
-- 📊 Advanced analytics dashboard
+- 🚀 **Light Protocol Mainnet** - Full ZK compression on mainnet
+- 🔐 **On-Chain Encrypted Keys** - Multi-device stealth payment access
+- 📱 **Mobile PWA** - Progressive Web App with offline support
+- 📊 **Analytics Dashboard** - Transaction insights and reporting
 
-### Beyond
+### Q2-Q4 2026
 
-- 📱 Native mobile apps (iOS/Android)
-- 🔐 Hardware wallet support (Ledger, Trezor)
-- 🌐 Multi-chain expansion (Ethereum, Polygon)
-- 🏢 Enterprise features
+- 📱 **Native Mobile Apps** - iOS and Android applications
+- 🔐 **Hardware Wallets** - Ledger and Trezor integration
+- 🌐 **Multi-Chain** - Ethereum, Polygon, and Layer 2 support
+- 🏢 **Enterprise Features** - White-label solutions and compliance tools
 
-**See [ROADMAP_2026.md](./ROADMAP_2026.md) for complete plan.**
+**See [ROADMAP.md](./ROADMAP.md) for the complete 2026 development plan.**
 
 ---
 
