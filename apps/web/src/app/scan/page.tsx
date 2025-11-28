@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { validatePaymentLink } from "@exe-pay/utils";
