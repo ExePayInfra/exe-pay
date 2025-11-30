@@ -276,18 +276,28 @@ export function StealthPaymentScanner() {
             <button
               onClick={handleRequestSignature}
               disabled={scanning}
-              className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+              className="w-full px-6 py-4 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-lg shadow-lg hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-3 group relative overflow-hidden"
+              style={{ borderRadius: '0.5rem 1.5rem 0.5rem 1.5rem' }}
             >
-              🔐 Sign Message to Enable Scanning
+              <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span className="relative z-10">Sign Message to Enable Scanning</span>
             </button>
           </div>
         ) : (
           <button
             onClick={() => handleScan()}
             disabled={scanning}
-            className="w-full px-6 py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+            className="w-full px-6 py-4 bg-gradient-to-br from-purple-600 via-pink-600 to-fuchsia-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-lg shadow-lg hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-3 group relative overflow-hidden"
+            style={{ borderRadius: '0.5rem 1.5rem 0.5rem 1.5rem' }}
           >
-            {scanning ? '🔍 Scanning Blockchain...' : '🔍 Scan for Payments'}
+            <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+            <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="relative z-10">{scanning ? 'Scanning Blockchain...' : 'Scan for Payments'}</span>
           </button>
         )}
 
@@ -342,9 +352,14 @@ export function StealthPaymentScanner() {
                     <button
                       onClick={() => handleClaim(payment)}
                       disabled={claimingId === payment.signature}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 transition-all"
+                      className="px-6 py-3 bg-gradient-to-br from-emerald-500 via-green-600 to-teal-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 flex items-center gap-2 group relative overflow-hidden"
+                      style={{ borderRadius: '1rem 0.5rem 1rem 0.5rem' }}
                     >
-                      {claimingId === payment.signature ? 'Claiming...' : 'Claim'}
+                      <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                      <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="relative z-10">{claimingId === payment.signature ? 'Claiming...' : 'Claim'}</span>
                     </button>
                   )}
                 </div>

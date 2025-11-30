@@ -340,9 +340,14 @@ export function StealthPaymentForm() {
           <button
             type="submit"
             disabled={loading || !generatedAddress || !amount || !publicKey}
-            className="w-full px-6 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-lg"
+            className="w-full px-6 py-4 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-lg shadow-lg hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-3 group relative overflow-hidden"
+            style={{ borderRadius: '1.5rem 0.5rem 1.5rem 0.5rem' }}
           >
-            {loading ? 'Sending...' : 'Send Private Payment'}
+            <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+            <svg className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+            <span className="relative z-10">{loading ? 'Sending...' : 'Send Private Payment'}</span>
           </button>
         </form>
       </div>

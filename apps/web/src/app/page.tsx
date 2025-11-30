@@ -5,7 +5,7 @@ import { Stats } from '@/components/Stats';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-// Production v1.0.5 - Nov 27, 2025
+// Production v1.0.6 - Nov 30, 2025
 
 // Partner logo configuration
 const partners = [
@@ -38,7 +38,7 @@ function PartnerLogo({ partner, onError }: { partner: typeof partners[0]; onErro
 
   return (
     <div className="group cursor-pointer flex flex-col items-center gap-3" title={partner.name}>
-      <div className="w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+      <div className="w-20 h-20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
         {useTextLogo ? (
           <div className={`w-full h-full rounded-full bg-gradient-to-br ${partner.gradient} shadow-lg flex items-center justify-center`}>
             <div className="text-white font-bold text-sm text-center px-2">
@@ -110,10 +110,10 @@ export default function Home() {
               <span className="text-sm font-semibold text-indigo-900">Powered by Light Protocol & Solana</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up stagger-1">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up stagger-1 animate-float-slow">
               Privacy-first payments
               <br />
-              <span className="text-gradient-brand animate-gradient">with zero-knowledge proofs</span>
+              <span className="text-gradient-brand animate-gradient inline-block">with zero-knowledge proofs</span>
             </h1>
 
             <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto animate-fade-in-up stagger-2">
@@ -123,9 +123,9 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-3">
               <a
                 href="/wallet"
-                className="btn-primary px-10 py-5 rounded-xl font-semibold text-lg inline-flex items-center gap-3 hover-lift group"
+                className="btn-primary px-10 py-5 rounded-xl font-semibold text-lg inline-flex items-center gap-3 group transition-all duration-300 hover:scale-105 hover:shadow-2xl"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span>Launch App</span>
@@ -134,9 +134,9 @@ export default function Home() {
                 href="https://docs.exepay.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-outline px-10 py-5 rounded-xl font-semibold text-lg inline-flex items-center gap-3 hover-scale"
+                className="btn-outline px-10 py-5 rounded-xl font-semibold text-lg inline-flex items-center gap-3 group transition-all duration-300 hover:scale-105 hover:border-indigo-600 hover:text-indigo-700"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <span>Documentation</span>
@@ -187,8 +187,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stacked Digital Cards Section */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-hidden">
+      {/* Features Overview Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl animate-blob"></div>
@@ -196,151 +196,43 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-20 animate-fade-in-up">
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Your Private Digital Wallet
+              Everything you need for private payments
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Multi-token support with military-grade encryption. Your funds, your privacy.
+              Built on Solana for speed, powered by cryptography for privacy.
             </p>
           </div>
 
-          {/* Stacked Cards - 3D Overlay Effect */}
-          <div className="relative max-w-md mx-auto h-[400px] animate-fade-in-up stagger-2">
-            {/* Card 3 - Back (Portfolio) */}
-            <div 
-              className="absolute top-16 left-1/2 transform -translate-x-1/2 w-full h-64 rounded-3xl shadow-2xl transition-all duration-500 hover:scale-105 hover:rotate-0 hover:top-0 hover:z-30 cursor-pointer"
-              style={{ 
-                transform: 'translateX(-50%) rotate(-6deg)',
-                zIndex: 1 
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-rose-600 to-orange-600 rounded-3xl"></div>
-              <div className="absolute inset-0 backdrop-blur-sm bg-black/20 rounded-3xl"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-xs font-semibold opacity-75 mb-1">ExePay Portfolio</div>
-                    <div className="text-2xl font-bold">Multi-Token</div>
-                  </div>
-                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75 mb-2">Total Balance</div>
-                  <div className="text-3xl font-bold mb-4 font-mono">
-                    <span className="blur-sm">$12,847.32</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">SOL</span>
-                    <span className="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">USDC</span>
-                    <span className="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">+3</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 - Middle (USDC) */}
-            <div 
-              className="absolute top-8 left-1/2 transform -translate-x-1/2 w-full h-64 rounded-3xl shadow-2xl transition-all duration-500 hover:scale-105 hover:rotate-0 hover:top-0 hover:z-30 cursor-pointer"
-              style={{ 
-                transform: 'translateX(-50%) rotate(3deg)',
-                zIndex: 2 
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 rounded-3xl"></div>
-              <div className="absolute inset-0 backdrop-blur-sm bg-black/20 rounded-3xl"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-xs font-semibold opacity-75 mb-1">ExePay Stablecoin</div>
-                    <div className="text-2xl font-bold">USDC</div>
-                  </div>
-                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75 mb-2">Shielded Balance</div>
-                  <div className="text-3xl font-bold mb-4 font-mono">
-                    <span className="blur-sm">$5,234.89</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-xs font-mono opacity-75">9pQ2...4sL</div>
-                    <div className="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Shielded</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 1 - Front (SOL) */}
-            <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-64 rounded-3xl shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
-              style={{ 
-                zIndex: 3 
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-600 rounded-3xl"></div>
-              <div className="absolute inset-0 backdrop-blur-sm bg-black/20 rounded-3xl"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-xs font-semibold opacity-75 mb-1">ExePay Private</div>
-                    <div className="text-2xl font-bold">Solana</div>
-                  </div>
-                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75 mb-2">Private Balance</div>
-                  <div className="text-3xl font-bold mb-4 font-mono">
-                    <span className="blur-sm">24.5847 SOL</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-xs font-mono opacity-75">7xKX...9rX</div>
-                    <div className="text-xs bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Private</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Features below cards */}
-          <div className="mt-32 grid md:grid-cols-3 gap-8 text-white">
-            <div className="text-center animate-fade-in-up stagger-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-8 text-white">
+            <div className="text-center animate-fade-in-up stagger-4 group cursor-pointer">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
+                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2">Zero-Knowledge Proofs</h3>
-              <p className="text-sm text-gray-300">Cryptographic privacy without compromising security</p>
+              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-indigo-300">Zero-Knowledge Proofs</h3>
+              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">Cryptographic privacy without compromising security</p>
             </div>
-            <div className="text-center animate-fade-in-up stagger-5">
-              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center animate-fade-in-up stagger-5 group cursor-pointer">
+              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
+                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2">Lightning Fast</h3>
-              <p className="text-sm text-gray-300">Transactions confirm in under 1 second on Solana</p>
+              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-cyan-300">Lightning Fast</h3>
+              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">Transactions confirm in under 1 second on Solana</p>
             </div>
-            <div className="text-center animate-fade-in-up stagger-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="text-center animate-fade-in-up stagger-6 group cursor-pointer">
+              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
+                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2">Multi-Token Support</h3>
-              <p className="text-sm text-gray-300">SOL, USDC, USDT, and custom SPL tokens</p>
+              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-pink-300">Multi-Token Support</h3>
+              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">SOL, USDC, USDT, and custom SPL tokens</p>
             </div>
           </div>
         </div>
@@ -427,13 +319,13 @@ export default function Home() {
       </section>
 
       {/* Privacy Modes */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               Choose your privacy level
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               From transparent to completely anonymous. You decide how much privacy you need.
             </p>
           </div>
@@ -441,8 +333,8 @@ export default function Home() {
           {/* Key Features Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {/* ExePay Logo Card - Blue */}
-            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center perspective-1000 bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl" style={{ animationDelay: '0s' }}>
-              <div className="relative w-full h-20 mb-3 transform-3d hover:rotate-y-12 transition-all duration-700" style={{ transformStyle: 'preserve-3d' }}>
+            <div className="p-6 rounded-2xl animate-fade-in-up text-center perspective-1000 bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group cursor-pointer" style={{ animationDelay: '0s' }}>
+              <div className="relative w-full h-20 mb-3 transition-all duration-700 group-hover:scale-110" style={{ transformStyle: 'preserve-3d' }}>
                 <Image
                   src="/exepay-logo.png"
                   alt="ExePay"
@@ -458,22 +350,22 @@ export default function Home() {
             </div>
             
             {/* Instant Settlement - Purple Gradient */}
-            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center bg-gradient-to-br from-indigo-600 to-purple-600 shadow-xl" style={{ animationDelay: '0.1s' }}>
-              <div className="text-4xl mb-3">⚡</div>
+            <div className="p-6 rounded-2xl animate-fade-in-up text-center bg-gradient-to-br from-indigo-600 to-purple-600 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group cursor-pointer" style={{ animationDelay: '0.1s' }}>
+              <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-125">⚡</div>
               <h3 className="font-bold text-white mb-2">Instant Settlement</h3>
               <p className="text-sm text-white/90">Transactions confirm in &lt;1 second</p>
             </div>
             
             {/* Ultra-Low Fees - White */}
-            <div className="glass-card p-6 rounded-2xl hover-lift animate-fade-in-up text-center shadow-xl" style={{ animationDelay: '0.2s' }}>
-              <div className="text-4xl mb-3">💰</div>
+            <div className="glass-card p-6 rounded-2xl animate-fade-in-up text-center shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group cursor-pointer" style={{ animationDelay: '0.2s' }}>
+              <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-125">💰</div>
               <h3 className="font-bold text-gray-900 mb-2">Ultra-Low Fees</h3>
               <p className="text-sm text-gray-600">Average cost: $0.0001 per transaction</p>
             </div>
             
             {/* Zero-Knowledge - Indigo Gradient */}
-            <div className="p-6 rounded-2xl hover-lift animate-fade-in-up text-center bg-gradient-to-br from-purple-600 to-indigo-600 shadow-xl" style={{ animationDelay: '0.3s' }}>
-              <div className="text-4xl mb-3">🔒</div>
+            <div className="p-6 rounded-2xl animate-fade-in-up text-center bg-gradient-to-br from-purple-600 to-indigo-600 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl group cursor-pointer" style={{ animationDelay: '0.3s' }}>
+              <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-125">🔒</div>
               <h3 className="font-bold text-white mb-2">Zero-Knowledge</h3>
               <p className="text-sm text-white/90">Prove without revealing data</p>
             </div>
@@ -482,30 +374,30 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: 'Public',
-                desc: 'Standard Solana transfers',
-                gradient: 'from-gray-400 to-gray-600',
-                features: ['Visible amounts', 'Visible addresses', 'Instant & cheap'],
+                title: 'ExePay Wallet',
+                desc: 'Multi-token digital wallet',
+                gradient: 'from-slate-700 to-slate-900',
+                features: null,
                 delay: '0s',
-                visualDesc: 'Fast & transparent - Best for everyday payments',
+                isWalletCard: true,
               },
               {
-                title: 'Shielded',
-                desc: 'Hidden amounts',
+                title: 'Light Protocol',
+                desc: 'On-chain ZK privacy',
                 gradient: 'from-indigo-500 to-purple-600',
-                features: ['Hidden amounts', 'Visible addresses', 'ZK-SNARK proofs'],
+                features: ['ZK compression', 'Hidden amounts', 'Beta on Devnet'],
                 badge: 'Popular',
                 delay: '0.1s',
-                visualDesc: 'Most used - Hide amounts, show addresses',
+                visualDesc: 'On-chain privacy with ZK-SNARKs - Complete transaction compression',
               },
               {
-                title: 'Private',
-                desc: 'Fully anonymous',
+                title: 'Stealth Addresses',
+                desc: 'Off-chain privacy',
                 gradient: 'from-purple-600 to-pink-600',
-                features: ['Hidden amounts', 'Anonymous addresses', 'Maximum privacy'],
+                features: ['One-time addresses', 'Hidden recipients', 'Live on Mainnet'],
                 badge: 'Recommended',
                 delay: '0.2s',
-                visualDesc: 'Maximum security - Complete anonymity',
+                visualDesc: 'Monero-style stealth addresses - Complete recipient anonymity',
               },
             ].map((mode) => (
               <div
@@ -513,62 +405,135 @@ export default function Home() {
                 className="relative group animate-fade-in-up"
                 style={{ animationDelay: mode.delay }}
               >
-                {mode.badge && (
-                  <div className="absolute -top-3 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-10 animate-bounce">
-                    {mode.badge}
-                  </div>
-                )}
-                <div className={`glass-card p-8 rounded-3xl hover-lift h-full bg-gradient-to-br ${mode.gradient} text-white transform transition-all duration-300 group-hover:scale-105 relative overflow-hidden`}>
-                  {/* Animated background pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full filter blur-3xl animate-pulse"></div>
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full filter blur-2xl animate-pulse animation-delay-2000"></div>
-                  </div>
-                  
-                  {/* Icon with graphic */}
-                  <div className="relative mb-6">
-                    <div className={`w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-transform duration-300`}>
-                      {mode.title === 'Public' && (
-                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                        </svg>
-                      )}
-                      {mode.title === 'Shielded' && (
-                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-                        </svg>
-                      )}
-                      {mode.title === 'Private' && (
-                        <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
-                        </svg>
-                      )}
+                <div className={`p-8 rounded-3xl hover-lift h-full bg-gradient-to-br ${mode.gradient} text-white transform transition-all duration-300 group-hover:scale-105 relative overflow-hidden shadow-2xl`}>
+                  {mode.isWalletCard ? (
+                    // Wallet Card with Mini Stacked Cards
+                    <div className="relative h-full flex flex-col">
+                      <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
+                      <p className="text-sm opacity-90 mb-6">{mode.desc}</p>
+                      
+                      {/* Mini Stacked Cards */}
+                      <div className="relative flex-1 min-h-[280px]">
+                        {/* Card 3 - Back */}
+                        <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[90%] h-32 rounded-2xl shadow-xl transition-all duration-300 hover:z-30 hover:scale-105 hover:rotate-0" style={{ transform: 'translateX(-50%) rotate(-4deg)', zIndex: 1 }}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-orange-600 rounded-2xl"></div>
+                          <div className="relative h-full p-4 flex flex-col justify-between text-white text-xs">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <div className="opacity-75 mb-1">Portfolio</div>
+                                <div className="text-sm font-bold">Multi-Token</div>
+                              </div>
+                              <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="text-xs">
+                              <div className="opacity-75 mb-1">Balance</div>
+                              <div className="font-mono blur-sm">$12,847</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Card 2 - Middle */}
+                        <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] h-32 rounded-2xl shadow-xl transition-all duration-300 hover:z-30 hover:scale-105 hover:rotate-0" style={{ transform: 'translateX(-50%) rotate(2deg)', zIndex: 2 }}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-2xl"></div>
+                          <div className="relative h-full p-4 flex flex-col justify-between text-white text-xs">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <div className="opacity-75 mb-1">Stablecoin</div>
+                                <div className="text-sm font-bold">USDC</div>
+                              </div>
+                              <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2" />
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-end">
+                              <div className="font-mono blur-sm text-sm">$5,234</div>
+                              <div className="text-xs bg-white/20 px-2 py-0.5 rounded-full">Shielded</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Card 1 - Front (with ExePay branding) */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-32 rounded-2xl shadow-xl transition-all duration-300" style={{ zIndex: 3 }}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-600 rounded-2xl"></div>
+                          <div className="relative h-full p-4 flex flex-col justify-between text-white text-xs">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <div className="opacity-75 mb-1">ExePay Private</div>
+                                <div className="text-sm font-bold">Solana</div>
+                              </div>
+                              <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-end">
+                              <div>
+                                <div className="opacity-75 mb-1">Private Balance</div>
+                                <div className="font-mono blur-sm text-sm">2.47 SOL</div>
+                              </div>
+                              <div className="text-xs bg-white/20 px-2 py-0.5 rounded-full">Private</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    {/* Decorative circles */}
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-white/30 rounded-full animate-ping"></div>
-                    <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-white/30 rounded-full animate-ping animation-delay-2000"></div>
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
-                    <p className="text-sm opacity-90 mb-4">{mode.desc}</p>
-                    
-                    {/* Visual Description Box */}
-                    <div className="mb-6 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-                      <p className="text-xs font-semibold opacity-90">{mode.visualDesc}</p>
-                    </div>
-                    
-                    <ul className="space-y-3">
-                      {mode.features.map((feature, idx) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
-                          <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  ) : (
+                    // Regular Privacy Mode Card
+                    <>
+                      {/* Animated background pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full filter blur-3xl animate-pulse"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full filter blur-2xl animate-pulse animation-delay-2000"></div>
+                      </div>
+                      
+                      {/* Icon with graphic */}
+                      <div className="relative mb-6">
+                        <div className={`w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto group-hover:rotate-12 transition-transform duration-300`}>
+                          {mode.title === 'Light Protocol' && (
+                            <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                            </svg>
+                          )}
+                          {mode.title === 'Stealth Addresses' && (
+                            <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                            </svg>
+                          )}
+                        </div>
+                        {/* Decorative circles */}
+                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-white/30 rounded-full animate-ping"></div>
+                        <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-white/30 rounded-full animate-ping animation-delay-2000"></div>
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <h3 className="text-2xl font-bold mb-2">{mode.title}</h3>
+                        <p className="text-sm opacity-90 mb-4">{mode.desc}</p>
+                        
+                        {/* Visual Description Box */}
+                        <div className="mb-6 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                          <p className="text-xs font-semibold opacity-90">{mode.visualDesc}</p>
+                        </div>
+                        
+                        <ul className="space-y-3">
+                          {mode.features.map((feature, idx) => (
+                            <li key={feature} className="flex items-center gap-2 text-sm animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                              <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             ))}

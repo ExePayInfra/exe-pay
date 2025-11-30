@@ -565,6 +565,20 @@ textarea:focus-visible {
   }
 }
 
+/* Hero title floating animation */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
 .animate-slide-in-right {
   animation: slide-in-right 0.8s ease-out;
 }
