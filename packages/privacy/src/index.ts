@@ -23,9 +23,6 @@ export * from "./scanner.js";
 export * from "./claim.js";
 export * from "./keyDerivation.js";
 
-// Export Privacy Pool (client-side mixing)
-export * from "./privacy-pool.js";
-
 // Export RPC Privacy (network-level privacy)
 export * from "./rpc-privacy.js";
 
