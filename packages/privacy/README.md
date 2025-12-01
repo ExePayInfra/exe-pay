@@ -5,7 +5,7 @@ Monero-inspired privacy features for Solana payments. Production-ready stealth a
 [![npm version](https://img.shields.io/npm/v/@exe-pay/privacy.svg)](https://www.npmjs.com/package/@exe-pay/privacy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features (Week 1 - Mainnet Ready! 🚀)
+## Features
 
 - 🔐 **Stealth Addresses** - Monero-inspired one-time addresses (X25519 ECDH + Keccak-256)
 - 📝 **Payment Proofs** - Cryptographic proofs for disputes, audits, and tax reporting

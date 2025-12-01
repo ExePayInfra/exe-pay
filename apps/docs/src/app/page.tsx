@@ -220,10 +220,10 @@ export default function Home() {
         </div>
       </div>
 
-      <h2>New: Week 1 Privacy Features ✨</h2>
+      <h2>Advanced Privacy Features ✨</h2>
 
       <p className="text-lg text-gray-700 mb-4">
-        We've just launched 5 major privacy features that bring Monero-level privacy to Solana payments!
+        Production-ready privacy features bringing Monero-level confidentiality to Solana payments.
       </p>
 
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
@@ -320,32 +320,32 @@ export default function Home() {
       </div>
 
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-6 my-8">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">🎉 Privacy Score: 5/10 → Monero-Level Privacy!</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">🔒 Enterprise-Grade Privacy Architecture</h3>
         <p className="text-gray-700 mb-4">
-          With Week 1 features, ExePay now offers <strong>Monero-level recipient privacy</strong> with business-friendly features 
-          like payment tracking, proof generation, and multi-identity management.
+          ExePay delivers <strong>Monero-level recipient privacy</strong> on Solana with X25519 ECDH encryption, 
+          cryptographic payment proofs, and hierarchical identity management. Built on audited cryptographic primitives.
         </p>
         <div className="grid md:grid-cols-3 gap-4 text-sm">
           <div>
-            <div className="font-semibold text-purple-900 mb-1">✅ Hidden</div>
+            <div className="font-semibold text-purple-900 mb-1">🔐 Cryptographic Protection</div>
             <ul className="text-gray-700 space-y-0.5">
-              <li>• Recipient identity</li>
-              <li>• Transaction links</li>
-              <li>• IP addresses</li>
+              <li>• Recipient identity (ECDH)</li>
+              <li>• Transaction unlinkability</li>
+              <li>• Network privacy (RPC rotation)</li>
             </ul>
           </div>
           <div>
-            <div className="font-semibold text-blue-900 mb-1">⚠️ Visible</div>
+            <div className="font-semibold text-blue-900 mb-1">📊 On-Chain Data</div>
             <ul className="text-gray-700 space-y-0.5">
               <li>• Transaction amounts</li>
               <li>• Sender addresses</li>
             </ul>
           </div>
           <div>
-            <div className="font-semibold text-green-900 mb-1">🔜 Coming Soon</div>
+            <div className="font-semibold text-green-900 mb-1">🚀 Planned Enhancements</div>
             <ul className="text-gray-700 space-y-0.5">
-              <li>• Amount privacy (ZK)</li>
-              <li>• Sender privacy (mixing)</li>
+              <li>• Zero-knowledge amount proofs</li>
+              <li>• Ring signature mixing</li>
             </ul>
           </div>
         </div>

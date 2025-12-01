@@ -12,19 +12,19 @@ Production-ready payment SDK with Monero-level recipient privacy, cryptographic 
 
 ---
 
-## 🎉 Latest Release: Week 1 Privacy Features
+## 🔐 Privacy Infrastructure
 
-**5 major privacy features now live on mainnet:**
+**Production-ready cryptographic privacy on Solana mainnet:**
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| 🔐 Stealth Addresses | Monero-inspired one-time addresses | ✅ Mainnet |
-| 📝 Payment Proofs | Cryptographic proof generation | ✅ Mainnet |
-| 🔗 Integrated Addresses | Invoice & order tracking | ✅ Mainnet |
-| 🔢 Subaddresses | Multi-identity management | ✅ Mainnet |
-| 🌐 RPC Privacy | IP address protection | ✅ Mainnet |
+| Feature | Technology | Status |
+|---------|------------|--------|
+| 🔐 Stealth Addresses | X25519 ECDH + Keccak-256 | ✅ Mainnet |
+| 📝 Payment Proofs | Cryptographic verification | ✅ Mainnet |
+| 🔗 Integrated Addresses | Payment ID embedding | ✅ Mainnet |
+| 🔢 Subaddresses | BIP32-derived identities | ✅ Mainnet |
+| 🌐 RPC Privacy | Multi-endpoint rotation | ✅ Mainnet |
 
-**Privacy Score: 5/10** - Industry-leading recipient privacy with business-friendly features.
+**Technical Achievement:** Monero-level recipient privacy with Solana's sub-second finality.
 
 ---
 
@@ -208,12 +208,12 @@ See [documentation](https://docs.exepay.app) for complete guides!
 - ✅ **View Tags** - One-byte tags for 99% faster payment scanning
 - ✅ **BIP32-like Derivation** - Hierarchical deterministic key generation
 
-### Privacy Level
+### Privacy Capabilities
 
-**Current: 5/10** (Monero-level recipient privacy)
-- ✅ **Hidden**: Recipient identity, transaction links, IP addresses
-- ⚠️ **Visible**: Transaction amounts, sender addresses
-- 🔜 **Coming**: Amount privacy (zk-SNARKs), sender mixing
+**Recipient Privacy:** Stealth addresses hide payment recipients using ECDH key exchange
+- ✅ **Protected**: Recipient identity, transaction linkability, IP addresses
+- ⚠️ **On-Chain**: Transaction amounts, sender addresses
+- **Future**: Zero-knowledge proofs for amount privacy, ring signatures for sender mixing
 
 ### Security Best Practices
 
@@ -302,16 +302,16 @@ See [LICENSE](./LICENSE) for details.
 
 ## 🎯 Roadmap
 
-### ✅ Completed (December 2025)
+### ✅ Production Features
 
-**Week 1 Privacy Features:**
+**Advanced Privacy:**
 - ✅ Payment Proofs - Cryptographic proof generation
 - ✅ Integrated Addresses - Payment ID tracking
 - ✅ Subaddresses - Multiple stealth identities
 - ✅ Enhanced Scanning - View tag optimization
 - ✅ RPC Privacy - IP address hiding
 
-**Core Features:**
+**Core Infrastructure:**
 - ✅ Stealth Addresses - Mainnet ready
 - ✅ Batch Payments - Multi-recipient transfers
 - ✅ Recurring Payments - Subscription management
@@ -319,7 +319,7 @@ See [LICENSE](./LICENSE) for details.
 - ✅ Multi-wallet support (6 wallets)
 - ✅ Professional UI/UX
 
-### 🚀 Next (Q1 2026)
+### 🚀 Planned Enhancements
 
 - 🔒 **Amount Privacy** - Zero-knowledge proofs for hidden amounts
 - 🌀 **Sender Mixing** - Pool-based sender anonymity
