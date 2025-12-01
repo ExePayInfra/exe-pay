@@ -28,3 +28,4 @@ apps/web/.next/
 
 # Documentation archive (session notes)
 docs/archive/
+.archive/
