@@ -5,6 +5,7 @@ import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { 
   decodeStealthMetaAddress, 
+  decodeIntegratedAddress,
   generateStealthAddress,
   type StealthAddress 
 } from '@exe-pay/privacy';
@@ -25,20 +26,35 @@ export function StealthPaymentForm() {
   const [txSignature, setTxSignature] = useState('');
   const [copiedAddress, setCopiedAddress] = useState(false);
 
+  const [paymentId, setPaymentId] = useState<string | null>(null);
+
   const handleGenerateAddress = () => {
     try {
       setError('');
       setGeneratedAddress(null);
       setCopiedAddress(false);
+      setPaymentId(null);
 
       // Validate stealth meta-address
       if (!stealthMetaAddress.trim()) {
         throw new Error('Please enter a stealth meta-address');
       }
 
-      const metaAddress = decodeStealthMetaAddress(stealthMetaAddress.trim());
-      if (!metaAddress) {
-        throw new Error('Invalid stealth meta-address format');
+      // Try to decode as integrated address first
+      const integratedAddress = decodeIntegratedAddress(stealthMetaAddress.trim());
+      
+      let metaAddress;
+      if (integratedAddress) {
+        // It's an integrated address - extract payment ID
+        metaAddress = integratedAddress.metaAddress;
+        setPaymentId(integratedAddress.paymentId);
+        console.log('[Stealth Payment] Integrated address detected, payment ID:', integratedAddress.paymentId);
+      } else {
+        // Try regular stealth meta-address
+        metaAddress = decodeStealthMetaAddress(stealthMetaAddress.trim());
+        if (!metaAddress) {
+          throw new Error('Invalid stealth meta-address format');
+        }
       }
 
       // Generate one-time stealth address
@@ -101,8 +117,13 @@ export function StealthPaymentForm() {
       );
 
       // Add memo with ephemeral key for recipient to detect payment
-      // Format: "ExePay:Stealth:<ephemeral_pubkey>:<view_tag>"
-      const stealthMemo = `ExePay:Stealth:${generatedAddress.ephemeralPubkey.toBase58()}:${generatedAddress.viewTag}`;
+      // Format: "ExePay:Stealth:<ephemeral_pubkey>:<view_tag>" OR
+      //         "ExePay:Stealth:<ephemeral_pubkey>:<view_tag>:<payment_id>" for integrated addresses
+      const stealthMemo = paymentId 
+        ? `ExePay:Stealth:${generatedAddress.ephemeralPubkey.toBase58()}:${generatedAddress.viewTag}:${paymentId}`
+        : `ExePay:Stealth:${generatedAddress.ephemeralPubkey.toBase58()}:${generatedAddress.viewTag}`;
+      
+      console.log('[Stealth Payment] Memo:', stealthMemo);
       
       // Import memo program dynamically
       const { TransactionInstruction } = await import('@solana/web3.js');

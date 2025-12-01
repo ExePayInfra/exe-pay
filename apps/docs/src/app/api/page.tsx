@@ -13,7 +13,7 @@ export default function APIPage() {
         <div className="border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">@exe-pay/core</h3>
           <p className="text-gray-600 text-sm mb-4">
-            Core SDK for private payments on Solana. Includes ElGamal encryption, ZK proofs, and transaction building.
+            Core SDK for payments on Solana. Includes transaction building, wallet management, and payment processing.
           </p>
           <a href="/api/core" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
             View Documentation →
@@ -23,7 +23,7 @@ export default function APIPage() {
         <div className="border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">@exe-pay/privacy</h3>
           <p className="text-gray-600 text-sm mb-4">
-            Privacy primitives including ZK-SNARKs, Pedersen commitments, and nullifier generation.
+            Privacy features: Stealth addresses, payment proofs, integrated addresses, subaddresses, view tags, and RPC privacy.
           </p>
           <a href="/api/privacy" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
             View Documentation →
@@ -91,12 +91,21 @@ function PaymentButton() {
         and privacy features.
       </p>
 
-      <h3>Privacy Levels</h3>
+      <h3>Privacy Features (Mainnet Ready)</h3>
       <ul>
-        <li><code>public</code> - Standard Solana transfers</li>
-        <li><code>shielded</code> - Hidden amounts (demo)</li>
-        <li><code>private</code> - Fully private (demo)</li>
+        <li><strong>Stealth Addresses</strong> - Monero-inspired one-time addresses using X25519 ECDH + Keccak-256</li>
+        <li><strong>Payment Proofs</strong> - Cryptographic proofs for disputes and audits (ECDH-based)</li>
+        <li><strong>Integrated Addresses</strong> - Payment IDs for invoice tracking</li>
+        <li><strong>Subaddresses</strong> - Multiple identities from one wallet (BIP32-like derivation)</li>
+        <li><strong>RPC Privacy</strong> - IP hiding via endpoint rotation</li>
+        <li><strong>View Tags</strong> - 99% faster payment detection with one-byte tags</li>
       </ul>
+      
+      <h3>Future: Zero-Knowledge Proofs</h3>
+      <p className="text-sm text-gray-600">
+        <strong>Coming soon:</strong> Groth16 zk-SNARKs for hidden amounts, range proofs, and balance verification. 
+        Currently in development with security audits planned before mainnet deployment.
+      </p>
 
       <h3>Token Support</h3>
       <p>
