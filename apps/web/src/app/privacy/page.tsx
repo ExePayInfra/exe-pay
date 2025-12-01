@@ -56,12 +56,50 @@ const StealthPaymentScanner = dynamicImport(
   }
 );
 
+const IntegratedAddressGenerator = dynamicImport(
+  () => import('@/components/IntegratedAddressGenerator').then(mod => ({ default: mod.IntegratedAddressGenerator })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔗</div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
+const SubaddressManager = dynamicImport(
+  () => import('@/components/SubaddressManager').then(mod => ({ default: mod.SubaddressManager })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔢</div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
+const RpcPrivacyIndicator = dynamicImport(
+  () => import('@/components/RpcPrivacyIndicator').then(mod => ({ default: mod.RpcPrivacyIndicator })),
+  { 
+    ssr: false,
+    loading: () => null
+  }
+);
+
 export default function PrivacyPage() {
   const searchParams = useSearchParams();
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
   const [mainTab, setMainTab] = useState<'stealth' | 'light'>('stealth');
-  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan'>('receive');
+  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses'>('receive');
 
   // Check URL parameter to set initial tab
   useEffect(() => {
@@ -177,6 +215,32 @@ export default function PrivacyPage() {
               <span className="text-xl">🔍</span>
               <span className="hidden sm:inline">Scan & Claim</span>
             </button>
+            <button
+              onClick={() => setStealthTab('integrated')}
+              className={`
+                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
+                ${stealthTab === 'integrated'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                }
+              `}
+            >
+              <span className="text-xl">🔗</span>
+              <span className="hidden sm:inline">Integrated</span>
+            </button>
+            <button
+              onClick={() => setStealthTab('subaddresses')}
+              className={`
+                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
+                ${stealthTab === 'subaddresses'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                }
+              `}
+            >
+              <span className="text-xl">🔢</span>
+              <span className="hidden sm:inline">Subaddresses</span>
+            </button>
           </div>
         )}
 
@@ -200,6 +264,18 @@ export default function PrivacyPage() {
                 {stealthTab === 'scan' && (
                   <div className="animate-fade-in">
                     <StealthPaymentScanner />
+                  </div>
+                )}
+
+                {stealthTab === 'integrated' && (
+                  <div className="animate-fade-in">
+                    <IntegratedAddressGenerator />
+                  </div>
+                )}
+
+                {stealthTab === 'subaddresses' && (
+                  <div className="animate-fade-in">
+                    <SubaddressManager />
                   </div>
                 )}
               </>
@@ -308,6 +384,9 @@ export default function PrivacyPage() {
           </div>
         </div>
       </div>
+      
+      {/* RPC Privacy Indicator */}
+      <RpcPrivacyIndicator />
     </div>
   );
 }

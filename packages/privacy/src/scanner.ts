@@ -31,7 +31,7 @@ export interface DetectedPayment {
   claimed: boolean;
 }
 
-export interface ScanOptions {
+export interface ScannerOptions {
   // Number of recent transactions to scan
   limit?: number;
   
@@ -185,7 +185,7 @@ export async function scanForPayments(
   userPublicKey: PublicKey,
   metaAddress: StealthMetaAddress,
   userSecretKey: Uint8Array,
-  options: ScanOptions = {}
+  options: ScannerOptions = {}
 ): Promise<DetectedPayment[]> {
   const {
     limit = 100,

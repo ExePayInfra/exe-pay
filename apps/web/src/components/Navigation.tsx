@@ -38,6 +38,10 @@ export function Navigation() {
             <a href="/links" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               Links
             </a>
+            <a href="/payment-proofs" className="text-gray-600 hover:text-gray-900 font-medium transition-colors flex items-center gap-1">
+              <span>🔐</span>
+              <span>Proofs</span>
+            </a>
             <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
               History
             </a>
@@ -102,6 +106,10 @@ export function Navigation() {
               </a>
               <a href="/links" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 Links
+              </a>
+              <a href="/payment-proofs" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-2">
+                <span>🔐</span>
+                <span>Proofs</span>
               </a>
               <a href="/history" className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2">
                 History

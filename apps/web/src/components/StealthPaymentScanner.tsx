@@ -7,6 +7,7 @@ import {
   generateStealthMetaAddress,
   encodeStealthMetaAddress,
   scanForPayments,
+  scanForStealthPayments,
   getStoredPayments,
   storePayments,
   markPaymentClaimed,
@@ -16,6 +17,8 @@ import {
   deriveViewingKey,
   derivePublicKey,
   type StealthMetaAddress,
+  type StealthPayment,
+  type ScanOptions,
   type DetectedPayment as PrivacyDetectedPayment
 } from '@exe-pay/privacy';
 
@@ -33,6 +36,7 @@ export function StealthPaymentScanner() {
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const [viewingKey, setViewingKey] = useState<Uint8Array | null>(null);
   const [needsSignature, setNeedsSignature] = useState(false);
+  const [scanProgress, setScanProgress] = useState<{ scanned: number; total: number } | null>(null);
 
   // Don't auto-generate meta address - it will be generated when user signs
   useEffect(() => {
@@ -108,16 +112,37 @@ export function StealthPaymentScanner() {
     setScanning(true);
     setError('');
     setNeedsSignature(false);
+    setScanProgress(null);
 
     try {
-      console.log('[Scanner UI] Starting scan for stealth payments...');
+      console.log('[Scanner UI] Starting enhanced scan for stealth payments...');
       console.log('[Scanner UI] Scan key length:', scanKey.length);
       console.log('[Scanner UI] Scan key (first 16 bytes):', Array.from(scanKey.slice(0, 16)));
 
       // scanKey should already be 64 bytes (full Ed25519 keypair)
       const userSecretKey = scanKey;
 
-      // Use the real scanner from privacy package
+      // Use BOTH scanners for compatibility
+      // 1. Try enhanced scanner first (new implementation)
+      let enhancedPayments: StealthPayment[] = [];
+      try {
+        enhancedPayments = await scanForStealthPayments(
+          connection,
+          scanMeta,
+          userSecretKey,
+          {
+            limit: 100,
+            onProgress: (scanned, total) => {
+              setScanProgress({ scanned, total });
+            },
+          }
+        );
+        console.log(`[Scanner UI] Enhanced scan found ${enhancedPayments.length} payments`);
+      } catch (enhancedErr) {
+        console.log('[Scanner UI] Enhanced scan failed, falling back to legacy scanner');
+      }
+
+      // 2. Use legacy scanner as fallback
       const detected = await scanForPayments(
         connection,
         publicKey,
@@ -126,17 +151,30 @@ export function StealthPaymentScanner() {
         { limit: 50 }
       );
 
-      console.log(`[Scanner UI] Detected ${detected.length} stealth payments`);
+      console.log(`[Scanner UI] Legacy scan found ${detected.length} payments`);
+
+      // Combine results (prefer legacy for now as it has more metadata)
+      const allPayments = detected.length > 0 ? detected : enhancedPayments.map(p => ({
+        address: p.stealthAddress,
+        amount: p.amount,
+        signature: p.signature,
+        timestamp: Date.now(),
+        claimed: false,
+        ephemeralPubkey: p.ephemeralPubkey.toBase58(),
+      }));
+
+      console.log(`[Scanner UI] Total detected: ${allPayments.length} payments`);
 
       // Save to localStorage
-      setPayments(detected);
-      storePayments(detected);
+      setPayments(allPayments);
+      storePayments(allPayments);
 
     } catch (err: any) {
       console.error('[Scanner UI] Scan failed:', err);
       setError(err.message || 'Failed to scan for payments');
     } finally {
       setScanning(false);
+      setScanProgress(null);
     }
   };
 
@@ -297,8 +335,41 @@ export function StealthPaymentScanner() {
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span className="relative z-10">{scanning ? 'Scanning Blockchain...' : 'Scan for Payments'}</span>
+            <span className="relative z-10">
+              {scanning ? (
+                scanProgress ? (
+                  `Scanning... ${scanProgress.scanned}/${scanProgress.total}`
+                ) : (
+                  'Scanning Blockchain...'
+                )
+              ) : (
+                'Scan for Payments'
+              )}
+            </span>
           </button>
+        )}
+
+        {/* Progress Bar */}
+        {scanning && scanProgress && (
+          <div className="bg-white rounded-xl p-4 shadow-lg border border-indigo-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">
+                Scanning transactions...
+              </span>
+              <span className="text-sm font-bold text-indigo-600">
+                {Math.round((scanProgress.scanned / scanProgress.total) * 100)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(scanProgress.scanned / scanProgress.total) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Checking {scanProgress.scanned} of {scanProgress.total} transactions
+            </p>
+          </div>
         )}
 
         {/* Error */}
@@ -422,29 +493,32 @@ export function StealthPaymentScanner() {
         </div>
       )}
 
-      {/* How Scanning Works */}
+      {/* How Enhanced Scanning Works */}
       <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-        <h4 className="font-semibold text-blue-900 mb-3">How Payment Scanning Works</h4>
+        <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+          <span>⚡</span>
+          <span>Enhanced Scanning (Day 5-6)</span>
+        </h4>
         <div className="space-y-2 text-sm text-blue-800">
           <div className="flex items-start gap-2">
             <span>1️⃣</span>
-            <span>Scanner fetches your recent transactions from Solana</span>
+            <span><strong>Progress Tracking:</strong> See real-time scan progress (X/Y transactions)</span>
           </div>
           <div className="flex items-start gap-2">
             <span>2️⃣</span>
-            <span>Checks each transaction for ephemeral public keys</span>
+            <span><strong>View Tag Optimization:</strong> 99% faster filtering (skip non-matching)</span>
           </div>
           <div className="flex items-start gap-2">
             <span>3️⃣</span>
-            <span>Uses view tags for 99% faster filtering</span>
+            <span><strong>Payment Stats:</strong> Total payments, total SOL, unclaimed count</span>
           </div>
           <div className="flex items-start gap-2">
             <span>4️⃣</span>
-            <span>Performs ECDH to check if payment is for you</span>
+            <span><strong>Better Detection:</strong> Finds payments in transaction memos</span>
           </div>
           <div className="flex items-start gap-2">
             <span>5️⃣</span>
-            <span>Displays detected payments with claim button</span>
+            <span><strong>Dual Scanner:</strong> Enhanced + legacy for maximum compatibility</span>
           </div>
         </div>
       </div>
