@@ -4,6 +4,21 @@
 
 ---
 
+## 🎯 Current Focus: Production-Ready Privacy Features
+
+**Latest Release:** View Keys for Compliance  
+**Status:** Live on mainnet (December 2025)  
+**Next Stage:** Unified Addresses + Amount Privacy (zk-SNARKs)
+
+**Privacy Architecture Status:**
+- ✅ **Recipient Privacy:** Stealth addresses (Monero-level)
+- ✅ **Transaction Privacy:** Integrated addresses, subaddresses, view tags
+- ✅ **Audit Capability:** View keys for compliance
+- 🔄 **Amount Privacy:** zk-SNARKs implementation (next stage)
+- 📋 **Sender Privacy:** Ring signatures (future stage)
+
+---
+
 ## ✅ Production Features
 
 ### Privacy Infrastructure
@@ -11,6 +26,7 @@
 - ✅ **Payment Proofs** - Cryptographic proof generation for disputes and auditing
 - ✅ **Integrated Addresses** - Payment ID tracking for invoices and orders
 - ✅ **Subaddresses** - Multiple stealth identities from single wallet
+- ✅ **View Keys** - Read-only keys for compliance and auditing (SHA-256 derived)
 - ✅ **Enhanced Scanning** - 99% faster detection with view tags
 - ✅ **RPC Privacy** - IP address hiding via endpoint rotation
 - ✅ **Light Protocol Integration** - ZK compression infrastructure (devnet beta)
@@ -31,39 +47,97 @@
 
 ---
 
-## 🚀 Planned Enhancements
+## 🚀 Next Development Stages
 
-### Advanced Privacy
-
-**Light Protocol Mainnet**
-- Full ZK compression on mainnet
-- Shielded pool management
-- 1000x cost reduction
-- Complete on-chain privacy (sender + recipient + amount)
-
-**Amount Privacy**
-- Zero-knowledge proofs for hidden amounts
-- Bulletproofs or Groth16 implementation
-- Range proofs for balance verification
-- Privacy score improvement: 7/10 → 8/10
-
-**Sender Mixing**
-- Ring signatures for sender anonymity
-- Pool-based mixing protocols
-- Transaction graph obfuscation
-- Privacy score improvement: 8/10 → 9.5/10
-
-**View Keys**
-- Read-only payment monitoring
-- Separate viewing and spending keys
-- Audit trail for compliance
-- Multi-device access
+### Stage 1: Enhanced Privacy Layer (Immediate)
 
 **Unified Addresses**
-- Single address for all privacy modes
-- Automatic privacy level selection
-- Backward compatibility
-- Simplified user experience
+- Single address supporting multiple privacy modes
+- Automatic mode detection (transparent, stealth, shielded)
+- Seamless user experience without manual selection
+- Backward compatibility with existing addresses
+- **Impact:** Simplified UX, increased privacy adoption
+
+**Amount Privacy with zk-SNARKs**
+- Groth16 zero-knowledge proofs for hidden amounts
+- Range proofs for balance verification (0 ≤ amount ≤ max)
+- Commitment schemes for encrypted balances
+- Production-ready on Solana mainnet
+- **Impact:** Complete transaction privacy (sender + recipient + amount)
+
+**Enhanced View Key System**
+- Multi-signature view key sharing
+- Hierarchical view keys for organizational structure
+- Time-limited view access for temporary auditing
+- Encrypted view key storage and recovery
+- **Impact:** Enterprise-grade compliance tooling
+
+---
+
+### Stage 2: Sender Anonymity (Advanced)
+
+**Ring Signatures**
+- Cryptographic ring signature implementation
+- Configurable anonymity set size (8, 16, 32 signers)
+- Linkable ring signatures to prevent double-spending
+- Integration with existing stealth address system
+- **Impact:** Complete sender privacy, Monero-level anonymity
+
+**Decoy Selection**
+- Intelligent decoy output selection
+- Blockchain-aware decoy distribution
+- Resist timing analysis attacks
+- Gamma distribution for realistic decoys
+- **Impact:** Stronger sender privacy guarantees
+
+---
+
+### Stage 3: Scale & Performance
+
+**Light Protocol Mainnet Launch**
+- Full ZK compression on Solana mainnet
+- 1000x state cost reduction
+- Compressed account management
+- Production-ready shielded pools
+- **Impact:** Affordable privacy at scale
+
+**Advanced Scanning Optimization**
+- Parallel transaction scanning
+- View key delegation to light servers
+- Background sync with service workers
+- Cached payment detection
+- **Impact:** Sub-second payment discovery
+
+**Layer 2 Privacy Solutions**
+- Rollup-based privacy layers
+- Hybrid on/off-chain architectures
+- State channels for instant private transfers
+- **Impact:** Instant private transactions
+
+---
+
+### Stage 4: Ecosystem Integrations
+
+**DeFi Privacy Bridges**
+- Private swaps via Jupiter/Raydium integration
+- Shielded liquidity pools
+- Privacy-preserving yield farming
+- Anonymous governance participation
+- **Impact:** Private DeFi interactions
+
+**Cross-Chain Privacy**
+- Ethereum stealth address support
+- Polygon privacy integration
+- Wormhole bridge for cross-chain private transfers
+- Unified privacy across chains
+- **Impact:** Multi-chain privacy infrastructure
+
+**NFT Privacy**
+- Private NFT transfers with stealth addresses
+- Hidden ownership records
+- Selective disclosure for marketplaces
+- Privacy-preserving royalty payments
+- **Impact:** Confidential digital collectibles
 
 ---
 
