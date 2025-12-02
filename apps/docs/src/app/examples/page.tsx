@@ -399,6 +399,113 @@ export function TransactionHistory() {
         </div>
       </div>
 
+      {/* Example 6: Stealth Address Payment */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Private Payment with Stealth Addresses</h2>
+        <p className="text-gray-700 mb-4">
+          Send a private payment using stealth addresses for recipient privacy.
+        </p>
+        <div className="bg-gray-900 text-white p-6 rounded-lg overflow-x-auto">
+          <pre className="text-sm">
+{`import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { generateStealthAddress, sendStealthPayment } from '@exe-pay/privacy';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+
+export function StealthPayment() {
+  const { publicKey, signMessage } = useWallet();
+  const { connection } = useConnection();
+
+  const sendPrivatePayment = async (
+    recipientMetaAddress: string,
+    amount: number
+  ) => {
+    if (!publicKey || !signMessage) throw new Error('Wallet not connected');
+
+    // Generate stealth address for this payment
+    const { stealthAddress, ephemeralPubkey, viewTag } = 
+      await generateStealthAddress(recipientMetaAddress);
+
+    console.log('Generated stealth address:', stealthAddress);
+    console.log('View tag (for scanning):', viewTag);
+
+    // Send payment to stealth address with metadata
+    const signature = await sendStealthPayment({
+      connection,
+      senderPublicKey: publicKey,
+      recipientStealthAddress: stealthAddress,
+      amount: amount * LAMPORTS_PER_SOL,
+      ephemeralPubkey,
+      viewTag,
+      signTransaction: async (tx) => {
+        // Use wallet adapter to sign
+        return tx;
+      },
+    });
+
+    return { signature, stealthAddress };
+  };
+
+  return (
+    <button onClick={() => sendPrivatePayment('META_ADDRESS', 0.1)}>
+      Send 0.1 SOL Privately
+    </button>
+  );
+}`}
+          </pre>
+        </div>
+      </div>
+
+      {/* Example 7: View Keys for Auditing */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Generate View Keys for Compliance</h2>
+        <p className="text-gray-700 mb-4">
+          Generate read-only view keys for accountants and auditors.
+        </p>
+        <div className="bg-gray-900 text-white p-6 rounded-lg overflow-x-auto">
+          <pre className="text-sm">
+{`import { useWallet } from '@solana/wallet-adapter-react';
+import { generateViewKeys, encodeViewKeys } from '@exe-pay/privacy';
+
+export function ViewKeysGenerator() {
+  const { publicKey, signMessage } = useWallet();
+
+  const createViewKeys = async () => {
+    if (!publicKey || !signMessage) throw new Error('Wallet not connected');
+
+    // Generate message to sign
+    const message = new TextEncoder().encode(
+      \`Generate View Keys for \${publicKey.toBase58()}\n\nTimestamp: \${Date.now()}\`
+    );
+
+    // Request signature from wallet
+    const signature = await signMessage(message);
+
+    // Generate view keys from signature
+    const viewKeys = await generateViewKeys(publicKey, signature);
+    const encoded = encodeViewKeys(viewKeys);
+
+    console.log('Private View Key:', encoded.privateViewKey);
+    console.log('Public View Key:', encoded.publicViewKey);
+    console.log('Spend Public Key:', encoded.spendPublicKey);
+
+    // Can be exported as JSON for accounting software
+    return {
+      privateViewKey: encoded.privateViewKey,  // For your records only
+      publicViewKey: encoded.publicViewKey,    // Safe to share with auditors
+      spendPublicKey: encoded.spendPublicKey,  // Your wallet address
+    };
+  };
+
+  return (
+    <button onClick={createViewKeys}>
+      Generate View Keys
+    </button>
+  );
+}`}
+          </pre>
+        </div>
+      </div>
+
       <div className="bg-green-50 border-l-4 border-green-500 p-6 mb-8">
         <div className="flex items-start">
           <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -411,7 +518,9 @@ export function TransactionHistory() {
             </p>
             <ul className="list-disc list-inside text-green-800 space-y-1 ml-4">
               <li>Payment links and QR codes</li>
-              <li>Multi-token support</li>
+              <li>Integrated addresses for invoice tracking</li>
+              <li>Subaddresses for multiple identities</li>
+              <li>Payment proofs for disputes</li>
               <li>Error handling and retries</li>
               <li>Mobile wallet integration</li>
             </ul>

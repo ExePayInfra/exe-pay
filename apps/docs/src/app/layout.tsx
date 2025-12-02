@@ -31,6 +31,7 @@ export default function RootLayout({
                     <Link href="/guide" className="text-gray-600 hover:text-gray-900">Guide</Link>
                     <Link href="/api" className="text-gray-600 hover:text-gray-900">API</Link>
                     <Link href="/examples" className="text-gray-600 hover:text-gray-900">Examples</Link>
+                    <Link href="/whitepaper" className="text-gray-600 hover:text-gray-900">Whitepaper</Link>
                   </nav>
                 </div>
                 <div className="flex items-center gap-4">
@@ -95,6 +96,13 @@ export default function RootLayout({
                     <Link href="/examples" className="sidebar-link">Code Examples</Link>
                     <Link href="/examples/integration" className="sidebar-link">Integration Guide</Link>
                   </div>
+
+                  <div className="mb-4">
+                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                      Resources
+                    </h3>
+                    <Link href="/whitepaper" className="sidebar-link">📄 Whitepaper</Link>
+                  </div>
                 </nav>
               </aside>
 
@@ -112,6 +120,7 @@ export default function RootLayout({
                 <p>© 2025 ExePay. Built with privacy in mind.</p>
                 <div className="mt-2 flex justify-center gap-4">
                   <a href="https://exepay.app" className="hover:text-gray-900">App</a>
+                  <Link href="/whitepaper" className="hover:text-gray-900">Whitepaper</Link>
                   <a href="https://github.com/ExePayInfra/exe-pay" className="hover:text-gray-900">GitHub</a>
                   <a href="https://twitter.com/exepay" className="hover:text-gray-900">Twitter</a>
                 </div>
