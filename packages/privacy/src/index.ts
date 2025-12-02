@@ -26,6 +26,9 @@ export * from "./keyDerivation.js";
 // Export RPC Privacy (network-level privacy)
 export * from "./rpc-privacy.js";
 
+// Export View Keys (read-only access for compliance)
+export * from "./view-keys.js";
+
 export interface ProveSpendResult {
   readonly proof: Uint8Array;
   readonly instruction: TransactionInstruction;
