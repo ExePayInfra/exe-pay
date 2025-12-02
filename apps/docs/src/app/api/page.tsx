@@ -23,7 +23,7 @@ export default function APIPage() {
         <div className="border border-gray-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">@exe-pay/privacy</h3>
           <p className="text-gray-600 text-sm mb-4">
-            Privacy features: Stealth addresses, payment proofs, integrated addresses, subaddresses, view tags, and RPC privacy.
+            Privacy features: Stealth addresses, payment proofs, integrated addresses, subaddresses, view keys, enhanced scanning with view tags, and RPC privacy.
           </p>
           <a href="/api/privacy" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
             View Documentation →
@@ -97,8 +97,9 @@ function PaymentButton() {
         <li><strong>Payment Proofs</strong> - Cryptographic proofs for disputes and audits (ECDH-based)</li>
         <li><strong>Integrated Addresses</strong> - Payment IDs for invoice tracking</li>
         <li><strong>Subaddresses</strong> - Multiple identities from one wallet (BIP32-like derivation)</li>
-        <li><strong>RPC Privacy</strong> - IP hiding via endpoint rotation</li>
+        <li><strong>View Keys</strong> - Read-only keys for compliance and auditing (SHA-256 derived from Ed25519)</li>
         <li><strong>View Tags</strong> - 99% faster payment detection with one-byte tags</li>
+        <li><strong>RPC Privacy</strong> - IP hiding via endpoint rotation</li>
       </ul>
       
       <h3>Future: Zero-Knowledge Proofs</h3>

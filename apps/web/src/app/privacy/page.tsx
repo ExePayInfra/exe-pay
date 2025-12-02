@@ -94,12 +94,27 @@ const RpcPrivacyIndicator = dynamicImport(
   }
 );
 
+const ViewKeysManager = dynamicImport(
+  () => import('@/components/ViewKeysManager').then(mod => ({ default: mod.ViewKeysManager })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔑</div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
 export default function PrivacyPage() {
   const searchParams = useSearchParams();
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
   const [mainTab, setMainTab] = useState<'stealth' | 'light'>('stealth');
-  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses'>('receive');
+  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses' | 'viewkeys'>('receive');
 
   // Check URL parameter to set initial tab
   useEffect(() => {
@@ -175,72 +190,98 @@ export default function PrivacyPage() {
 
         {/* Sub-tabs for Stealth */}
         {mainTab === 'stealth' && (
-          <div className="flex gap-2 sm:gap-4 mb-8 justify-center flex-wrap max-w-4xl mx-auto">
-            <button
-              onClick={() => setStealthTab('receive')}
-              className={`
-                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-                ${stealthTab === 'receive'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-                }
-              `}
-            >
-              <span className="text-xl">📥</span>
-              <span className="hidden sm:inline">Receive</span>
-            </button>
-            <button
-              onClick={() => setStealthTab('send')}
-              className={`
-                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-                ${stealthTab === 'send'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-                }
-              `}
-            >
-              <span className="text-xl">💸</span>
-              <span className="hidden sm:inline">Send</span>
-            </button>
-            <button
-              onClick={() => setStealthTab('scan')}
-              className={`
-                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-                ${stealthTab === 'scan'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-                }
-              `}
-            >
-              <span className="text-xl">🔍</span>
-              <span className="hidden sm:inline">Scan & Claim</span>
-            </button>
-            <button
-              onClick={() => setStealthTab('integrated')}
-              className={`
-                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-                ${stealthTab === 'integrated'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-                }
-              `}
-            >
-              <span className="text-xl">🔗</span>
-              <span className="hidden sm:inline">Integrated</span>
-            </button>
-            <button
-              onClick={() => setStealthTab('subaddresses')}
-              className={`
-                flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all transform hover:scale-105
-                ${stealthTab === 'subaddresses'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
-                }
-              `}
-            >
-              <span className="text-xl">🔢</span>
-              <span className="hidden sm:inline">Subaddresses</span>
-            </button>
+          <div className="mb-10 max-w-5xl mx-auto">
+            {/* Primary Actions - Larger Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              <button
+                onClick={() => setStealthTab('receive')}
+                className={`
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  ${stealthTab === 'receive'
+                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                  }
+                `}
+              >
+                <span className="text-4xl">📥</span>
+                <span>Receive</span>
+                <span className="text-xs font-normal opacity-75">Generate stealth address</span>
+              </button>
+              <button
+                onClick={() => setStealthTab('send')}
+                className={`
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  ${stealthTab === 'send'
+                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                  }
+                `}
+              >
+                <span className="text-4xl">💸</span>
+                <span>Send</span>
+                <span className="text-xs font-normal opacity-75">Send private payment</span>
+              </button>
+              <button
+                onClick={() => setStealthTab('scan')}
+                className={`
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  ${stealthTab === 'scan'
+                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                  }
+                `}
+              >
+                <span className="text-4xl">🔍</span>
+                <span>Scan & Claim</span>
+                <span className="text-xs font-normal opacity-75">Find your payments</span>
+              </button>
+            </div>
+
+            {/* Advanced Features - Smaller Pills */}
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 text-center">Advanced Features</p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <button
+                  onClick={() => setStealthTab('integrated')}
+                  className={`
+                    flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all transform hover:scale-105
+                    ${stealthTab === 'integrated'
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl'
+                      : 'bg-gray-50 text-gray-700 hover:bg-purple-50 shadow border border-gray-300'
+                    }
+                  `}
+                >
+                  <span className="text-xl">🔗</span>
+                  <span>Integrated Address</span>
+                </button>
+                <button
+                  onClick={() => setStealthTab('subaddresses')}
+                  className={`
+                    flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all transform hover:scale-105
+                    ${stealthTab === 'subaddresses'
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl'
+                      : 'bg-gray-50 text-gray-700 hover:bg-purple-50 shadow border border-gray-300'
+                    }
+                  `}
+                >
+                  <span className="text-xl">🔢</span>
+                  <span>Subaddresses</span>
+                </button>
+                <button
+                  onClick={() => setStealthTab('viewkeys')}
+                  className={`
+                    flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all transform hover:scale-105
+                    ${stealthTab === 'viewkeys'
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl'
+                      : 'bg-gray-50 text-gray-700 hover:bg-purple-50 shadow border border-gray-300'
+                    }
+                  `}
+                >
+                  <span className="text-xl">🔑</span>
+                  <span>View Keys</span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -276,6 +317,12 @@ export default function PrivacyPage() {
                 {stealthTab === 'subaddresses' && (
                   <div className="animate-fade-in">
                     <SubaddressManager />
+                  </div>
+                )}
+
+                {stealthTab === 'viewkeys' && (
+                  <div className="animate-fade-in">
+                    <ViewKeysManager />
                   </div>
                 )}
               </>

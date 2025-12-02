@@ -71,6 +71,7 @@ export default function Home() {
             <li><strong>✅ Payment Proofs:</strong> Cryptographic proof of payment for disputes</li>
             <li><strong>✅ Integrated Addresses:</strong> Track invoices with payment IDs</li>
             <li><strong>✅ Subaddresses:</strong> Multiple identities from one wallet</li>
+            <li><strong>✅ View Keys:</strong> Read-only access for auditing & compliance</li>
             <li><strong>✅ Enhanced Scanning:</strong> 99% faster with view tags</li>
             <li><strong>✅ RPC Privacy:</strong> IP address hiding via rotation</li>
           </ul>

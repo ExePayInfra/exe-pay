@@ -53,15 +53,6 @@ export function Navigation() {
             >
               Docs
             </a>
-            <a
-              href="https://docs.exepay.app/whitepaper"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-gray-900 font-medium transition-colors flex items-center gap-1"
-            >
-              <span>📄</span>
-              <span>Whitepaper</span>
-            </a>
             <div className="flex items-center gap-3">
               {!publicKey ? (
                 <a
@@ -131,15 +122,6 @@ export function Navigation() {
               >
                 Docs
               </a>
-              <a
-                href="https://docs.exepay.app/whitepaper"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-2"
-              >
-                <span>📄</span>
-                <span>Whitepaper</span>
-              </a>
               {!publicKey ? (
                 <a
                   href="/wallet"
@@ -175,9 +157,6 @@ export function Footer() {
             </a>
             <a href="https://docs.exepay.app" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
               Docs
-            </a>
-            <a href="https://docs.exepay.app/whitepaper" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Whitepaper
             </a>
           </div>
         </div>

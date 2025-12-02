@@ -15,6 +15,15 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import { keccak_256 } from '@noble/hashes/sha3';
 import { ed25519, x25519 } from '@noble/curves/ed25519';
 
+// Helper functions for encoding (using hex for simplicity and compatibility)
+const toBase58 = (bytes: Uint8Array): string => {
+  return Buffer.from(bytes).toString('hex');
+};
+
+const fromBase58 = (str: string): Uint8Array => {
+  return new Uint8Array(Buffer.from(str, 'hex'));
+};
+
 /**
  * View Key Pair
  * - Private view key: Detects payments, cannot spend
@@ -77,11 +86,9 @@ export function encodeViewKeys(
   viewKeys: ViewKeyPair, 
   spendPublicKey: PublicKey
 ): EncodedViewKey {
-  const bs58 = require('bs58');
-  
   return {
-    privateViewKey: bs58.encode(viewKeys.privateKey),
-    publicViewKey: bs58.encode(viewKeys.publicKey),
+    privateViewKey: toBase58(viewKeys.privateKey),
+    publicViewKey: toBase58(viewKeys.publicKey),
     spendPublicKey: spendPublicKey.toBase58()
   };
 }
@@ -96,12 +103,10 @@ export function decodeViewKeys(encoded: EncodedViewKey): {
   viewKeys: ViewKeyPair;
   spendPublicKey: PublicKey;
 } {
-  const bs58 = require('bs58');
-  
   return {
     viewKeys: {
-      privateKey: bs58.decode(encoded.privateViewKey),
-      publicKey: bs58.decode(encoded.publicViewKey)
+      privateKey: fromBase58(encoded.privateViewKey),
+      publicKey: fromBase58(encoded.publicViewKey)
     },
     spendPublicKey: new PublicKey(encoded.spendPublicKey)
   };
@@ -187,15 +192,13 @@ export function generateShareableViewCredential(encoded: EncodedViewKey): {
  */
 export function validateViewKey(encoded: Partial<EncodedViewKey>): boolean {
   try {
-    const bs58 = require('bs58');
-    
     if (encoded.privateViewKey) {
-      const decoded = bs58.decode(encoded.privateViewKey);
+      const decoded = fromBase58(encoded.privateViewKey);
       if (decoded.length !== 32) return false;
     }
     
     if (encoded.publicViewKey) {
-      const decoded = bs58.decode(encoded.publicViewKey);
+      const decoded = fromBase58(encoded.publicViewKey);
       if (decoded.length !== 32) return false;
     }
     

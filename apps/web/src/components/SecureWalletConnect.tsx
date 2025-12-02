@@ -75,7 +75,16 @@ export function SecureWalletConnect({ onConnected, showHeader = true, children }
       await new Promise(resolve => setTimeout(resolve, 100));
       
       console.log(`[ExePay] Attempting to connect to ${walletName}...`);
-      await selectedWallet.adapter.connect();
+      
+      try {
+        await selectedWallet.adapter.connect();
+      } catch (connectErr: any) {
+        // If Solflare fails, provide helpful message
+        if (walletName === 'Solflare' && connectErr.message?.includes('User rejected')) {
+          throw new Error('Connection cancelled. Please try again and approve the connection in your Solflare wallet.');
+        }
+        throw connectErr;
+      }
       
       if (!selectedWallet.adapter.publicKey) {
         throw new Error('Connection failed - no public key received. Please try again.');
@@ -169,17 +178,21 @@ export function SecureWalletConnect({ onConnected, showHeader = true, children }
   if ((!connected || !verifiedConnection) || showWalletSelector) {
     return (
       <div className="bg-white rounded-2xl p-8 shadow-2xl text-center border border-gray-200">
-        <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          {showWalletSelector ? 'Choose a Different Wallet' : 'Connect Your Wallet'}
-        </h3>
-        <p className="text-gray-600 mb-6">
-          {showWalletSelector ? 'Select a wallet to connect' : 'Choose your preferred Solana wallet'}
-        </p>
+        {showHeader && (
+          <>
+            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              {showWalletSelector ? 'Choose a Different Wallet' : 'Connect Your Wallet'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {showWalletSelector ? 'Select a wallet to connect' : 'Choose your preferred Solana wallet'}
+            </p>
+          </>
+        )}
 
         {/* Error Message */}
         {error && (
@@ -262,46 +275,49 @@ export function SecureWalletConnect({ onConnected, showHeader = true, children }
     );
   }
 
-  // Wallet is connected and verified
+  // Wallet is connected and verified - always show status
   return (
     <>
-      {showHeader && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
-          <div className="flex items-center gap-3">
-            {wallet?.adapter.icon && (
-              <div className="w-10 h-10 flex-shrink-0">
-                <Image
-                  src={wallet.adapter.icon}
-                  alt={wallet.adapter.name}
-                  width={40}
-                  height={40}
-                  className="rounded-lg"
-                />
-              </div>
-            )}
-            <div>
-              <p className="text-xs text-gray-500">Connected: {wallet?.adapter.name}</p>
-              <p className="text-sm text-gray-900 font-mono font-semibold">
-                {publicKey?.toString().slice(0, 6)}...{publicKey?.toString().slice(-6)}
-              </p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl shadow-md">
+        <div className="flex items-center gap-3">
+          {wallet?.adapter.icon && (
+            <div className="w-10 h-10 flex-shrink-0">
+              <Image
+                src={wallet.adapter.icon}
+                alt={wallet.adapter.name}
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleChangeWallet}
-              className="py-2 px-4 rounded-lg font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-all duration-200 text-sm whitespace-nowrap"
-            >
-              Change Wallet
-            </button>
-            <button
-              onClick={handleDisconnect}
-              className="py-2 px-4 rounded-lg font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-200 text-sm whitespace-nowrap"
-            >
-              Disconnect
-            </button>
+          )}
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">✅</span>
+              <p className="text-xs text-green-700 font-semibold">Connected & Verified</p>
+            </div>
+            <p className="text-sm text-gray-900 font-bold">{wallet?.adapter.name}</p>
+            <p className="text-xs text-gray-600 font-mono">
+              {publicKey?.toString().slice(0, 4)}...{publicKey?.toString().slice(-4)}
+            </p>
           </div>
         </div>
-      )}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleChangeWallet}
+            className="py-2 px-4 rounded-lg font-semibold text-indigo-600 bg-white hover:bg-indigo-50 transition-all duration-200 text-sm whitespace-nowrap border border-indigo-300"
+          >
+            Change
+          </button>
+          <button
+            onClick={handleDisconnect}
+            className="py-2 px-4 rounded-lg font-semibold text-white bg-red-500 hover:bg-red-600 transition-all duration-200 text-sm whitespace-nowrap flex items-center gap-1"
+          >
+            <span>🚪</span>
+            <span>Disconnect</span>
+          </button>
+        </div>
+      </div>
       {children}
     </>
   );
