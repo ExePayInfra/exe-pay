@@ -30,33 +30,26 @@ code {
 }
 
 pre {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: #f1f5f9;
-  padding: 1.5rem;
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  padding: 1.5rem !important;
   border-radius: 0.75rem;
   overflow-x: auto;
   margin: 1.5rem 0;
-  border: 1px solid #334155;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: 2px solid #6366f1;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
   position: relative;
 }
 
-pre::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-}
-
 pre code {
-  background-color: transparent;
-  color: inherit;
-  padding: 0;
-  border: none;
+  background: transparent !important;
+  color: #f1f5f9 !important;
+  padding: 0 !important;
+  border: none !important;
   font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  display: block;
 }
 
 .prose {
