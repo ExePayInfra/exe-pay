@@ -51,13 +51,14 @@ export function PaymentProofGenerator() {
 
     try {
       // Create connection based on selected network
+      // Use environment variable if available, otherwise use public RPC
       const rpcUrl = network === 'mainnet' 
-        ? 'https://api.mainnet-beta.solana.com'
+        ? (process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com')
         : 'https://api.devnet.solana.com';
       
       const connection = new Connection(rpcUrl, 'confirmed');
       
-      console.log(`[Payment Proof] Fetching transaction from ${network}...`);
+      console.log(`[Payment Proof] Fetching transaction from ${network} (${rpcUrl})...`);
       
       // Fetch the actual transaction from chain
       let tx;
@@ -199,8 +200,9 @@ export function PaymentProofGenerator() {
 
     try {
       // Create connection based on selected network
+      // Use environment variable if available, otherwise use public RPC
       const rpcUrl = network === 'mainnet' 
-        ? 'https://api.mainnet-beta.solana.com'
+        ? (process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com')
         : 'https://api.devnet.solana.com';
       
       const connection = new Connection(rpcUrl, 'confirmed');
@@ -216,7 +218,7 @@ export function PaymentProofGenerator() {
 
       setDecodedProof(decoded);
 
-      console.log(`[Payment Proof] Verifying on ${network}...`);
+      console.log(`[Payment Proof] Verifying on ${network} (${rpcUrl})...`);
       
       // Verify the proof on-chain
       const isValid = await verifyPaymentProof(decoded, connection);
@@ -293,30 +295,41 @@ export function PaymentProofGenerator() {
       </div>
 
       {/* Mainnet RPC Warning */}
-      {network === 'mainnet' && (
+      {network === 'mainnet' && !process.env.NEXT_PUBLIC_SOLANA_RPC_URL && (
         <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <div className="flex items-start gap-3">
             <span className="text-xl">⚠️</span>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-yellow-900 mb-1">
-                Mainnet RPC Rate Limits
+              <p className="text-sm font-semibold text-yellow-900 mb-2">
+                Mainnet RPC Required
               </p>
-              <p className="text-xs text-yellow-800">
-                Public Solana mainnet RPC has strict rate limits. For production use, get a free RPC from{' '}
-                <a href="https://helius.dev" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
-                  Helius
-                </a>
-                ,{' '}
-                <a href="https://quicknode.com" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
-                  QuickNode
-                </a>
-                , or{' '}
-                <a href="https://alchemy.com" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
-                  Alchemy
-                </a>
-                . For testing, use Devnet.
+              <p className="text-xs text-yellow-800 mb-3">
+                Public Solana mainnet RPC is heavily rate-limited and may not work. To verify mainnet transactions, 
+                set up a free RPC endpoint (takes 2 minutes):
               </p>
+              <div className="space-y-2 text-xs">
+                <div className="bg-white p-2 rounded border border-yellow-300">
+                  <p className="font-semibold text-yellow-900 mb-1">Quick Setup:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-yellow-800">
+                    <li>Get free RPC from <a href="https://helius.dev" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Helius</a> (500k requests/day)</li>
+                    <li>Create <code className="bg-gray-100 px-1 py-0.5 rounded">.env.local</code> file in project root</li>
+                    <li>Add: <code className="bg-gray-100 px-1 py-0.5 rounded">NEXT_PUBLIC_SOLANA_RPC_URL=your_rpc_url</code></li>
+                    <li>Restart dev server</li>
+                  </ol>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      )}
+      
+      {network === 'mainnet' && process.env.NEXT_PUBLIC_SOLANA_RPC_URL && (
+        <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">✅</span>
+            <p className="text-sm font-medium text-green-900">
+              Custom mainnet RPC configured
+            </p>
           </div>
         </div>
       )}
