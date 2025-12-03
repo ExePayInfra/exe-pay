@@ -60,12 +60,35 @@ export function PaymentProofGenerator() {
       console.log(`[Payment Proof] Fetching transaction from ${network}...`);
       
       // Fetch the actual transaction from chain
-      const tx = await connection.getTransaction(txSignature, {
-        maxSupportedTransactionVersion: 0,
-      });
+      let tx;
+      try {
+        tx = await connection.getTransaction(txSignature, {
+          maxSupportedTransactionVersion: 0,
+        });
+      } catch (rpcError: any) {
+        console.error('[Payment Proof] RPC Error:', rpcError);
+        
+        // Handle rate limiting / 403 errors
+        if (rpcError?.message?.includes('403') || rpcError?.message?.includes('forbidden')) {
+          setError(
+            `⚠️ RPC Rate Limit: The public ${network} RPC is rate-limited. ` +
+            `To use mainnet payment proofs, please set up a free RPC endpoint from Helius, QuickNode, or Alchemy. ` +
+            `For testing, use Devnet instead.`
+          );
+        } else {
+          setError(`Network error: ${rpcError?.message || 'Failed to fetch transaction'}`);
+        }
+        setGenerating(false);
+        return;
+      }
       
       if (!tx) {
-        setError('Transaction not found on-chain. Please check the signature.');
+        setError(
+          `Transaction not found on ${network}. ` +
+          `${network === 'mainnet' 
+            ? 'Try switching to Devnet if this is a test transaction, or verify the signature is correct.' 
+            : 'Verify the signature is correct or try Mainnet.'}`
+        );
         setGenerating(false);
         return;
       }
@@ -268,6 +291,35 @@ export function PaymentProofGenerator() {
           {network === 'devnet' ? '🧪 Test Network' : '🟢 Production Network'}
         </div>
       </div>
+
+      {/* Mainnet RPC Warning */}
+      {network === 'mainnet' && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">⚠️</span>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-yellow-900 mb-1">
+                Mainnet RPC Rate Limits
+              </p>
+              <p className="text-xs text-yellow-800">
+                Public Solana mainnet RPC has strict rate limits. For production use, get a free RPC from{' '}
+                <a href="https://helius.dev" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
+                  Helius
+                </a>
+                ,{' '}
+                <a href="https://quicknode.com" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
+                  QuickNode
+                </a>
+                , or{' '}
+                <a href="https://alchemy.com" target="_blank" rel="noopener noreferrer" className="underline font-semibold">
+                  Alchemy
+                </a>
+                . For testing, use Devnet.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6 border-b border-gray-200">
