@@ -143,13 +143,29 @@ export default function Home() {
               </a>
             </div>
 
-            {/* Live Badge */}
-            <div className="mt-12 inline-flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full border border-green-200 animate-fade-in-up stagger-4">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </span>
-              <span className="text-sm font-semibold text-green-900">Live on Mainnet</span>
+            {/* Live Badge and Token Link */}
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-in-up stagger-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full border border-green-200">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span className="text-sm font-semibold text-green-900">Live on Mainnet</span>
+              </div>
+              
+              <a
+                href="https://dexscreener.com/solana/6iguzmhnkhnzehesmznacpvtrwffsyjdjbhviij1fucr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-full border border-purple-700 shadow-lg transition-all duration-300 hover:scale-105 group"
+                title="Trade $EXE Token"
+              >
+                <span className="text-xl">🪙</span>
+                <span className="text-sm font-semibold text-white">$EXE Token</span>
+                <svg className="w-4 h-4 text-white transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
