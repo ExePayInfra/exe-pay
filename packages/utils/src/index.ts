@@ -31,3 +31,9 @@ export async function withTimeout<T>(promise: Promise<T>, ms: number, onTimeout?
 // Export payment link utilities
 export * from "./payment-links.js";
 
+// Export wallet generation utilities
+export * from "./wallet-generator.js";
+
+// Export encryption utilities
+export * from "./encryption.js";
+
