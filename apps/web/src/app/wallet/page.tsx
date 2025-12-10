@@ -43,15 +43,26 @@ export default function WalletPage() {
 
   // Auto-connect ExePay wallet if unlocked
   useEffect(() => {
-    if (hasWallet && isUnlocked && !connected) {
-      console.log('[Wallet Page] Auto-connecting ExePay wallet...');
-      select('ExePay');
-      setTimeout(() => {
-        connect().catch(err => {
-          console.error('[Wallet Page] Auto-connect failed:', err);
-        });
-      }, 500);
-    }
+    const autoConnect = async () => {
+      if (hasWallet && isUnlocked && !connected) {
+        console.log('[Wallet Page] Auto-connecting ExePay wallet...');
+        try {
+          // Select ExePay wallet
+          await select('ExePay');
+          
+          // Wait a bit for selection to complete
+          await new Promise(resolve => setTimeout(resolve, 300));
+          
+          // Connect
+          await connect();
+          console.log('[Wallet Page] ✅ ExePay wallet connected successfully');
+        } catch (err) {
+          console.error('[Wallet Page] ❌ Auto-connect failed:', err);
+        }
+      }
+    };
+    
+    autoConnect();
   }, [hasWallet, isUnlocked, connected, select, connect]);
 
   // Fetch balance when connected

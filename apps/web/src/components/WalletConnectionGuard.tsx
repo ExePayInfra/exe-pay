@@ -2,6 +2,7 @@
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect } from 'react';
+import { WalletDisconnectButton } from '@/components/WalletDisconnectButton';
 
 /**
  * WalletConnectionGuard
@@ -81,6 +82,11 @@ export function WalletConnectionGuard({ children }: { children: React.ReactNode 
     }
   }, [connected, wallet]);
 
-  return <>{children}</>;
+  return (
+    <>
+      <WalletDisconnectButton />
+      {children}
+    </>
+  );
 }
 

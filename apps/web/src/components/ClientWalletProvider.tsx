@@ -156,7 +156,7 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       });
     })(); // Call the async function immediately
 
-    // Clear ALL wallet-related cache on mount to force fresh connections (DESKTOP ONLY)
+    // Clear EXTERNAL wallet cache on mount, but preserve built-in wallet (DESKTOP ONLY)
     if (typeof window !== 'undefined') {
       // Check if we're on mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -166,27 +166,28 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       if (isMobile) {
         console.log('[ExePay Security] Mobile detected - preserving wallet cache for better UX');
       } else {
-        // Desktop only: Clear our app's wallet session
-        localStorage.removeItem('exepay-wallet-session');
-        localStorage.removeItem('walletName');
-        
-        // Desktop only: Clear Phantom's cached permission
+        // Desktop only: Clear EXTERNAL wallet permissions (NOT built-in wallet)
+        // Clear Phantom's cached permission
         localStorage.removeItem('phantom_permission');
         
-        // Desktop only: Clear Solflare's cached permission
+        // Clear Solflare's cached permission
         localStorage.removeItem('solflare_permission');
         
-        // Desktop only: Clear any other wallet adapter cache
+        // Clear other external wallet adapter cache
         const keysToRemove: string[] = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key && key.toLowerCase().includes('wallet') && key.includes('permission')) {
+          // Skip ExePay wallet data - only clear external wallets
+          if (key && 
+              key.toLowerCase().includes('wallet') && 
+              key.includes('permission') &&
+              !key.includes('exepay')) {
             keysToRemove.push(key);
           }
         }
         keysToRemove.forEach(key => localStorage.removeItem(key));
         
-        console.log('[ExePay Security] Cleared cached wallet permissions for fresh session (Desktop)');
+        console.log('[ExePay Security] Cleared external wallet permissions (preserved ExePay wallet)');
       }
     }
 
