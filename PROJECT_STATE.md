@@ -9,6 +9,7 @@
 ## ✅ Completed Features (Production)
 
 ### Privacy Features
+
 - [x] **Stealth Addresses** - Monero-level recipient privacy (X25519 ECDH)
 - [x] **Payment Proofs** - Cryptographic verification with network selection (mainnet/devnet)
 - [x] **Integrated Addresses** - Payment ID embedding for invoice tracking
@@ -18,6 +19,7 @@
 - [x] **RPC Privacy** - Multi-endpoint rotation for IP hiding
 
 ### Payment Infrastructure
+
 - [x] **Multi-Token Support** - SOL, USDC, USDT, BONK, JUP, RAY, ORCA
 - [x] **Batch Payments** - Multi-recipient transfers with status tracking
 - [x] **Recurring Payments** - Automated subscription management
@@ -25,6 +27,7 @@
 - [x] **Transaction History** - Complete payment tracking
 
 ### Developer Experience
+
 - [x] **TypeScript SDK** - Full type safety with comprehensive interfaces
 - [x] **React Hooks** - useExePay(), useBatchPayment(), useRecurringPayment()
 - [x] **Monorepo** - Turborepo + pnpm for optimal builds
@@ -36,12 +39,14 @@
 ## 🌐 Deployments
 
 ### Production
+
 - **Main App:** https://exepay.app
 - **Documentation:** https://docs.exepay.app
 - **Network:** Solana Mainnet
 - **Status:** ✅ Live
 
 ### Configuration
+
 - **RPC:** Helius (mainnet-beta)
 - **API Key:** Configured in `.env.local`
 - **Light Protocol:** Devnet (beta testing)
@@ -70,7 +75,9 @@ EXE/
 ## 🔧 Development Setup
 
 ### Environment Variables
+
 Located in `.env.local` (not tracked by git):
+
 ```bash
 NEXT_PUBLIC_SOLANA_NETWORK=mainnet-beta
 NEXT_PUBLIC_SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
@@ -78,6 +85,7 @@ NEXT_PUBLIC_LIGHT_RPC_URL=https://devnet.helius-rpc.com
 ```
 
 ### Quick Commands
+
 ```bash
 # Install
 pnpm install
@@ -103,11 +111,13 @@ pnpm test
 ## 🚀 Recent Changes (Session)
 
 ### 1. Token Link Added
+
 - Added $EXE token badge to homepage hero
 - Links to DEX Screener for trading
 - Clean, minimal pill-style button
 
 ### 2. Payment Proof Fixes
+
 - Added network selector (mainnet/devnet)
 - Implemented proper RPC error handling
 - Added Helius RPC configuration
@@ -115,6 +125,7 @@ pnpm test
 - Removed mock proof generation
 
 ### 3. View Keys Implementation
+
 - SHA-256 derived view keys for compliance
 - Public/private view key pairs
 - Secure display with anti-shoulder-surfing
@@ -122,6 +133,7 @@ pnpm test
 - Comprehensive security documentation
 
 ### 4. Documentation Updates
+
 - Added whitepaper to docs navigation
 - Created complete API documentation
 - Enhanced styling with modern gradients
@@ -132,11 +144,13 @@ pnpm test
 ## 📝 Important Files
 
 ### Configuration
+
 - `.env.local` - Environment variables (Helius API key)
 - `turbo.json` - Monorepo build configuration
 - `pnpm-workspace.yaml` - Workspace definition
 
 ### Documentation
+
 - `README.md` - Main project overview
 - `ROADMAP.md` - Development roadmap with stages
 - `CONTRIBUTING.md` - Contribution guidelines
@@ -144,6 +158,7 @@ pnpm test
 - `WHITEPAPER.md` - Technical whitepaper
 
 ### Development
+
 - `DEVELOPMENT.md` - Local development guide
 - `.github/workflows/` - CI/CD pipelines
 - `.husky/` - Git hooks (pre-commit linting)
@@ -153,16 +168,19 @@ pnpm test
 ## 🔐 Credentials & Access
 
 ### GitHub
+
 - **Repository:** https://github.com/ExePayInfra/exe-pay
 - **Branch:** main
 - **Access:** Full access via user account
 
 ### Helius RPC
+
 - **Dashboard:** https://dev.helius.xyz
 - **API Key:** Configured in `.env.local`
 - **Tier:** Free (500k requests/day)
 
 ### Vercel
+
 - **Main App:** Auto-deploys from `main` branch
 - **Docs:** Auto-deploys from `main` branch
 - **Env Variables:** Configured in Vercel dashboard
@@ -171,23 +189,28 @@ pnpm test
 
 ## 📋 Next Steps (Roadmap)
 
-### Stage 1: Unified Addresses + Amount Privacy
+### Stage 1: Enhanced Privacy + UX
+
+- **Built-in Wallet Creation** ⭐ NEW - Create wallets in ExePay (no external wallet needed)
 - Unified address format supporting multiple privacy modes
-- Groth16 zk-SNARKs for hidden amounts
+- Groth16 zk-SNARKs for hidden amounts (amount privacy)
 - Range proofs for balance verification
 - Hierarchical view keys
 
 ### Stage 2: Sender Anonymity
+
 - Ring signatures (Monero-level)
 - Intelligent decoy selection
 - Linkable ring signatures
 
 ### Stage 3: Performance & Scale
+
 - Light Protocol mainnet launch
 - Parallel transaction scanning
 - Layer 2 privacy solutions
 
 ### Stage 4: Ecosystem Integrations
+
 - DeFi privacy bridges
 - Cross-chain support
 - NFT privacy
@@ -196,12 +219,16 @@ pnpm test
 
 ## 🐛 Known Issues
 
-### 1. Public Mainnet RPC Rate Limiting
-- **Status:** Resolved
-- **Solution:** Custom Helius RPC configured
-- **User Impact:** None with proper RPC setup
+### 1. Payment Proofs Not Working on Live Mainnet
+
+- **Status:** In Progress
+- **Issue:** Environment variables not configured in Vercel dashboard
+- **Solution:** Add `NEXT_PUBLIC_SOLANA_RPC_URL` to Vercel (see VERCEL_ENV_SETUP.md)
+- **User Impact:** Payment proof verification fails on exepay.app for mainnet transactions
+- **Fix:** Configure Vercel env vars + redeploy
 
 ### 2. ESLint Plugin Conflict
+
 - **Status:** Known issue
 - **Workaround:** `--no-verify` flag for commits
 - **Impact:** Pre-commit hook fails occasionally
@@ -221,23 +248,27 @@ pnpm test
 ## 🔄 How to Resume Development
 
 1. **Pull latest changes:**
+
    ```bash
    cd /Users/kingchief/Documents/EXE
    git pull origin main
    ```
 
 2. **Verify environment:**
+
    ```bash
    cat .env.local  # Check RPC configuration
    ```
 
 3. **Install & build:**
+
    ```bash
    pnpm install
    pnpm build
    ```
 
 4. **Start development:**
+
    ```bash
    pnpm --filter @exe-pay/web dev
    ```
@@ -260,4 +291,3 @@ pnpm test
 ---
 
 **Status:** ✅ All systems operational. Project is production-ready and deployed on Solana mainnet.
-
