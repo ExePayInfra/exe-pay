@@ -108,14 +108,30 @@ export function PaymentProofGenerator() {
         ? message.staticAccountKeys 
         : (message as any).accountKeys || [];
       
-      // Find the recipient (usually index 1 for simple transfers)
-      let recipientIndex = 1;
-      let recipientAddress = accountKeys[recipientIndex]?.toBase58() || '';
+      // Find the recipient by looking for the account that RECEIVED funds
+      let recipientIndex = -1;
+      let actualAmount = 0;
       
-      // Calculate actual amount transferred
-      const preBalance = tx.meta.preBalances[recipientIndex] || 0;
-      const postBalance = tx.meta.postBalances[recipientIndex] || 0;
-      const actualAmount = postBalance - preBalance;
+      for (let i = 0; i < accountKeys.length; i++) {
+        const preBalance = tx.meta.preBalances[i] || 0;
+        const postBalance = tx.meta.postBalances[i] || 0;
+        const balanceChange = postBalance - preBalance;
+        
+        // Find account that received funds (positive balance change, not fee payer)
+        if (balanceChange > 0 && i !== 0) {
+          recipientIndex = i;
+          actualAmount = balanceChange;
+          break;
+        }
+      }
+      
+      if (recipientIndex === -1) {
+        setError('Could not find recipient in transaction. This may not be a valid payment transaction.');
+        setGenerating(false);
+        return;
+      }
+      
+      const recipientAddress = accountKeys[recipientIndex]?.toBase58() || '';
       
       // Look for ephemeral pubkey in memo (for stealth payments)
       let ephemeralPubkey: string | null = null;
@@ -152,12 +168,20 @@ export function PaymentProofGenerator() {
         ephemeralPubkey,
       });
       
+      // Auto-fill amount field with actual on-chain amount if not provided
+      if (!amount) {
+        setAmount((actualAmount / 1_000_000_000).toString());
+      }
+      
+      // Use actual on-chain amount for proof (ignore manual input to avoid mismatches)
+      const proofAmount = actualAmount;
+      
       // Generate cryptographic proof hash from transaction data
       // This creates a deterministic proof that can be verified
       const proofData = new Uint8Array([
         ...Buffer.from(txSignature, 'utf-8'),
         ...Buffer.from(recipientAddress, 'utf-8'),
-        ...new Uint8Array(new Float64Array([actualAmount]).buffer),
+        ...new Uint8Array(new Float64Array([proofAmount]).buffer),
       ]);
       const sharedSecretHash = Buffer.from(keccak_256(proofData)).toString('hex');
       
@@ -168,7 +192,7 @@ export function PaymentProofGenerator() {
           ? new PublicKey(ephemeralPubkey) 
           : new PublicKey(accountKeys[0]), // Use sender as fallback
         sharedSecretHash,
-        amount: amount ? parseFloat(amount) * 1_000_000_000 : actualAmount,
+        amount: proofAmount, // Always use actual on-chain amount
         timestamp: tx.blockTime ? tx.blockTime * 1000 : Date.now(),
         memo: memo || undefined,
         stealthAddress: new PublicKey(recipientAddress),
@@ -386,16 +410,20 @@ export function PaymentProofGenerator() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Amount (SOL) *
+              Amount (SOL)
             </label>
             <input
               type="number"
               step="0.000001"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.1"
+              placeholder="Auto-filled from chain"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              disabled={generating}
             />
+            <p className="mt-1 text-xs text-gray-500">
+              Leave empty to auto-fill exact amount from blockchain
+            </p>
           </div>
 
           <div>
@@ -422,14 +450,17 @@ export function PaymentProofGenerator() {
           {/* Transaction Details (from chain) */}
           {txDetails && !generatedProof && (
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="text-sm font-medium text-blue-900 mb-2">📋 Transaction Found:</h4>
+              <h4 className="text-sm font-medium text-blue-900 mb-2">📋 Transaction Found On-Chain:</h4>
               <div className="text-xs space-y-1">
                 <p><strong>Recipient:</strong> {txDetails.recipientAddress.slice(0, 8)}...{txDetails.recipientAddress.slice(-8)}</p>
-                <p><strong>Amount:</strong> {(txDetails.actualAmount / 1_000_000_000).toFixed(4)} SOL</p>
+                <p><strong>Actual Amount:</strong> {(txDetails.actualAmount / 1_000_000_000).toFixed(9)} SOL</p>
                 {txDetails.ephemeralPubkey && (
                   <p><strong>Stealth Payment:</strong> ✅ Yes</p>
                 )}
               </div>
+              <p className="text-xs text-blue-700 mt-2">
+                ✅ Proof will use exact on-chain amount for verification
+              </p>
             </div>
           )}
 
@@ -444,7 +475,7 @@ export function PaymentProofGenerator() {
               {txDetails && (
                 <div className="mb-3 p-3 bg-white rounded border border-green-200 text-xs space-y-1">
                   <p><strong>Recipient:</strong> <span className="font-mono">{txDetails.recipientAddress.slice(0, 12)}...</span></p>
-                  <p><strong>Amount:</strong> {(txDetails.actualAmount / 1_000_000_000).toFixed(4)} SOL</p>
+                  <p><strong>Amount:</strong> {(txDetails.actualAmount / 1_000_000_000).toFixed(9)} SOL (exact on-chain amount)</p>
                   <p><strong>Type:</strong> {txDetails.ephemeralPubkey ? '🔒 Stealth Payment' : '📝 Regular Payment'}</p>
                 </div>
               )}
