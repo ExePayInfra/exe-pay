@@ -7,6 +7,7 @@ import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { CreateWalletModal } from '@/components/CreateWalletModal';
 import { ImportWalletModal } from '@/components/ImportWalletModal';
 import { UnlockWalletModal } from '@/components/UnlockWalletModal';
+import { TwitterLoginButton } from '@/components/TwitterLoginButton';
 import { 
   hasStoredWallet, 
   hasActiveSession, 
@@ -172,41 +173,85 @@ export default function WalletPage() {
 
         {/* No Wallet - Show Options */}
         {!hasWallet && (
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✨</span>
+          <div className="space-y-8">
+            {/* Social Login Option - Featured */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-purple-200">
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-4xl">⚡</span>
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  Instant Sign In
+                </h2>
+                <p className="text-gray-600">
+                  Create a wallet instantly with your Twitter account
+                </p>
+                <p className="text-sm text-purple-600 font-medium mt-2">
+                  ✨ Recommended for new users
+                </p>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-                Create New Wallet
-              </h2>
-              <p className="text-gray-600 mb-6 text-center">
-                Generate a new Solana wallet with a secure recovery phrase
-              </p>
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
-              >
-                Create Wallet
-              </button>
+
+              <div className="max-w-md mx-auto">
+                <TwitterLoginButton 
+                  variant="create" 
+                  onSuccess={() => {
+                    checkWalletStatus();
+                    setShowUnlockModal(true);
+                  }} 
+                />
+                
+                <div className="mt-4 text-center">
+                  <p className="text-xs text-gray-500">
+                    No seed phrase needed • Secure • Instant setup
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">📥</span>
+            {/* Divider */}
+            <div className="flex items-center gap-4">
+              <div className="flex-1 h-px bg-gray-300"></div>
+              <span className="text-sm text-gray-500 font-medium">OR</span>
+              <div className="flex-1 h-px bg-gray-300"></div>
+            </div>
+
+            {/* Traditional Options */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">✨</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+                  Create New Wallet
+                </h2>
+                <p className="text-gray-600 mb-6 text-center">
+                  Generate a new Solana wallet with a 12-word recovery phrase
+                </p>
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+                >
+                  Create Wallet
+                </button>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-                Import Wallet
-              </h2>
-              <p className="text-gray-600 mb-6 text-center">
-                Restore your wallet using a recovery phrase
-              </p>
-              <button
-                onClick={() => setShowImportModal(true)}
-                className="w-full py-3 px-6 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
-              >
-                Import Wallet
-              </button>
+
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">📥</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+                  Import Wallet
+                </h2>
+                <p className="text-gray-600 mb-6 text-center">
+                  Restore your wallet using an existing recovery phrase
+                </p>
+                <button
+                  onClick={() => setShowImportModal(true)}
+                  className="w-full py-3 px-6 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200"
+                >
+                  Import Wallet
+                </button>
+              </div>
             </div>
           </div>
         )}
