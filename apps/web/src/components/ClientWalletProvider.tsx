@@ -84,7 +84,25 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
     
     // Only load wallets in the browser
     console.log('[ExePay] Loading wallet adapters...');
-    import('@solana/wallet-adapter-wallets').then((walletModule) => {
+    
+    // Load all wallets asynchronously
+    (async () => {
+      const walletList: Adapter[] = [];
+      const walletNames = new Set<string>();
+      
+      // Load ExePay built-in wallet first
+      try {
+        const { ExePayWalletAdapter } = await import('@/lib/ExePayWalletAdapter');
+        const exePayAdapter = new ExePayWalletAdapter();
+        walletList.push(exePayAdapter);
+        walletNames.add(exePayAdapter.name);
+        console.log('[ExePay] ✅ Built-in wallet adapter loaded');
+      } catch (err) {
+        console.error('[ExePay] ❌ Failed to load built-in wallet:', err);
+      }
+      
+      // Load external wallet adapters
+      return import('@solana/wallet-adapter-wallets').then((walletModule) => {
       console.log('[ExePay] Wallet module loaded');
       
       // Detect if we're on mobile
@@ -94,12 +112,8 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
       
       console.log('[ExePay] Is mobile:', isMobile);
       
-      // Safely instantiate wallets - only add ones that exist
-      const walletList: Adapter[] = [];
-      
       // Try each wallet adapter individually
-      // Create a Set to track unique wallet names and avoid duplicates
-      const walletNames = new Set<string>();
+      // walletNames already initialized above with ExePay wallet
       
       const adapters = [
         { name: 'Phantom', Adapter: walletModule.PhantomWalletAdapter },
@@ -134,12 +148,13 @@ export function ClientWalletProvider({ children }: { children: ReactNode }) {
         }
       }
       
-      console.log('[ExePay] Total wallets configured:', walletList.length);
-      setWallets(walletList);
-    }).catch(err => {
-      console.error('[ExePay] Failed to load wallet adapters:', err);
-      console.error('[ExePay] Error details:', err.message, err.stack);
-    });
+        console.log('[ExePay] Total wallets configured:', walletList.length);
+        setWallets(walletList);
+      }).catch(err => {
+        console.error('[ExePay] Failed to load wallet adapters:', err);
+        console.error('[ExePay] Error details:', err.message, err.stack);
+      });
+    })(); // Call the async function immediately
 
     // Clear ALL wallet-related cache on mount to force fresh connections (DESKTOP ONLY)
     if (typeof window !== 'undefined') {

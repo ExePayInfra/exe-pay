@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { CreateWalletModal } from '@/components/CreateWalletModal';
 import { ImportWalletModal } from '@/components/ImportWalletModal';
 import { UnlockWalletModal } from '@/components/UnlockWalletModal';
@@ -17,10 +19,15 @@ import {
 
 export default function WalletPage() {
   const router = useRouter();
+  const { connection } = useConnection();
+  const { select, connect, disconnect, publicKey: walletPublicKey, connected } = useWallet();
+  
   const [hasWallet, setHasWallet] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [walletName, setWalletName] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [loadingBalance, setLoadingBalance] = useState(false);
   
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -33,6 +40,26 @@ export default function WalletPage() {
   useEffect(() => {
     checkWalletStatus();
   }, []);
+
+  // Auto-connect ExePay wallet if unlocked
+  useEffect(() => {
+    if (hasWallet && isUnlocked && !connected) {
+      console.log('[Wallet Page] Auto-connecting ExePay wallet...');
+      select('ExePay');
+      setTimeout(() => {
+        connect().catch(err => {
+          console.error('[Wallet Page] Auto-connect failed:', err);
+        });
+      }, 500);
+    }
+  }, [hasWallet, isUnlocked, connected, select, connect]);
+
+  // Fetch balance when connected
+  useEffect(() => {
+    if (walletPublicKey && connection) {
+      fetchBalance();
+    }
+  }, [walletPublicKey, connection]);
 
   const checkWalletStatus = () => {
     const stored = hasStoredWallet();
@@ -47,6 +74,21 @@ export default function WalletPage() {
     }
   };
 
+  const fetchBalance = async () => {
+    if (!walletPublicKey) return;
+    
+    setLoadingBalance(true);
+    try {
+      const bal = await connection.getBalance(walletPublicKey);
+      setBalance(bal / LAMPORTS_PER_SOL);
+    } catch (err) {
+      console.error('[Wallet Page] Failed to fetch balance:', err);
+      setBalance(null);
+    } finally {
+      setLoadingBalance(false);
+    }
+  };
+
   const handleWalletCreated = () => {
     checkWalletStatus();
     setShowUnlockModal(true);
@@ -56,9 +98,11 @@ export default function WalletPage() {
     checkWalletStatus();
   };
 
-  const handleLockWallet = () => {
+  const handleLockWallet = async () => {
+    await disconnect();
     clearWalletSession();
     checkWalletStatus();
+    setBalance(null);
   };
 
   const handleDeleteWallet = () => {
@@ -66,6 +110,7 @@ export default function WalletPage() {
       if (window.confirm('This will PERMANENTLY delete your wallet from this browser. Type "DELETE" to confirm.')) {
         const confirmation = window.prompt('Type DELETE to confirm:');
         if (confirmation === 'DELETE') {
+          disconnect();
           deleteWallet();
           checkWalletStatus();
           alert('Wallet deleted successfully');
@@ -93,16 +138,36 @@ export default function WalletPage() {
     }
   };
 
+  const copyPublicKey = async () => {
+    if (publicKey) {
+      try {
+        await navigator.clipboard.writeText(publicKey);
+        alert('Public key copied!');
+      } catch (err) {
+        alert('Failed to copy');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-12">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Built-in Wallet
-          </h1>
-          <p className="text-lg text-gray-600">
-            Create or import a wallet - No extensions needed!
-          </p>
+        {/* Header with Back Button */}
+        <div className="flex items-center gap-4 mb-8">
+          <button
+            onClick={() => router.push('/')}
+            className="p-2 rounded-lg hover:bg-white/50 transition-colors"
+          >
+            ← Back
+          </button>
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold text-gray-900">
+              Built-in Wallet
+            </h1>
+            <p className="text-lg text-gray-600 mt-1">
+              No extension needed - Full control
+            </p>
+          </div>
         </div>
 
         {/* No Wallet - Show Options */}
@@ -146,93 +211,139 @@ export default function WalletPage() {
           </div>
         )}
 
-        {/* Has Wallet - Show Status */}
+        {/* Has Wallet - Show Dashboard */}
         {hasWallet && (
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isUnlocked ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <span className="text-2xl">{isUnlocked ? '🔓' : '🔒'}</span>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{walletName}</h2>
-                  <p className="text-sm text-gray-600">
-                    {isUnlocked ? 'Unlocked' : 'Locked'}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-2">
-                {isUnlocked && (
-                  <button
-                    onClick={handleLockWallet}
-                    className="py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    Lock
-                  </button>
-                )}
-                {!isUnlocked && (
-                  <button
-                    onClick={() => setShowUnlockModal(true)}
-                    className="py-2 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
-                  >
-                    Unlock
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {publicKey && (
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-700 mb-1">Public Key</p>
-                    <p className="text-sm font-mono text-gray-900 break-all">{publicKey}</p>
+          <div className="space-y-6">
+            {/* Main Wallet Card */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isUnlocked ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <span className="text-2xl">{isUnlocked ? '🔓' : '🔒'}</span>
                   </div>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(publicKey);
-                      alert('Copied!');
-                    }}
-                    className="ml-4 text-purple-600 hover:text-purple-700"
-                  >
-                    📋
-                  </button>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">{walletName}</h2>
+                    <p className="text-sm text-gray-600">
+                      {isUnlocked ? (connected ? 'Connected & Unlocked' : 'Unlocked') : 'Locked'}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-2">
+                  {isUnlocked && (
+                    <button
+                      onClick={handleLockWallet}
+                      className="py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                    >
+                      🔒 Lock
+                    </button>
+                  )}
+                  {!isUnlocked && (
+                    <button
+                      onClick={() => setShowUnlockModal(true)}
+                      className="py-2 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+                    >
+                      🔓 Unlock
+                    </button>
+                  )}
                 </div>
               </div>
-            )}
 
-            {/* Wallet Actions */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <button
-                onClick={() => router.push('/privacy')}
-                className="py-3 px-4 bg-blue-50 text-blue-700 font-medium rounded-lg hover:bg-blue-100 transition-colors"
-              >
-                🔒 Use Privacy Features
-              </button>
-              <button
-                onClick={() => setShowExportModal(true)}
-                className="py-3 px-4 bg-yellow-50 text-yellow-700 font-medium rounded-lg hover:bg-yellow-100 transition-colors"
-              >
-                📥 Export Backup
-              </button>
-              <button
-                onClick={handleDeleteWallet}
-                className="py-3 px-4 bg-red-50 text-red-700 font-medium rounded-lg hover:bg-red-100 transition-colors"
-              >
-                🗑️ Delete Wallet
-              </button>
+              {/* Balance Display */}
+              {isUnlocked && publicKey && (
+                <>
+                  <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 mb-6">
+                    <p className="text-sm text-gray-600 mb-1">Balance</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-bold text-gray-900">
+                        {loadingBalance ? '...' : balance?.toFixed(4) || '0.0000'}
+                      </span>
+                      <span className="text-xl text-gray-600">SOL</span>
+                      <button
+                        onClick={fetchBalance}
+                        className="ml-4 text-sm text-purple-600 hover:text-purple-700"
+                        disabled={loadingBalance}
+                      >
+                        🔄 Refresh
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Public Key */}
+                  <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-700 mb-1">Public Key</p>
+                        <p className="text-sm font-mono text-gray-900 break-all">{publicKey}</p>
+                      </div>
+                      <button
+                        onClick={copyPublicKey}
+                        className="ml-4 text-purple-600 hover:text-purple-700"
+                      >
+                        📋
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="grid md:grid-cols-3 gap-3 mb-6">
+                    <button
+                      onClick={() => router.push('/privacy')}
+                      className="py-3 px-4 bg-blue-50 text-blue-700 font-medium rounded-lg hover:bg-blue-100 transition-colors text-center"
+                    >
+                      🔒 Privacy Features
+                    </button>
+                    <button
+                      onClick={() => router.push('/batch')}
+                      className="py-3 px-4 bg-purple-50 text-purple-700 font-medium rounded-lg hover:bg-purple-100 transition-colors text-center"
+                    >
+                      📦 Batch Payments
+                    </button>
+                    <button
+                      onClick={() => router.push('/history')}
+                      className="py-3 px-4 bg-indigo-50 text-indigo-700 font-medium rounded-lg hover:bg-indigo-100 transition-colors text-center"
+                    >
+                      📜 History
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Wallet Management */}
+              <div className="grid md:grid-cols-3 gap-4 pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => setShowExportModal(true)}
+                  className="py-3 px-4 bg-yellow-50 text-yellow-700 font-medium rounded-lg hover:bg-yellow-100 transition-colors"
+                >
+                  📥 Export Backup
+                </button>
+                <button
+                  onClick={() => router.push('/')}
+                  className="py-3 px-4 bg-gray-50 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  🏠 Home
+                </button>
+                <button
+                  onClick={handleDeleteWallet}
+                  className="py-3 px-4 bg-red-50 text-red-700 font-medium rounded-lg hover:bg-red-100 transition-colors"
+                >
+                  🗑️ Delete Wallet
+                </button>
+              </div>
             </div>
 
-            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                💡 Security Tips
+            {/* Security Info */}
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+              <h4 className="text-sm font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                <span>💡</span>
+                <span>Security Tips</span>
               </h4>
-              <ul className="text-xs text-blue-800 space-y-1">
-                <li>• Your wallet is encrypted and stored locally in your browser</li>
-                <li>• Always keep your recovery phrase in a safe place offline</li>
-                <li>• Never share your password or recovery phrase with anyone</li>
-                <li>• Sessions expire after 30 minutes of inactivity</li>
+              <ul className="text-xs text-blue-800 space-y-2">
+                <li>✅ Your wallet is encrypted and stored locally in your browser</li>
+                <li>✅ Always keep your recovery phrase in a safe place offline</li>
+                <li>✅ Never share your password or recovery phrase with anyone</li>
+                <li>✅ Sessions expire after 30 minutes of inactivity</li>
+                <li>✅ Use privacy features for enhanced transaction privacy</li>
               </ul>
             </div>
           </div>

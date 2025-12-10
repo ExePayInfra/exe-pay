@@ -23,15 +23,26 @@ export function ImportWalletModal({ isOpen, onClose, onSuccess }: ImportWalletMo
   const handleMnemonicSubmit = () => {
     setError('');
     
-    const trimmedMnemonic = mnemonic.trim().toLowerCase();
+    // Clean up mnemonic: trim, lowercase, normalize spaces
+    const cleanedMnemonic = mnemonic
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' '); // Replace multiple spaces with single space
     
-    // Validate mnemonic
-    if (!validateMnemonic(trimmedMnemonic)) {
-      setError('Invalid recovery phrase. Please check and try again.');
+    // Check word count
+    const words = cleanedMnemonic.split(' ');
+    if (words.length !== 12 && words.length !== 24) {
+      setError(`Invalid word count: ${words.length}. Must be 12 or 24 words.`);
       return;
     }
     
-    setMnemonic(trimmedMnemonic);
+    // Validate mnemonic
+    if (!validateMnemonic(cleanedMnemonic)) {
+      setError('Invalid recovery phrase. Please check each word and try again.');
+      return;
+    }
+    
+    setMnemonic(cleanedMnemonic);
     setStep('password');
   };
 
