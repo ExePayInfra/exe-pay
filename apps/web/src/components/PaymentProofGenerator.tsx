@@ -41,6 +41,7 @@ export function PaymentProofGenerator() {
     setError('');
     setGeneratedProof('');
     setTxDetails(null);
+    setAmount(''); // Clear amount field
     
     if (!txSignature) {
       setError('Transaction signature is required');
@@ -111,22 +112,31 @@ export function PaymentProofGenerator() {
       // Find the recipient by looking for the account that RECEIVED funds
       let recipientIndex = -1;
       let actualAmount = 0;
+      let largestPositiveChange = 0;
       
-      for (let i = 0; i < accountKeys.length; i++) {
+      // Find account with largest positive balance change (excluding fee payer at index 0)
+      for (let i = 1; i < accountKeys.length; i++) {
         const preBalance = tx.meta.preBalances[i] || 0;
         const postBalance = tx.meta.postBalances[i] || 0;
         const balanceChange = postBalance - preBalance;
         
-        // Find account that received funds (positive balance change, not fee payer)
-        if (balanceChange > 0 && i !== 0) {
+        if (balanceChange > largestPositiveChange) {
           recipientIndex = i;
           actualAmount = balanceChange;
-          break;
+          largestPositiveChange = balanceChange;
         }
       }
       
-      if (recipientIndex === -1) {
-        setError('Could not find recipient in transaction. This may not be a valid payment transaction.');
+      // Fallback: if no recipient found, check if index 1 exists (common pattern)
+      if (recipientIndex === -1 && accountKeys.length > 1) {
+        recipientIndex = 1;
+        const preBalance = tx.meta.preBalances[1] || 0;
+        const postBalance = tx.meta.postBalances[1] || 0;
+        actualAmount = Math.abs(postBalance - preBalance);
+      }
+      
+      if (recipientIndex === -1 || actualAmount === 0) {
+        setError('Could not determine recipient or amount from this transaction. Try a different transaction signature.');
         setGenerating(false);
         return;
       }
@@ -162,18 +172,16 @@ export function PaymentProofGenerator() {
         }
       }
       
+      // Auto-fill amount field with actual on-chain amount
+      setAmount((actualAmount / 1_000_000_000).toFixed(9));
+      
       setTxDetails({
         recipientAddress,
         actualAmount,
         ephemeralPubkey,
       });
       
-      // Auto-fill amount field with actual on-chain amount if not provided
-      if (!amount) {
-        setAmount((actualAmount / 1_000_000_000).toString());
-      }
-      
-      // Use actual on-chain amount for proof (ignore manual input to avoid mismatches)
+      // Always use actual on-chain amount for proof
       const proofAmount = actualAmount;
       
       // Generate cryptographic proof hash from transaction data
@@ -417,13 +425,10 @@ export function PaymentProofGenerator() {
               step="0.000001"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="Auto-filled from chain"
+              placeholder="0.0"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               disabled={generating}
             />
-            <p className="mt-1 text-xs text-gray-500">
-              Leave empty to auto-fill exact amount from blockchain
-            </p>
           </div>
 
           <div>
@@ -612,4 +617,5 @@ export function PaymentProofGenerator() {
     </div>
   );
 }
+
 
