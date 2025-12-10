@@ -1,1 +1,1 @@
-{"root":["./src/encryption.ts","./src/index.ts","./src/payment-links.ts","./src/social-wallet.ts","./src/wallet-generator.ts"],"version":"5.9.3"}
+{"root":["./src/encryption.ts","./src/index.ts","./src/payment-links.ts","./src/wallet-generator.ts"],"version":"5.9.3"}

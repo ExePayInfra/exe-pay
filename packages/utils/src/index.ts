@@ -37,6 +37,3 @@ export * from "./wallet-generator.js";
 // Export encryption utilities
 export * from "./encryption.js";
 
-// Export social wallet utilities
-export * from "./social-wallet.js";
-
