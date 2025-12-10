@@ -253,28 +253,6 @@ Basic features will always be free. Premium features (coming soon) may have opti
 
 ---
 
-## **Token ($EXE)**
-
-### **Is there an ExePay token?**
-Coming soon! $EXE token launch planned for Q1 2026.
-
-### **What will the token be used for?**
-- Fee discounts
-- Governance voting
-- Staking rewards
-- Premium features
-
-### **How can I get tokens?**
-- Airdrop to early users
-- Liquidity mining
-- Community rewards
-- DEX purchase
-
-### **When is the token launch?**
-Q1 2026. Follow on Twitter for updates!
-
----
-
 ## **Grants & Funding**
 
 ### **Is ExePay funded?**
@@ -302,10 +280,10 @@ Not currently raising. May consider funding after token launch.
 - More tokens
 
 **Q1 2026:**
-- Token launch ($EXE)
 - Native mobile app
 - On-chain ZK verification
 - Cross-chain support
+- Advanced privacy features
 
 **Q2 2026:**
 - Enterprise features

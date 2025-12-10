@@ -110,21 +110,17 @@ pnpm test
 
 ## 🚀 Recent Changes (Session)
 
-### 1. Token Link Added
-
-- Added $EXE token badge to homepage hero
-- Links to DEX Screener for trading
-- Clean, minimal pill-style button
-
-### 2. Payment Proof Fixes
+### 1. Payment Proof Fixes
 
 - Added network selector (mainnet/devnet)
 - Implemented proper RPC error handling
 - Added Helius RPC configuration
 - Fixed transaction lookup from real blockchain data
 - Removed mock proof generation
+- Auto-fill amounts from blockchain
+- Improved recipient detection
 
-### 3. View Keys Implementation
+### 2. View Keys Implementation
 
 - SHA-256 derived view keys for compliance
 - Public/private view key pairs
@@ -132,7 +128,7 @@ pnpm test
 - Export functionality with encryption
 - Comprehensive security documentation
 
-### 4. Documentation Updates
+### 3. Documentation Updates
 
 - Added whitepaper to docs navigation
 - Created complete API documentation
@@ -286,7 +282,6 @@ pnpm test
 - **Documentation:** https://docs.exepay.app
 - **Repository:** https://github.com/ExePayInfra/exe-pay
 - **Twitter:** [@exeinfra](https://x.com/exeinfra)
-- **Token:** $EXE on DEX Screener
 
 ---
 
