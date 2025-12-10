@@ -1,8 +1,8 @@
 # ExePay - Current Project State
 
-**Last Updated:** December 3, 2025  
+**Last Updated:** December 10, 2025  
 **Branch:** main  
-**Status:** Production Ready (Mainnet)
+**Status:** Production Ready (Mainnet + Built-in Wallets)
 
 ---
 
@@ -25,6 +25,16 @@
 - [x] **Recurring Payments** - Automated subscription management
 - [x] **Payment Links** - Shareable URLs with QR codes
 - [x] **Transaction History** - Complete payment tracking
+
+### Wallet Management ⭐ NEW
+
+- [x] **Built-in Wallet Creation** - No browser extension required
+- [x] **BIP39 Seed Phrases** - Standard 12-word recovery phrases
+- [x] **Import Wallet** - Restore from existing seed phrase
+- [x] **Password Encryption** - AES-256-GCM encrypted storage
+- [x] **Session Management** - Auto-lock after 30 minutes
+- [x] **Privacy Integration** - Works with all ExePay features
+- [x] **Export/Delete** - Full wallet management
 
 ### Developer Experience
 
@@ -110,7 +120,36 @@ pnpm test
 
 ## 🚀 Recent Changes (Session)
 
-### 1. Payment Proof Fixes
+### 1. Built-in Wallet Creation ⭐ NEW
+
+**Create & Import Wallets:**
+- BIP39 seed phrase generation (12-word)
+- HD key derivation (m/44'/501'/0'/0')
+- Import from existing seed phrase
+- Password-encrypted local storage (AES-256-GCM)
+- Session management with auto-lock
+
+**Wallet Integration:**
+- Custom ExePayWalletAdapter for Solana
+- Works with all privacy features
+- SOL balance display
+- Transaction history
+- Export/delete functionality
+
+**Security:**
+- PBKDF2 key derivation (100k iterations)
+- AES-256-GCM encryption
+- No server-side key storage
+- Fully non-custodial
+- Session timeout (30 min)
+
+**Twitter OAuth Archived:**
+- Requires $100/month (Twitter API)
+- Archived to docs/archive/
+- Can be re-enabled when budget allows
+- Free alternatives (Google, GitHub) for future
+
+### 2. Payment Proof Fixes
 
 - Added network selector (mainnet/devnet)
 - Implemented proper RPC error handling
