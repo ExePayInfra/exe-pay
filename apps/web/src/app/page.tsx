@@ -122,7 +122,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-3">
               <a
-                href="/wallet"
+                href="/app"
                 className="btn-primary px-10 py-5 rounded-xl font-semibold text-lg inline-flex items-center gap-3 group transition-all duration-300 hover:scale-105 hover:shadow-2xl"
               >
                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">

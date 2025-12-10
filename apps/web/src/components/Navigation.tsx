@@ -56,7 +56,7 @@ export function Navigation() {
             <div className="flex items-center gap-3">
               {!publicKey ? (
                 <a
-                  href="/wallet"
+                  href="/app"
                   className="btn-primary px-6 py-2.5 rounded-lg font-semibold hover-lift"
                 >
                   Launch App
@@ -124,7 +124,7 @@ export function Navigation() {
               </a>
               {!publicKey ? (
                 <a
-                  href="/wallet"
+                  href="/app"
                   className="btn-primary px-6 py-2.5 rounded-lg font-semibold text-center"
                 >
                   Launch App
