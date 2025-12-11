@@ -32,9 +32,10 @@ export default function RootLayout({
                         fill
                         className="object-contain"
                         priority
+                        style={{ filter: 'brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(2381%) hue-rotate(217deg) brightness(96%) contrast(101%)' }}
                       />
                     </div>
-                    <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">
+                    <span className="text-xl font-bold" style={{ color: '#3B5BA5' }}>
                       ExePay Docs
                     </span>
                   </Link>

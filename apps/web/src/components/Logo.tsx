@@ -56,22 +56,13 @@ export function LogoText({ className = '', with3D = false }: { className?: strin
           style={{ filter: 'brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(2381%) hue-rotate(217deg) brightness(96%) contrast(101%)' }}
         />
       </div>
-      {/* Pay text with 3D effect - gradient blue to match logo */}
+      {/* Pay text - solid blue to match Exe logo */}
       <span 
-        className={`text-[1.75rem] font-bold -ml-10 tracking-tight leading-[1.75rem] transition-all duration-500 group-hover:scale-110 ${
-          with3D ? 'text-3d-gradient' : 'text-black'
-        }`}
-        style={with3D ? {
-          background: 'linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          textShadow: '0 4px 8px rgba(79, 70, 229, 0.3), 0 8px 16px rgba(79, 70, 229, 0.2)',
-          filter: 'drop-shadow(0 2px 4px rgba(79, 70, 229, 0.4))',
+        className="text-[1.75rem] font-bold -ml-10 tracking-tight leading-[1.75rem] transition-all duration-500 group-hover:scale-110"
+        style={{
+          color: '#3B5BA5',
           fontFamily: 'system-ui, -apple-system, sans-serif',
           fontWeight: 800,
-        } : {
-          fontFamily: 'system-ui, -apple-system, sans-serif'
         }}
       >
         Pay
