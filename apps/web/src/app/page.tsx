@@ -94,11 +94,12 @@ export default function Home() {
     <main className="min-h-screen bg-white text-gray-900 overflow-hidden">
       <Navigation />
 
-      {/* Animated Background Blobs */}
+      {/* Animated Background Blobs - Enhanced */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 left-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 right-10 w-[600px] h-[600px] bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-40 left-10 w-[500px] h-[500px] bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-1/2 w-[550px] h-[550px] bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       </div>
 
       {/* Hero Section */}
@@ -110,10 +111,12 @@ export default function Home() {
               <span className="text-sm font-semibold text-indigo-900">Powered by Light Protocol & Solana</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up stagger-1 animate-float-slow">
-              Privacy-first payments
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up stagger-1">
+              <span className="inline-block animate-float-slow">Privacy-first payments</span>
               <br />
-              <span className="text-gradient-brand animate-gradient inline-block">with zero-knowledge proofs</span>
+              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient inline-block">
+                with zero-knowledge proofs
+              </span>
             </h1>
 
             <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto animate-fade-in-up stagger-2">
@@ -205,34 +208,34 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Feature Cards */}
+          {/* Feature Cards - Enhanced */}
           <div className="grid md:grid-cols-3 gap-8 text-white">
             <div className="text-center animate-fade-in-up stagger-4 group cursor-pointer">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
-                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl transition-all duration-300 group-hover:scale-125 group-hover:shadow-indigo-500/50 group-hover:rotate-12 animate-pulse-glow">
+                <svg className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-indigo-300">Zero-Knowledge Proofs</h3>
-              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">Cryptographic privacy without compromising security</p>
+              <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-indigo-300">Zero-Knowledge Proofs</h3>
+              <p className="text-sm text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-100">Cryptographic privacy without compromising security</p>
             </div>
             <div className="text-center animate-fade-in-up stagger-5 group cursor-pointer">
-              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
-                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <div className="w-20 h-20 bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl transition-all duration-300 group-hover:scale-125 group-hover:shadow-cyan-500/50 group-hover:rotate-12 animate-pulse-glow animation-delay-2000">
+                <svg className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-cyan-300">Lightning Fast</h3>
-              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">Transactions confirm in under 1 second on Solana</p>
+              <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-cyan-300">Lightning Fast</h3>
+              <p className="text-sm text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-100">Transactions confirm in under 1 second on Solana</p>
             </div>
             <div className="text-center animate-fade-in-up stagger-6 group cursor-pointer">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:rotate-6">
-                <svg className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              <div className="w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-rose-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl transition-all duration-300 group-hover:scale-125 group-hover:shadow-pink-500/50 group-hover:rotate-12 animate-pulse-glow animation-delay-4000">
+                <svg className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold mb-2 transition-colors duration-300 group-hover:text-pink-300">Multi-Token Support</h3>
-              <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200">SOL, USDC, USDT, and custom SPL tokens</p>
+              <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-pink-300">Multi-Token Support</h3>
+              <p className="text-sm text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-100">SOL, USDC, USDT, and custom SPL tokens</p>
             </div>
           </div>
         </div>

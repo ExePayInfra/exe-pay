@@ -109,27 +109,12 @@ const ViewKeysManager = dynamicImport(
   }
 );
 
-const UnifiedAddressGenerator = dynamicImport(
-  () => import('@/components/UnifiedAddressGenerator').then(mod => ({ default: mod.UnifiedAddressGenerator })),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
-        <div className="text-center">
-          <div className="text-4xl mb-4">🏠</div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-);
-
 export default function PrivacyPage() {
   const searchParams = useSearchParams();
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
   const [mainTab, setMainTab] = useState<'stealth' | 'light'>('stealth');
-  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses' | 'viewkeys' | 'unified'>('receive');
+  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses' | 'viewkeys'>('receive');
 
   // Check URL parameter to set initial tab
   useEffect(() => {
@@ -172,14 +157,14 @@ export default function PrivacyPage() {
           <button
             onClick={() => setMainTab('stealth')}
             className={`
-              flex-1 max-w-xs flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105
+              flex-1 max-w-xs flex items-center justify-center gap-3 px-8 py-5 rounded-2xl font-bold text-lg transition-all transform hover:scale-110 hover:shadow-2xl
               ${mainTab === 'stealth'
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-xl'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border-2 border-gray-200'
+                ? 'bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 text-white shadow-2xl ring-4 ring-indigo-200/50 animate-gradient'
+                : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-blue-50 shadow-xl border-2 border-gray-200 hover:border-indigo-400'
               }
             `}
           >
-            <span className="text-2xl">🔒</span>
+            <span className="text-3xl animate-bounce-in">🔒</span>
             <div className="text-left">
               <div>Stealth System</div>
               <div className="text-xs font-normal opacity-90">Off-chain Privacy</div>
@@ -188,14 +173,14 @@ export default function PrivacyPage() {
           <button
             onClick={() => setMainTab('light')}
             className={`
-              flex-1 max-w-xs flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105
+              flex-1 max-w-xs flex items-center justify-center gap-3 px-8 py-5 rounded-2xl font-bold text-lg transition-all transform hover:scale-110 hover:shadow-2xl
               ${mainTab === 'light'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border-2 border-gray-200'
+                ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white shadow-2xl ring-4 ring-purple-200/50 animate-gradient'
+                : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 shadow-xl border-2 border-gray-200 hover:border-purple-400'
               }
             `}
           >
-            <span className="text-2xl">🌟</span>
+            <span className="text-3xl animate-bounce-in animation-delay-2000">🌟</span>
             <div className="text-left">
               <div>Light Protocol</div>
               <div className="text-xs font-normal opacity-90">ZK Compression</div>
@@ -211,42 +196,42 @@ export default function PrivacyPage() {
               <button
                 onClick={() => setStealthTab('receive')}
                 className={`
-                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-110 hover:shadow-2xl hover:-translate-y-1
                   ${stealthTab === 'receive'
-                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
-                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                    ? 'bg-gradient-to-br from-emerald-500 via-green-600 to-teal-600 text-white shadow-2xl ring-4 ring-emerald-200/50'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-emerald-50 hover:to-green-50 shadow-lg border-2 border-gray-200 hover:border-emerald-400'
                   }
                 `}
               >
-                <span className="text-4xl">📥</span>
+                <span className="text-4xl animate-bounce-in">📥</span>
                 <span>Receive</span>
                 <span className="text-xs font-normal opacity-75">Generate stealth address</span>
               </button>
               <button
                 onClick={() => setStealthTab('send')}
                 className={`
-                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-110 hover:shadow-2xl hover:-translate-y-1
                   ${stealthTab === 'send'
-                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
-                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                    ? 'bg-gradient-to-br from-orange-500 via-red-500 to-pink-600 text-white shadow-2xl ring-4 ring-orange-200/50'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 shadow-lg border-2 border-gray-200 hover:border-orange-400'
                   }
                 `}
               >
-                <span className="text-4xl">💸</span>
+                <span className="text-4xl animate-bounce-in">💸</span>
                 <span>Send</span>
                 <span className="text-xs font-normal opacity-75">Send private payment</span>
               </button>
               <button
                 onClick={() => setStealthTab('scan')}
                 className={`
-                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-105
+                  flex flex-col items-center gap-3 p-6 rounded-2xl font-bold text-base transition-all transform hover:scale-110 hover:shadow-2xl hover:-translate-y-1
                   ${stealthTab === 'scan'
-                    ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-indigo-200'
-                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 shadow-lg border-2 border-gray-200 hover:border-indigo-300'
+                    ? 'bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 text-white shadow-2xl ring-4 ring-blue-200/50'
+                    : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 shadow-lg border-2 border-gray-200 hover:border-blue-400'
                   }
                 `}
               >
-                <span className="text-4xl">🔍</span>
+                <span className="text-4xl animate-bounce-in">🔍</span>
                 <span>Scan & Claim</span>
                 <span className="text-xs font-normal opacity-75">Find your payments</span>
               </button>
@@ -295,19 +280,6 @@ export default function PrivacyPage() {
                   <span className="text-xl">🔑</span>
                   <span>View Keys</span>
                 </button>
-
-                {/* Unified Addresses */}
-                <button
-                  onClick={() => setStealthTab('unified')}
-                  className={`flex items-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-200 hover:scale-105 ${
-                    stealthTab === 'unified'
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                  }`}
-                >
-                  <span className="text-xl">🏠</span>
-                  <span>Unified Address</span>
-                </button>
               </div>
             </div>
           </div>
@@ -351,12 +323,6 @@ export default function PrivacyPage() {
                 {stealthTab === 'viewkeys' && (
                   <div className="animate-fade-in">
                     <ViewKeysManager />
-                  </div>
-                )}
-
-                {stealthTab === 'unified' && (
-                  <div className="animate-fade-in">
-                    <UnifiedAddressGenerator />
                   </div>
                 )}
               </>
