@@ -109,12 +109,27 @@ const ViewKeysManager = dynamicImport(
   }
 );
 
+const UnifiedAddressGenerator = dynamicImport(
+  () => import('@/components/UnifiedAddressGenerator').then(mod => ({ default: mod.UnifiedAddressGenerator })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🏠</div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+);
+
 export default function PrivacyPage() {
   const searchParams = useSearchParams();
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>('auto');
   const [amount, setAmount] = useState<number>(1);
   const [mainTab, setMainTab] = useState<'stealth' | 'light'>('stealth');
-  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses' | 'viewkeys'>('receive');
+  const [stealthTab, setStealthTab] = useState<'receive' | 'send' | 'scan' | 'integrated' | 'subaddresses' | 'viewkeys' | 'unified'>('receive');
 
   // Check URL parameter to set initial tab
   useEffect(() => {
@@ -280,6 +295,19 @@ export default function PrivacyPage() {
                   <span className="text-xl">🔑</span>
                   <span>View Keys</span>
                 </button>
+
+                {/* Unified Addresses */}
+                <button
+                  onClick={() => setStealthTab('unified')}
+                  className={`flex items-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-200 hover:scale-105 ${
+                    stealthTab === 'unified'
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  }`}
+                >
+                  <span className="text-xl">🏠</span>
+                  <span>Unified Address</span>
+                </button>
               </div>
             </div>
           </div>
@@ -323,6 +351,12 @@ export default function PrivacyPage() {
                 {stealthTab === 'viewkeys' && (
                   <div className="animate-fade-in">
                     <ViewKeysManager />
+                  </div>
+                )}
+
+                {stealthTab === 'unified' && (
+                  <div className="animate-fade-in">
+                    <UnifiedAddressGenerator />
                   </div>
                 )}
               </>

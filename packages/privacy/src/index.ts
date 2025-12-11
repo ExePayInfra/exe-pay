@@ -29,6 +29,9 @@ export * from "./rpc-privacy.js";
 // Export View Keys (read-only access for compliance)
 export * from "./view-keys.js";
 
+// Export Unified Addresses (single address for all modes)
+export * from "./unified-address.js";
+
 export interface ProveSpendResult {
   readonly proof: Uint8Array;
   readonly instruction: TransactionInstruction;
