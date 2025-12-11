@@ -4,11 +4,11 @@
 
 ---
 
-## 🎯 Current Focus: Production-Ready Privacy Features
+## 🎯 Current Focus: Enhanced UX & Advanced Privacy
 
-**Latest Release:** View Keys for Compliance  
+**Latest Release:** Built-in Wallets + UI Polish  
 **Status:** Live on mainnet (December 2025)  
-**Next Stage:** Unified Addresses + Amount Privacy (zk-SNARKs)
+**Next Stage:** Amount Privacy (zk-SNARKs) + Ring Signatures
 
 **Privacy Architecture Status:**
 
@@ -41,40 +41,37 @@
 - ✅ **Payment Links** - Shareable payment URLs with QR codes
 - ✅ **Transaction History** - Complete payment tracking and analytics
 
+### Wallet Management
+
+- ✅ **Built-in Wallet Creation** - No browser extension required
+- ✅ **BIP39 Seed Phrases** - Standard 12-word recovery phrases
+- ✅ **Import/Export** - Full wallet portability
+- ✅ **AES-256-GCM Encryption** - Password-protected storage
+- ✅ **Multi-Wallet Support** - Phantom, Solflare, Coinbase, Trust, Torus, Ledger
+- ✅ **Onboarding Flow** - Seamless user experience
+
 ### Developer Experience
 
 - ✅ **TypeScript SDK** - Full type safety and comprehensive interfaces
 - ✅ **React Hooks** - useExePay(), useBatchPayment(), useRecurringPayment()
-- ✅ **Multi-Wallet** - Phantom, Solflare, Coinbase, Trust, Torus, Ledger
 - ✅ **Production Ready** - Mainnet deployed, battle-tested
 - ✅ **Complete Documentation** - API reference, guides, examples
+
+### UI/UX
+
+- ✅ **Professional Branding** - Consistent ExePay logo and colors
+- ✅ **Colorful Gradients** - Vibrant, modern design system
+- ✅ **Smooth Animations** - Enhanced user interactions
+- ✅ **Responsive Design** - Mobile-first approach
+- ✅ **Feature Grouping** - Organized advanced features tab
 
 ---
 
 ## 🚀 Next Development Stages
 
-### Stage 1: Enhanced Privacy Layer (Immediate)
+### Stage 1: Advanced Privacy Layer
 
-**Built-in Wallet Creation** ⭐ NEW
-
-- Create Solana wallets directly in ExePay (no external wallet needed)
-- Secure key generation using Web Crypto API
-- Encrypted local storage with password protection
-- Export private key / seed phrase for backup
-- Import existing wallets from seed phrase
-- Browser-based, non-custodial (user owns keys)
-- **Impact:** Lower barrier to entry, onboard users without external wallets
-- **Use Cases:** New users, privacy-focused users, testing/demo accounts
-
-**Unified Addresses**
-
-- Single address supporting multiple privacy modes
-- Automatic mode detection (transparent, stealth, shielded)
-- Seamless user experience without manual selection
-- Backward compatibility with existing addresses
-- **Impact:** Simplified UX, increased privacy adoption
-
-**Amount Privacy with zk-SNARKs**
+**Amount Privacy with zk-SNARKs** (Priority)
 
 - Groth16 zero-knowledge proofs for hidden amounts
 - Range proofs for balance verification (0 ≤ amount ≤ max)
@@ -399,6 +396,24 @@
 - API reference updates
 - Community wiki
 - Best practices guides
+
+---
+
+## 📦 Archived Features
+
+These features were explored but archived for future consideration:
+
+**Unified Addresses** (Archived December 2025)
+- Single address format for multiple privacy modes
+- Requires full payment flow integration to be useful
+- May be revisited when all privacy modes are production-ready
+- Code preserved in `docs/archive/unified-addresses/`
+
+**Twitter OAuth Wallet Creation** (Archived December 2025)
+- Social login-based deterministic wallet generation
+- Twitter API costs ($100/month) not justified at current stage
+- May be revisited with Google OAuth (free tier) or other providers
+- Code preserved in `docs/archive/twitter-oauth/`
 
 ---
 
