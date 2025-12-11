@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'ExePay Documentation',
@@ -21,11 +22,21 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center gap-8">
-                  <Link href="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">E</span>
+                  <Link href="/" className="flex items-center gap-2 group">
+                    <div className="relative w-10 h-10 transition-all duration-300 group-hover:scale-110" style={{
+                      filter: 'drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3)) drop-shadow(0 4px 8px rgba(79, 70, 229, 0.15))',
+                    }}>
+                      <Image
+                        src="/exepay-logo.png"
+                        alt="ExePay"
+                        fill
+                        className="object-contain"
+                        priority
+                      />
                     </div>
-                    <span className="text-xl font-bold text-gray-900">ExePay Docs</span>
+                    <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">
+                      ExePay Docs
+                    </span>
                   </Link>
                   <nav className="hidden md:flex items-center gap-6">
                     <Link href="/guide" className="text-gray-600 hover:text-gray-900">Guide</Link>

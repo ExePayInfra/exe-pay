@@ -112,9 +112,19 @@ export default function Home() {
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up stagger-1">
-              <span className="inline-block animate-float-slow">Privacy-first payments</span>
+              <span className="inline-block animate-float-slow" style={{
+                textShadow: '0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05)',
+              }}>
+                Privacy-first payments
+              </span>
               <br />
-              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient inline-block">
+              <span 
+                className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient inline-block"
+                style={{
+                  filter: 'drop-shadow(0 4px 12px rgba(79, 70, 229, 0.4)) drop-shadow(0 8px 24px rgba(79, 70, 229, 0.2))',
+                  WebkitTextStroke: '1px rgba(79, 70, 229, 0.1)',
+                }}
+              >
                 with zero-knowledge proofs
               </span>
             </h1>

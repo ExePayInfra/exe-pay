@@ -7,13 +7,24 @@ interface LogoProps {
   className?: string;
   animated?: boolean;
   variant?: 'transparent' | 'full';
+  with3D?: boolean;
 }
 
-export function Logo({ size = 40, className = '', animated = false, variant = 'transparent' }: LogoProps) {
+export function Logo({ size = 40, className = '', animated = false, variant = 'transparent', with3D = false }: LogoProps) {
   const logoSrc = variant === 'full' ? '/exepay-logo-full.png' : '/exepay-logo.png';
   
   return (
-    <div className={`relative ${className} ${animated ? 'hover:scale-105 transition-transform duration-300' : ''}`} style={{ width: size, height: size }}>
+    <div 
+      className={`relative ${className} ${animated ? 'hover:scale-105 transition-transform duration-300' : ''} ${with3D ? 'logo-3d' : ''}`} 
+      style={{ 
+        width: size, 
+        height: size,
+        ...(with3D && {
+          filter: 'drop-shadow(0 4px 8px rgba(79, 70, 229, 0.3)) drop-shadow(0 8px 16px rgba(79, 70, 229, 0.2))',
+          transform: 'perspective(1000px) rotateX(5deg)',
+        })
+      }}
+    >
       <Image
         src={logoSrc}
         alt="ExePay Logo"
@@ -25,11 +36,17 @@ export function Logo({ size = 40, className = '', animated = false, variant = 't
   );
 }
 
-export function LogoText({ className = '' }: { className?: string }) {
+export function LogoText({ className = '', with3D = false }: { className?: string; with3D?: boolean }) {
   return (
     <div className={`flex items-center gap-0 ${className} group cursor-pointer`}>
-      {/* Exe logo image */}
-      <div className="relative w-32 h-14 transition-all duration-500 group-hover:scale-110">
+      {/* Exe logo image with 3D effect */}
+      <div 
+        className="relative w-32 h-14 transition-all duration-500 group-hover:scale-110"
+        style={with3D ? {
+          filter: 'drop-shadow(0 4px 8px rgba(79, 70, 229, 0.4)) drop-shadow(0 8px 16px rgba(79, 70, 229, 0.2))',
+          transform: 'perspective(1000px) rotateY(-5deg)',
+        } : {}}
+      >
         <Image
           src="/exepay-logo.png"
           alt="Exe"
@@ -39,17 +56,42 @@ export function LogoText({ className = '' }: { className?: string }) {
           style={{ filter: 'brightness(0) saturate(100%) invert(32%) sepia(99%) saturate(2381%) hue-rotate(217deg) brightness(96%) contrast(101%)' }}
         />
       </div>
-      {/* Pay text - same size as logo, black, very close */}
-      <span className="text-[1.75rem] font-bold text-black -ml-10 tracking-tight leading-[1.75rem] transition-all duration-500 group-hover:scale-110" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* Pay text with 3D effect - gradient blue to match logo */}
+      <span 
+        className={`text-[1.75rem] font-bold -ml-10 tracking-tight leading-[1.75rem] transition-all duration-500 group-hover:scale-110 ${
+          with3D ? 'text-3d-gradient' : 'text-black'
+        }`}
+        style={with3D ? {
+          background: 'linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          textShadow: '0 4px 8px rgba(79, 70, 229, 0.3), 0 8px 16px rgba(79, 70, 229, 0.2)',
+          filter: 'drop-shadow(0 2px 4px rgba(79, 70, 229, 0.4))',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontWeight: 800,
+        } : {
+          fontFamily: 'system-ui, -apple-system, sans-serif'
+        }}
+      >
         Pay
       </span>
     </div>
   );
 }
 
-export function LogoIcon({ size = 24, className = '' }: { size?: number; className?: string }) {
+export function LogoIcon({ size = 24, className = '', with3D = false }: { size?: number; className?: string; with3D?: boolean }) {
   return (
-    <div className={`relative ${className}`} style={{ width: size, height: size }}>
+    <div 
+      className={`relative ${className}`} 
+      style={{ 
+        width: size, 
+        height: size,
+        ...(with3D && {
+          filter: 'drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3)) drop-shadow(0 4px 8px rgba(79, 70, 229, 0.15))',
+        })
+      }}
+    >
       <Image
         src="/exepay-logo.png"
         alt="ExePay Icon"
