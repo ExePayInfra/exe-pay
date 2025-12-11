@@ -1,20 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { SecureWalletConnect } from '@/components/SecureWalletConnect';
 
 export default function AppLandingPage() {
   const router = useRouter();
   const { connected, publicKey } = useWallet();
+  const [showConnectModal, setShowConnectModal] = useState(false);
 
   // If already connected, redirect to privacy features
   useEffect(() => {
     if (connected && publicKey) {
-      router.push('/privacy');
+      // Check if verified in session
+      const verifiedKey = sessionStorage.getItem('exepay_verified_wallet');
+      if (verifiedKey === publicKey.toString()) {
+        router.push('/privacy');
+      }
     }
   }, [connected, publicKey, router]);
+
+  // Handle successful wallet connection
+  const handleWalletConnected = () => {
+    console.log('[App] Wallet connected and verified, redirecting...');
+    setTimeout(() => {
+      router.push('/privacy');
+    }, 500);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 py-12">
@@ -156,9 +169,12 @@ export default function AppLandingPage() {
               </div>
 
               {/* Wallet Connect Button */}
-              <div className="wallet-connect-custom">
-                <WalletMultiButton className="!w-full !py-4 !bg-gradient-to-r !from-blue-600 !to-cyan-600 hover:!from-blue-700 hover:!to-cyan-700 !text-white !font-bold !rounded-xl !transition-all !duration-200 !shadow-lg hover:!shadow-xl !transform hover:!scale-105 !text-lg" />
-              </div>
+              <button
+                onClick={() => setShowConnectModal(true)}
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 text-lg"
+              >
+                Select Wallet
+              </button>
 
               {/* Best for */}
               <p className="text-sm text-center text-blue-600 font-medium mt-4">
@@ -167,6 +183,30 @@ export default function AppLandingPage() {
             </div>
           </div>
         </div>
+
+        {/* Secure Wallet Connect Modal */}
+        {showConnectModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl animate-scale-in">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Connect Wallet</h2>
+                <button
+                  onClick={() => setShowConnectModal(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <SecureWalletConnect 
+                showHeader={false}
+                onConnected={handleWalletConnected}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Bottom Info */}
         <div className="mt-12 text-center animate-fade-in-up stagger-3">
